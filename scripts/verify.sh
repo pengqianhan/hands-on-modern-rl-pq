@@ -1,0 +1,18 @@
+#!/bin/sh
+set -eu
+
+echo "Checking formatting..."
+npm run format:check
+
+echo "Checking lint..."
+npm run lint
+
+echo "Building site..."
+npm run build
+
+echo "Checking build output..."
+test -f docs/.vitepress/dist/preface/intro.html
+test -f docs/.vitepress/dist/sitemap.xml
+test -f docs/.vitepress/dist/robots.txt
+
+echo "Verification passed"

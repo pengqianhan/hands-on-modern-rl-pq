@@ -1,0 +1,43 @@
+{
+  "name": "course-template",
+  "version": "1.0.0",
+  "description": "WalkingLabs reusable course template based on VitePress",
+  "type": "module",
+  "scripts": {
+    "dev": "vitepress dev docs",
+    "build": "npm run sitemap && vitepress build docs",
+    "build:force": "npm run sitemap && vitepress build docs --force",
+    "preview": "vitepress preview docs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "lint": "eslint docs/.vitepress/theme",
+    "lint:fix": "eslint docs/.vitepress/theme --fix",
+    "verify": "bash scripts/verify.sh",
+    "sitemap": "node scripts/generate-sitemap.mjs"
+  },
+  "keywords": [
+    "walkinglabs",
+    "course-template",
+    "vitepress",
+    "documentation"
+  ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "CC-BY-NC-SA-4.0",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:walkinglabs/hands-on-modern-rl.git"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "eslint": "^9.0.0",
+    "eslint-plugin-vue": "^9.30.0",
+    "prettier": "^3.7.4",
+    "vue-eslint-parser": "^9.4.3"
+  },
+  "dependencies": {
+    "vitepress": "^2.0.0-alpha.16",
+    "vue": "^3.5.0"
+  }
+}
