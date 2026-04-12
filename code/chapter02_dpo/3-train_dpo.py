@@ -4,13 +4,16 @@ from datasets import Dataset
 from trl import DPOTrainer
 from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments
 
+# 优先使用本地模型（由 0-download_model.py 下载）
+LOCAL_MODEL_DIR = "./Qwen2.5-0.5B-Instruct"
+
 # ==========================================
 # 1. 准备偏好数据
 # ==========================================
 data_file = "output/preference_data.json"
 
 if not os.path.exists(data_file):
-    print(f"找不到 {data_file}！请先运行 0-generate_data.py 来生成偏好数据。")
+    print(f"找不到 {data_file}！请先运行 1-generate_data.py 来生成偏好数据。")
     exit(1)
 
 with open(data_file, "r", encoding="utf-8") as f:
@@ -27,7 +30,7 @@ train_dataset = Dataset.from_dict(data_dict)
 # ==========================================
 # 2. 加载模型与分词器
 # ==========================================
-model_name = "Qwen/Qwen2.5-0.5B-Instruct"
+model_name = LOCAL_MODEL_DIR if os.path.exists(LOCAL_MODEL_DIR) else "Qwen/Qwen2.5-0.5B-Instruct"
 print(f"正在加载基础模型 {model_name} ...")
 model = AutoModelForCausalLM.from_pretrained(model_name)
 tokenizer = AutoTokenizer.from_pretrained(model_name)
@@ -65,4 +68,4 @@ trainer.train()
 save_path = "./output/dpo_results/final_model"
 trainer.save_model(save_path)
 print(f"🎉 训练完成！微调后的模型已保存至 {save_path}。")
-print("你可以运行 test_after.py 来看看现在的模型会不会'好好说话'了。")
+print("你可以运行 4-test_after.py 来看看现在的模型会不会'好好说话'了。")
