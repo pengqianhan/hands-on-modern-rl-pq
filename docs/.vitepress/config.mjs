@@ -484,7 +484,17 @@ const zhSidebar = {
           text: '附录D：强化学习经典项目',
           link: '/appendix_game_projects/intro'
         },
-        { text: '附录E：数学基础', link: '/appendix_math/intro' },
+        {
+          text: '附录E：数学基础',
+          collapsed: false,
+          items: [
+            { text: '章节导览', link: '/appendix_math/intro' },
+            { text: 'E.1 线性代数', link: '/appendix_math/linear-algebra' },
+            { text: 'E.2 概率与统计', link: '/appendix_math/probability-statistics' },
+            { text: 'E.3 微积分与优化', link: '/appendix_math/calculus-optimization' },
+            { text: 'E.4 信息论', link: '/appendix_math/information-theory' }
+          ]
+        },
         { text: '附录G：术语对照表', link: '/appendix_terminology/intro' },
         { text: '附录H：环境安装指南', link: '/appendix_env_install/intro' }
       ]
