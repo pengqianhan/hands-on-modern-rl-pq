@@ -112,18 +112,18 @@ const zhSidebar = {
       text: '第二篇：核心理论与方法',
       items: [
         {
-          text: 'Chapter 3. Foundations of RL: MDP, Value Functions & Policy Optimization',
+          text: '第3章：强化学习理论基础——MDP、价值函数与策略优化',
           collapsed: false,
           items: [
-            { text: 'Chapter Overview', link: '/chapter03_mdp/intro' },
-            { text: '3.1 Multi-Armed Bandits: Exploration vs Exploitation', link: '/chapter03_mdp/bandit' },
-            { text: '3.2 Markov Decision Processes', link: '/chapter03_mdp/mdp' },
-            { text: '3.3 Value Functions & Bellman Equations', link: '/chapter03_mdp/value-bellman' },
-            { text: '3.4 Dynamic Programming, Monte Carlo & Temporal Difference', link: '/chapter03_mdp/dp-mc-td' },
-            { text: '3.5 Value-Based: Action-Value Q(s, a)', link: '/chapter03_mdp/value-q' },
-            { text: '3.6 Policy-Based: Objective J(θ)', link: '/chapter03_mdp/policy-objective' },
-            { text: '3.7 Reward Shaping & Design', link: '/chapter03_mdp/reward-design' },
-            { text: '3.8 Landscape: Taxonomy & Roadmap', link: '/chapter03_mdp/panorama' }
+            { text: '章节导览', link: '/chapter03_mdp/intro' },
+            { text: '探索与利用：多臂老虎机', link: '/chapter03_mdp/bandit' },
+            { text: '马尔可夫决策过程', link: '/chapter03_mdp/mdp' },
+            { text: '价值函数与贝尔曼方程', link: '/chapter03_mdp/value-bellman' },
+            { text: '价值计算：动态规划、蒙特卡洛与时序差分', link: '/chapter03_mdp/dp-mc-td' },
+            { text: '动作价值函数 Q(s, a)', link: '/chapter03_mdp/value-q' },
+            { text: '策略优化目标 J(θ)', link: '/chapter03_mdp/policy-objective' },
+            { text: '奖励函数设计', link: '/chapter03_mdp/reward-design' },
+            { text: '算法范式总览', link: '/chapter03_mdp/panorama' }
           ]
         },
         {
