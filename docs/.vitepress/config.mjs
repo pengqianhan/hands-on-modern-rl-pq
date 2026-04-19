@@ -308,6 +308,10 @@ const zhSidebar = {
               link: '/chapter12_agentic_rl/tool-use-agents'
             },
             {
+              text: '动手：端到端 Agentic RL 训练——从目标到效果',
+              link: '/chapter12_agentic_rl/agentic-training-hands-on'
+            },
+            {
               text: 'Agentic RL 工程实战与总结',
               link: '/chapter12_agentic_rl/agentic-engineering'
             },

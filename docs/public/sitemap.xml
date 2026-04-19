@@ -206,7 +206,7 @@
   </url>
   <url>
     <loc>https://walkinglabs.github.io/hands-on-modern-rl/chapter03_mdp/intro/</loc>
-    <lastmod>2026-04-19T07:49:51.981Z</lastmod>
+    <lastmod>2026-04-19T07:52:40.349Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -589,6 +589,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://walkinglabs.github.io/hands-on-modern-rl/chapter12_agentic_rl/agentic-training-hands-on/</loc>
+    <lastmod>2026-04-19T16:08:34.696Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://walkinglabs.github.io/hands-on-modern-rl/chapter12_agentic_rl/deep-research-agent/</loc>
     <lastmod>2026-04-19T06:41:22.290Z</lastmod>
     <changefreq>weekly</changefreq>
@@ -614,7 +620,7 @@
   </url>
   <url>
     <loc>https://walkinglabs.github.io/hands-on-modern-rl/chapter12_agentic_rl/intro/</loc>
-    <lastmod>2026-04-19T07:20:53.779Z</lastmod>
+    <lastmod>2026-04-19T08:25:14.068Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -626,7 +632,7 @@
   </url>
   <url>
     <loc>https://walkinglabs.github.io/hands-on-modern-rl/chapter12_agentic_rl/tool-use-agents/</loc>
-    <lastmod>2026-04-19T07:01:57.673Z</lastmod>
+    <lastmod>2026-04-19T08:25:28.306Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>

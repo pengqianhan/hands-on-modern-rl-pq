@@ -340,7 +340,7 @@ def tool_rl_training_loop(
 
 </details>
 
-下一节我们来聊聊 Agentic RL 的工程挑战和评估体系——[如何把这一切跑起来并衡量效果](./agentic-engineering)。
+下一节我们动手跑一遍完整的 Agentic RL 训练管线——[端到端训练：从目标定义到效果提升](./agentic-training-hands-on)。
 
 ## 参考资料
 
