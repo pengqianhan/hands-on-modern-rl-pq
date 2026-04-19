@@ -1,6 +1,6 @@
 # E.4 信息论
 
-> 相关章节：[第6章 GAE 与奖励模型](/chapter06_ppo/gae-reward-model)、[第7章 DPO](/chapter07_alignment/dpo-math)、[第9章 SAC](/chapter09_continuous_control/sac-comparison)
+> 相关章节：[第6章 GAE 与奖励模型](/chapter06_ppo/gae-reward-model)、[第8章 DPO](/chapter07_alignment/dpo-theory-and-family)、[第11章 SAC](/chapter09_continuous_control/sac-comparison)
 
 信息论研究信息的度量、存储与传输。在强化学习中，信息论提供了三个关键工具：熵（度量不确定性）、KL 散度（度量两个分布之间的差异）、交叉熵（分类任务的标准损失）。SAC 利用熵鼓励探索，RLHF 利用 KL 约束防止策略退化，DPO 通过隐式 KL 正则化绕过显式的奖励模型训练。
 
@@ -16,13 +16,13 @@ $$J(\pi) = \mathbb{E}_{\pi}[r(x, y)] - \beta D_{KL}(\pi_\theta \| \pi_{\text{ref
 
 涉及概念：**KL 散度**。$D_{KL}$ 度量当前策略 $\pi_\theta$ 偏离参考策略 $\pi_{\text{ref}}$ 的程度，充当"安全绳"防止策略退化。
 
-**公式② DPO 的隐式 KL 正则化**（[第7章 DPO](/chapter07_alignment/dpo-math)）
+**公式② DPO 的隐式 KL 正则化**（[第8章 DPO](/chapter07_alignment/dpo-theory-and-family)）
 
 $$\mathcal{L}_{\text{DPO}} = -\mathbb{E}\left[\log \sigma\left(\beta \log \frac{\pi_\theta(y_w \mid x)}{\pi_{\text{ref}}(y_w \mid x)} - \beta \log \frac{\pi_\theta(y_l \mid x)}{\pi_{\text{ref}}(y_l \mid x)}\right)\right]$$
 
 涉及概念：**KL 散度**、**对数概率比**。DPO 不显式计算 $D_{KL}$，但对数概率比 $\log(\pi_\theta / \pi_{\text{ref}})$ 正是隐式奖励的定义。
 
-**公式③ SAC 的熵正则化**（[第9章 SAC](/chapter09_continuous_control/sac-comparison)）
+**公式③ SAC 的熵正则化**（[第11章 SAC](/chapter09_continuous_control/sac-comparison)）
 
 $$J(\pi) = \sum_{t=0}^{T} \mathbb{E}\left[r(s_t, a_t) + \alpha \cdot H(\pi(\cdot \mid s_t))\right]$$
 
@@ -84,7 +84,7 @@ $$H(\pi(\cdot \mid s)) = -\sum_a \pi(a \mid s) \log \pi(a \mid s)$$
 
 熵高时，策略在各动作之间分配的概率较为均匀，探索充分。熵低时，策略几乎确定性地选择某一动作，倾向于利用但可能陷入局部最优。
 
-SAC（Soft Actor-Critic）将熵直接纳入目标函数（[第9章](/chapter09_continuous_control/sac-comparison)）：
+SAC（Soft Actor-Critic）将熵直接纳入目标函数（[第11章](/chapter09_continuous_control/sac-comparison)）：
 
 $$J(\pi) = \sum_{t=0}^{T} \mathbb{E}\left[r(s_t, a_t) + \alpha \cdot H(\pi(\cdot \mid s_t))\right]$$
 

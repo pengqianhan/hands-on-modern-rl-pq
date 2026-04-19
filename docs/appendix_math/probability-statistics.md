@@ -78,7 +78,7 @@ $$P(A \mid B) = \frac{P(B \mid A) \cdot P(A)}{P(B)}$$
 - $P(B \mid A)$ 称为**似然**（likelihood），表示若 $A$ 为真时观测到 $B$ 的概率
 - $P(A \mid B)$ 称为**后验**（posterior），表示观测到 $B$ 之后对 $A$ 的更新信念
 
-在强化学习中，贝叶斯强化学习利用贝叶斯定理维护对环境参数（转移概率、奖励函数）的后验分布。偏好学习中的 Bradley-Terry 模型（[第7章](/chapter07_alignment/dpo-math)）同样基于贝叶斯思想：通过观测到的偏好 $(y_w \succ y_l)$ 推断奖励函数的后验。
+在强化学习中，贝叶斯强化学习利用贝叶斯定理维护对环境参数（转移概率、奖励函数）的后验分布。偏好学习中的 Bradley-Terry 模型（[第8章](/chapter07_alignment/dpo-theory-and-family)）同样基于贝叶斯思想：通过观测到的偏好 $(y_w \succ y_l)$ 推断奖励函数的后验。
 
 ## 随机变量与期望
 

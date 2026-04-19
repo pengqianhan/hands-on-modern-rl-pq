@@ -1,6 +1,6 @@
 # E.1 线性代数
 
-> 相关章节：[第3章 MDP 形式化](/chapter03_mdp/formalism)、[第4章 DQN](/chapter04_dqn/from-q-to-dqn)、[第9章 连续控制](/chapter09_continuous_control/intro)
+> 相关章节：[第3章 MDP 形式化](/chapter03_mdp/formalism)、[第4章 DQN](/chapter04_dqn/from-q-to-dqn)、[第11章 连续控制与具身智能](/chapter09_continuous_control/intro)
 
 线性代数是强化学习的数学语言。RL 中的状态用向量表示，策略参数存储在矩阵中，价值函数的收敛性与特征值有关。理解这些对象的几何意义，能让我们在面对"为什么这个网络架构有效""为什么梯度会爆炸"等问题时，有直观的判断依据。
 

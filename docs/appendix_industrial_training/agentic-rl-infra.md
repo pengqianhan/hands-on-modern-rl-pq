@@ -122,7 +122,7 @@ curl -X POST http://controller:8000/scale \
 
 ### 算法、模型和运维
 
-Relax 内置了四种算法：GRPO（见 [8.1-8.2 节](/chapter08_grpo_rlvr/grpo-mechanism)）、GSPO、SAPO 和 OPD（见 [8.5 节](/chapter08_grpo_rlvr/on-policy-distillation)）。加新算法只需要实现一个 Service 类注册到 `ALGOS` 字典。
+Relax 内置了四种算法：GRPO（见 [8.1-8.2 节](/chapter08_grpo_rlvr/grpo-practice-and-mechanism)）、GSPO、SAPO 和 OPD（见 [8.5 节](/chapter08_grpo_rlvr/on-policy-distillation)）。加新算法只需要实现一个 Service 类注册到 `ALGOS` 字典。
 
 模型方面支持 Qwen3 全系列（4B、30B-A3B MoE）、Qwen3-VL（视觉语言）、Qwen3-Omni（全模态）和 Qwen3.5。
 
@@ -147,7 +147,7 @@ Relax 是目前唯一同时支持全模态和全异步弹性扩展的 Agentic RL
 
 ## 参考文献
 
-[^relax_paper]: Xiaohongshu AI Infra Team. "[Relax: An Asynchronous Reinforcement Learning Engine for Omni-Modal Post-Training at Scale](https://arxiv.org/abs/2604.11554)." arXiv:2604.11554, 2026. [GitHub](https://github.com/redai-infra/Relax)
+[^relax_paper]: Zhang L, Ning B, Yang R, et al. "[Relax: An Asynchronous Reinforcement Learning Engine for Omni-Modal Post-Training at Scale](https://arxiv.org/abs/2604.11554)." arXiv:2604.11554, 2026. [GitHub](https://github.com/redai-infra/Relax)
 
 [^1]: HuggingFace Blog, "[Async RL Training Landscape — 16 Open-Source Libraries Compared](https://huggingface.co/blog/async-rl-training-landscape)", 2026.
 

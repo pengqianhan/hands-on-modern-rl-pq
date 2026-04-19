@@ -84,12 +84,12 @@
 | --------------------- | ------------ | ----------------------------------------------------- | ------------ |
 | **Gymnasium**         | 通用 RL 环境 | OpenAI Gym 的继任者，CartPole、LunarLander 等经典环境 | Ch1, Ch3-Ch6 |
 | **Atari (ALE)**       | 游戏环境     | 57 款 Atari 2600 游戏，DQN 系列论文标准基准           | Ch4          |
-| **PyBullet**          | 物理仿真     | 开源机器人仿真，Ant、HalfCheetah 等                   | Ch9          |
-| **MuJoCo**            | 物理仿真     | 高精度物理引擎，连续控制标准基准                      | Ch9          |
-| **Isaac Lab**         | GPU 并行仿真 | NVIDIA Isaac Gym 继任者，万级机器人并行训练           | Ch9, Ch13    |
+| **PyBullet**          | 物理仿真     | 开源机器人仿真，Ant、HalfCheetah 等                   | Ch11          |
+| **MuJoCo**            | 物理仿真     | 高精度物理引擎，连续控制标准基准                      | Ch11          |
+| **Isaac Lab**         | GPU 并行仿真 | NVIDIA Isaac Gym 继任者，万级机器人并行训练           | Ch11, Ch12    |
 | **Unity ML-Agents**   | 3D 游戏 RL   | Unity 引擎中的 RL 训练工具箱，支持 3D 空间推理        | 附录         |
 | **Stable-Baselines3** | 算法库       | 封装好的 DQN/PPO/SAC 等算法实现                       | Ch1, Ch4-Ch6 |
-| **PettingZoo**        | 多智能体环境 | 多智能体版 Gymnasium，支持合作/竞争场景               | Ch13         |
+| **PettingZoo**        | 多智能体环境 | 多智能体版 Gymnasium，支持合作/竞争场景               | Ch12         |
 | **ViZDoom**           | FPS 3D 环境  | 第一人称射击游戏，部分可观察                          | Ch4          |
 | **Stable-Retro**      | 经典游戏     | 1000+ 款复古游戏的 Gym 封装                           | Ch4          |
 | **MineRL**            | Minecraft    | Minecraft 环境 + 人类示范数据集                       | 附录         |

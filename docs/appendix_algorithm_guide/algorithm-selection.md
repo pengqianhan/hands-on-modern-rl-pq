@@ -77,7 +77,7 @@ def select_by_action_space(n_actions: int, is_continuous: bool):
 
 你能让智能体在环境中试错吗？如果能（游戏、仿真、LLM 推理），就用 Online RL（PPO/GRPO）。如果不能（医疗、自动驾驶、工业推荐），就只能用 Offline RL（DPO/CQL）。
 
-这个维度在第 7 章的 DPO 讨论中已经涉及：DPO 本质上是一种极其成功的 Offline RL 算法——它完全不需要在线交互，只用固定的偏好数据集就能训练。代价是它无法发现训练数据之外的更好策略。
+这个维度在第 8 章的 DPO 讨论中已经涉及：DPO 本质上是一种极其成功的 Offline RL 算法——它完全不需要在线交互，只用固定的偏好数据集就能训练。代价是它无法发现训练数据之外的更好策略。
 
 ### 维度五：计算资源
 

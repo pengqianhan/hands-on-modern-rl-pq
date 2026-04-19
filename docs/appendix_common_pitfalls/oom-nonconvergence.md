@@ -124,7 +124,7 @@ config.estimate_memory(7.0)
 ```
 
 ::: tip 优先级建议
-如果你的显存预算有限，按这个顺序依次尝试：**bf16 > LoRA > 梯度检查点 > ZeRO**。前三项都不需要多卡，ZeRO 才需要多 GPU 环境。回顾第 7 章的 DPO 实验中，我们用的正是 LoRA + bf16 的组合——因为 DPO 只需要两个模型（Actor + Reference），显存压力远小于 PPO。
+如果你的显存预算有限，按这个顺序依次尝试：**bf16 > LoRA > 梯度检查点 > ZeRO**。前三项都不需要多卡，ZeRO 才需要多 GPU 环境。回顾第 8 章的 DPO 实验中，我们用的正是 LoRA + bf16 的组合——因为 DPO 只需要两个模型（Actor + Reference），显存压力远小于 PPO。
 :::
 
 ---

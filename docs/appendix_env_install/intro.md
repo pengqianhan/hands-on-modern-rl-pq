@@ -84,7 +84,7 @@ pip install tqdm tensorboard wandb
 不同章节用到不同的仿真环境，可以按需安装。
 
 ```bash
-# 第9章：PyBullet 机器人仿真
+# 第11章：PyBullet 机器人仿真
 pip install pybullet
 
 # 第4章：Atari 游戏（需要 ale-py）
@@ -155,7 +155,7 @@ ML-Agents 的独特价值在于**3D 空间推理**：Atari 是 2D 像素，CartP
 
 ## D.5 LLM 训练框架
 
-课程后半部分（Ch7-Ch12）涉及大模型对齐训练。
+课程后半部分（Ch7-Ch10）涉及大模型对齐训练。
 
 ```bash
 # Hugging Face 生态
@@ -331,16 +331,16 @@ print("=" * 45 + "\n")
 | stable-baselines3 | 2.2+     | 封装好的 RL 算法                | Ch1, Ch4-Ch6 |
 | numpy             | 1.24+    | 数值计算                        | 全书         |
 | matplotlib        | 3.7+     | 可视化绘图                      | 全书         |
-| pybullet          | 3.2+     | 机器人仿真                      | Ch9          |
-| mujoco            | 3.0+     | 高精度物理仿真                  | Ch9          |
-| isaacsim          | 4.0+     | GPU 并行机器人仿真（Isaac Lab） | Ch9, Ch13    |
+| pybullet          | 3.2+     | 机器人仿真                      | Ch11          |
+| mujoco            | 3.0+     | 高精度物理仿真                  | Ch11          |
+| isaacsim          | 4.0+     | GPU 并行机器人仿真（Isaac Lab） | Ch11, Ch12    |
 | mlagents          | 1.0+     | Unity 3D 游戏 RL 环境           | 附录         |
 | ale-py            | 0.8+     | Atari 模拟器                    | Ch4          |
-| transformers      | 4.45+    | LLM 模型加载                    | Ch7-Ch12     |
+| transformers      | 4.45+    | LLM 模型加载                    | Ch7-Ch10     |
 | trl               | 0.12+    | LLM 强化学习训练                | Ch7-Ch8      |
-| peft              | 0.13+    | 参数高效微调 (LoRA)             | Ch7-Ch12     |
-| accelerate        | 1.0+     | 分布式训练                      | Ch7-Ch12     |
-| datasets          | 3.0+     | 数据集加载                      | Ch7-Ch12     |
+| peft              | 0.13+    | 参数高效微调 (LoRA)             | Ch7-Ch10     |
+| accelerate        | 1.0+     | 分布式训练                      | Ch7-Ch10     |
+| datasets          | 3.0+     | 数据集加载                      | Ch7-Ch10     |
 | wandb             | 0.16+    | 实验追踪                        | 全书         |
 | tensorboard       | 2.15+    | 训练可视化                      | 全书         |
 

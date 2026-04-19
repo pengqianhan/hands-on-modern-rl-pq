@@ -57,7 +57,7 @@ const zhNav = [
   { text: '大模型强化学习', link: '/chapter07_alignment/intro' },
   {
     text: '前沿与进阶专题',
-    link: '/chapter09_continuous_control/intro'
+    link: '/chapter11_vlm_rl/intro'
   }
 ]
 
@@ -122,6 +122,7 @@ const zhSidebar = {
             { text: '经典方法速览：DP、MC 与 TD', link: '/chapter03_mdp/dp-mc-td' },
             { text: '路线一：Q(s,a)', link: '/chapter03_mdp/value-q' },
             { text: '路线二：J(θ)', link: '/chapter03_mdp/policy-objective' },
+            { text: '奖励函数设计', link: '/chapter03_mdp/reward-design' },
             { text: '全景地图', link: '/chapter03_mdp/panorama' }
           ]
         },
@@ -228,86 +229,7 @@ const zhSidebar = {
       text: '第三篇：大模型强化学习',
       items: [
         {
-          text: '第7章：对齐方法族（DPO / KTO / SimPO）',
-          collapsed: false,
-          items: [
-            { text: '章节导览', link: '/chapter07_alignment/intro' },
-            {
-              text: '动手：DPO 对齐实验',
-              link: '/chapter07_alignment/dpo-hands-on'
-            },
-            {
-              text: 'DPO 数学推导与隐式奖励',
-              link: '/chapter07_alignment/dpo-math'
-            },
-            {
-              text: 'DPO 家族与选型指南',
-              link: '/chapter07_alignment/dpo-family'
-            }
-          ]
-        },
-        {
-          text: '第8章：GRPO、DAPO 与 RLVR',
-          collapsed: false,
-          items: [
-            { text: '章节导览', link: '/chapter08_grpo_rlvr/intro' },
-            {
-              text: '动手：GRPO 训练数学推理',
-              link: '/chapter08_grpo_rlvr/grpo-hands-on'
-            },
-            {
-              text: 'GRPO 核心机制',
-              link: '/chapter08_grpo_rlvr/grpo-mechanism'
-            },
-            {
-              text: 'DeepSeek、DAPO 与 RLVR',
-              link: '/chapter08_grpo_rlvr/deepseek-dapo-rlvr'
-            },
-            {
-              text: 'RL Scaling 与前沿展望',
-              link: '/chapter08_grpo_rlvr/rl-scaling-outlook'
-            },
-            {
-              text: '知识蒸馏与在线策略蒸馏',
-              link: '/chapter08_grpo_rlvr/on-policy-distillation'
-            }
-          ]
-        },
-        { text: '第三篇总结', link: '/summaries/part3-summary' }
-      ]
-    },
-    {
-      text: '第四篇：前沿与进阶专题',
-      items: [
-        {
-          text: '第9章：连续动作控制 (SAC/TD3)',
-          collapsed: false,
-          items: [
-            { text: '章节导览', link: '/chapter09_continuous_control/intro' },
-            {
-              text: '动手：PyBullet 机器人仿真',
-              link: '/chapter09_continuous_control/pybullet-hands-on'
-            },
-            {
-              text: '连续策略与 DDPG/TD3',
-              link: '/chapter09_continuous_control/continuous-policy-ddpg-td3'
-            },
-            {
-              text: 'SAC、算法对比与并行采样',
-              link: '/chapter09_continuous_control/sac-comparison'
-            },
-            {
-              text: 'HER：把失败变成成功',
-              link: '/chapter09_continuous_control/her-sparse-reward'
-            },
-            {
-              text: '扩散策略：生成式连续控制',
-              link: '/chapter09_continuous_control/diffusion-policy'
-            }
-          ]
-        },
-        {
-          text: '第10章：RLHF 完整流水线',
+          text: '第7章：RLHF 完整流水线',
           collapsed: false,
           items: [
             { text: '章节导览', link: '/chapter10_rlhf/intro' },
@@ -324,17 +246,44 @@ const zhSidebar = {
               link: '/chapter10_rlhf/training-stability-hacking'
             },
             {
-              text: 'RLAIF 与自我博弈',
-              link: '/chapter10_rlhf/rlaif-self-play'
-            },
-            {
-              text: '数据循环体系',
-              link: '/chapter10_rlhf/data-cycle'
+              text: '自我博弈与数据飞轮',
+              link: '/chapter10_rlhf/rlaif-and-data-cycle'
             }
           ]
         },
         {
-          text: '第11章：Agentic RL——工具调用、多轮交互与智能体训练',
+          text: '第8章：对齐与推理强化（DPO / GRPO / RLVR）',
+          collapsed: false,
+          items: [
+            { text: '章节导览', link: '/chapter07_alignment/intro' },
+            {
+              text: '动手：DPO 对齐实验',
+              link: '/chapter07_alignment/dpo-hands-on'
+            },
+            {
+              text: 'DPO 原理、数学与选型',
+              link: '/chapter07_alignment/dpo-theory-and-family'
+            },
+            {
+              text: '动手：GRPO 训练与核心机制',
+              link: '/chapter08_grpo_rlvr/grpo-practice-and-mechanism'
+            },
+            {
+              text: 'DeepSeek、DAPO 与 RLVR',
+              link: '/chapter08_grpo_rlvr/deepseek-dapo-rlvr'
+            },
+            {
+              text: 'RL Scaling 与前沿展望',
+              link: '/chapter08_grpo_rlvr/rl-scaling-outlook'
+            },
+            {
+              text: '知识蒸馏——从大模型到小模型的知识迁移',
+              link: '/chapter08_grpo_rlvr/on-policy-distillation'
+            }
+          ]
+        },
+        {
+          text: '第9章：Agentic RL——工具调用、多轮交互与智能体训练',
           collapsed: false,
           items: [
             { text: '章节导览', link: '/chapter12_agentic_rl/intro' },
@@ -372,8 +321,14 @@ const zhSidebar = {
             }
           ]
         },
+        { text: '第三篇总结', link: '/summaries/part3-summary' }
+      ]
+    },
+    {
+      text: '第四篇：前沿与进阶专题',
+      items: [
         {
-          text: '第12章：VLM 强化学习',
+          text: '第10章：VLM 强化学习',
           collapsed: false,
           items: [
             { text: '章节导览', link: '/chapter11_vlm_rl/intro' },
@@ -396,17 +351,44 @@ const zhSidebar = {
           ]
         },
         {
-          text: '第13章：未来趋势',
+          text: '第11章：连续动作算法与具身智能',
+          collapsed: false,
+          items: [
+            { text: '章节导览', link: '/chapter09_continuous_control/intro' },
+            {
+              text: '动手：PyBullet 机器人仿真',
+              link: '/chapter09_continuous_control/pybullet-hands-on'
+            },
+            {
+              text: '连续策略与 DDPG/TD3',
+              link: '/chapter09_continuous_control/continuous-policy-ddpg-td3'
+            },
+            {
+              text: 'SAC、算法对比与并行采样',
+              link: '/chapter09_continuous_control/sac-comparison'
+            },
+            {
+              text: 'HER：把失败变成成功',
+              link: '/chapter09_continuous_control/her-sparse-reward'
+            },
+            {
+              text: '扩散策略：生成式连续控制',
+              link: '/chapter09_continuous_control/diffusion-policy'
+            },
+            {
+              text: '从仿真到现实：具身智能',
+              link: '/chapter09_continuous_control/embodied-intelligence'
+            }
+          ]
+        },
+        {
+          text: '第12章：未来趋势',
           collapsed: false,
           items: [
             { text: '章节导览', link: '/chapter13_future_trends/intro' },
             {
               text: '测试时计算与 RL 推理',
               link: '/chapter13_future_trends/test-time-reasoning'
-            },
-            {
-              text: '多模态与具身智能',
-              link: '/chapter13_future_trends/embodied-multimodal'
             },
             {
               text: '多智能体 RL 与基于模型的 RL',
