@@ -54,7 +54,7 @@ const zhNav = [
   { text: '前言与导论', link: '/preface/intro' },
   { text: '基础导论', link: '/chapter01_cartpole/intro' },
   { text: '核心理论与方法', link: '/chapter03_mdp/intro' },
-  { text: '大模型强化学习', link: '/chapter07_alignment/intro' },
+  { text: '大模型强化学习', link: '/chapter10_rlhf/intro' },
   {
     text: '前沿与进阶专题',
     link: '/chapter11_vlm_rl/intro'
@@ -229,7 +229,7 @@ const zhSidebar = {
       text: '第三篇：大模型强化学习',
       items: [
         {
-          text: '第7章：RLHF 完整流水线',
+          text: '第8章：RLHF 完整流水线',
           collapsed: false,
           items: [
             { text: '章节导览', link: '/chapter10_rlhf/intro' },
@@ -256,7 +256,7 @@ const zhSidebar = {
           ]
         },
         {
-          text: '第8章：对齐与推理强化（DPO / GRPO / RLVR）',
+          text: '第9章：对齐与推理强化（DPO / GRPO / RLVR）',
           collapsed: false,
           items: [
             { text: '章节导览', link: '/chapter07_alignment/intro' },
@@ -287,7 +287,7 @@ const zhSidebar = {
           ]
         },
         {
-          text: '第9章：Agentic RL——工具调用、多轮交互与智能体训练',
+          text: '第10章：Agentic RL——工具调用、多轮交互与智能体训练',
           collapsed: false,
           items: [
             { text: '章节导览', link: '/chapter12_agentic_rl/intro' },
@@ -340,7 +340,7 @@ const zhSidebar = {
       text: '第四篇：前沿与进阶专题',
       items: [
         {
-          text: '第10章：VLM 强化学习',
+          text: '第11章：VLM 强化学习',
           collapsed: false,
           items: [
             { text: '章节导览', link: '/chapter11_vlm_rl/intro' },
@@ -363,7 +363,7 @@ const zhSidebar = {
           ]
         },
         {
-          text: '第11章：连续动作算法与具身智能',
+          text: '第12章：连续动作算法与具身智能',
           collapsed: false,
           items: [
             { text: '章节导览', link: '/chapter09_continuous_control/intro' },
@@ -394,7 +394,7 @@ const zhSidebar = {
           ]
         },
         {
-          text: '第12章：未来趋势',
+          text: '第13章：未来趋势',
           collapsed: false,
           items: [
             { text: '章节导览', link: '/chapter13_future_trends/intro' },
@@ -603,8 +603,8 @@ const enSidebar = {
 export default withMermaid(
   defineConfig({
     lang: 'zh-CN',
-    title: 'Course Template',
-    description: 'WalkingLabs course template powered by VitePress',
+    title: 'Hands-on Modern RL',
+    description: '现代强化学习实战——从代码到原理',
     base,
     cleanUrls: true,
     lastUpdated: true,
@@ -642,13 +642,13 @@ export default withMermaid(
       ],
       ['meta', { name: 'author', content: 'WalkingLabs' }],
       ['meta', { name: 'robots', content: 'index,follow' }],
-      ['meta', { property: 'og:title', content: 'Course Template' }],
+      ['meta', { property: 'og:title', content: 'Hands-on Modern RL' }],
       [
         'meta',
         {
           property: 'og:description',
           content:
-            'A reusable bilingual documentation and deployment template for future WalkingLabs courses'
+            '现代强化学习实战——从代码到原理'
         }
       ],
       ['meta', { property: 'og:type', content: 'website' }],
@@ -660,8 +660,8 @@ export default withMermaid(
         label: '简体中文',
         lang: 'zh-CN',
         link: '/zh/',
-        title: 'Course Template',
-        description: 'WalkingLabs 双语课程仓库模板',
+        title: 'Hands-on Modern RL',
+        description: '现代强化学习实战——从代码到原理',
         themeConfig: {
           nav: zhNav,
           sidebar: zhSidebar,
@@ -670,7 +670,7 @@ export default withMermaid(
             text: '在 GitHub 上编辑此页'
           },
           footer: {
-            message: '为可复用的双语课程交付而构建',
+            message: '现代强化学习实战课程',
             copyright: 'Copyright © WalkingLabs'
           },
           outline: {
@@ -704,8 +704,8 @@ export default withMermaid(
         label: 'English',
         lang: 'en-US',
         link: '/en/',
-        title: 'Course Template',
-        description: 'WalkingLabs bilingual course repository template',
+        title: 'Hands-on Modern RL',
+        description: 'Modern Reinforcement Learning in Practice — From Code to Theory',
         themeConfig: {
           nav: enNav,
           sidebar: enSidebar,
@@ -714,7 +714,7 @@ export default withMermaid(
             text: 'Edit this page on GitHub'
           },
           footer: {
-            message: 'Built for reusable bilingual course delivery',
+            message: '现代强化学习实战课程',
             copyright: 'Copyright © WalkingLabs'
           },
           outline: {
