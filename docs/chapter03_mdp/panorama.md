@@ -1,5 +1,23 @@
 # 全景地图：两条路线与核心困境
 
+## 本节导读
+
+**核心内容**
+
+- 掌握 Value-Based 与 Policy-Based 两条路线的核心差异、优势和短板。
+- 理解探索与利用如何在两条路线中以不同形式出现。
+- 建立从表格方法到神经网络，再到 Actor-Critic 的整体地图。
+
+**核心公式**
+
+$$\pi^*(s)=\arg\max_a Q^*(s,a)$$
+
+$$J(\theta)=\mathbb{E}_{\pi_\theta}\left[\sum_{t=0}^{\infty}\gamma^t r_t\right]$$
+
+$$\delta = r+\gamma V(s')-V(s)$$
+
+$$V(s)\approx f(s;\theta), \qquad Q(s,a)\approx f(s,a;\theta)$$
+
 到目前为止，我们已经掌握了 RL 的基础工具箱：MDP 定义了游戏规则，$V(s)$ 评估了局面好坏，贝尔曼方程提供了计算价值的递归方法，DP/MC/TD 给出了三种从数据中估计价值的策略。
 
 然后我们看到，$V(s)$ 有一个根本性的局限——它不告诉你选哪个动作。这个局限催生了两条截然不同的路线：

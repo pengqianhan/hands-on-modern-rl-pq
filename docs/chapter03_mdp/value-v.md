@@ -1,5 +1,23 @@
 # V(s) 与贝尔曼方程——价值评估的基础
 
+## 本节导读
+
+**核心内容**
+
+- 掌握状态价值函数 $V^\pi(s)$ 如何评估一个局面的长期好坏。
+- 理解 DP、MC、TD 三种方法如何从理论公式或实际数据中估计 $V(s)$。
+- 学会用 TD Target 和 TD Error 判断价值估计应该上调还是下调。
+
+**核心公式**
+
+$$V^\pi(s) = \mathbb{E}_\pi\left[G_t\mid s_t=s\right]$$
+
+$$V(s) \leftarrow \sum_a \pi(a\mid s)\left[R(s,a)+\gamma\sum_{s'}P(s'\mid s,a)V(s')\right]$$
+
+$$V(s) \leftarrow V(s)+\alpha\left[G_t-V(s)\right]$$
+
+$$V(s) \leftarrow V(s)+\alpha\left[r+\gamma V(s')-V(s)\right]$$
+
 上一节我们定义了 MDP 五元组、折扣累积回报 $G_t$ 和策略 $\pi$。现在要回答一个核心问题：**当前的局面对智能体来说到底值多少分？**
 
 这就是状态价值函数 $V(s)$ 的任务。本节将聚焦于一个更实际的问题：贝尔曼方程给了我们计算 $V$ 的理论公式，但在实际中，怎么从数据里把 $V$ 估计出来？我们将看到三种经典方法——DP、MC、TD——每一代都解决了前一代的核心局限。

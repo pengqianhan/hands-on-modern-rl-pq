@@ -1,6 +1,20 @@
 # V(s) 与贝尔曼方程
 
-> **本节目标**：理解状态价值函数 $V(s)$ 的定义、贝尔曼方程的递归结构，并动手验证——用 Python 计算走廊寻宝和老虎机的价值，建立"当前局面值多少分"的直觉。
+## 本节导读
+
+**核心内容**
+
+- 掌握状态价值函数 $V^\pi(s)$ 的定义：从某个状态出发的期望累积回报。
+- 理解贝尔曼方程如何把"无穷未来"递归拆成"一步奖励 + 下一状态价值"。
+- 区分贝尔曼期望方程与贝尔曼最优方程，并用简单环境动手验证。
+
+**核心公式**
+
+$$V^\pi(s) = \mathbb{E}_\pi\left[\sum_{k=0}^{\infty}\gamma^k r_{t+k}\mid s_t=s\right]$$
+
+$$V^\pi(s) = \sum_{a \in \mathcal{A}}\pi(a\mid s)\left[R(s,a)+\gamma\sum_{s'\in\mathcal{S}}P(s'\mid s,a)V^\pi(s')\right]$$
+
+$$V^*(s) = \max_a\left[R(s,a)+\gamma\sum_{s'\in\mathcal{S}}P(s'\mid s,a)V^*(s')\right]$$
 
 上一节我们搭建了 RL 的形式化框架：MDP 五元组 $\langle \mathcal{S}, \mathcal{A}, P, R, \gamma \rangle$ 描述了游戏规则，折扣累积回报 $G_t$ 定义了总分，策略 $\pi$ 决定了行动方式。但有一个关键问题还没有回答：**在当前局面下，智能体到底处于优势还是劣势？**
 

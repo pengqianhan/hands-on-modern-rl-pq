@@ -1,5 +1,23 @@
 # 路线二：J(θ)——直接优化策略
 
+## 本节导读
+
+**核心内容**
+
+- 掌握参数化策略 $\pi_\theta(a\mid s)$ 如何直接表示"看到什么做什么"。
+- 理解策略目标 $J(\theta)$ 如何衡量一个策略的平均长期回报。
+- 知道策略梯度的直觉：提高带来高回报动作的概率，降低带来低回报动作的概率。
+
+**核心公式**
+
+$$\pi_\theta(a\mid s) = P_\theta(a\mid s)$$
+
+$$J(\theta) = \mathbb{E}_{\pi_\theta}\left[G_t\right] = \mathbb{E}_{\pi_\theta}\left[\sum_{t=0}^{\infty}\gamma^t r_t\right]$$
+
+$$\theta^* = \arg\max_\theta J(\theta)$$
+
+$$\nabla_\theta J(\theta) \propto \mathbb{E}_{\pi_\theta}\left[\nabla_\theta\log\pi_\theta(a\mid s)\cdot G_t\right]$$
+
 控制一个机械臂需要给 6 个关节各施加一个力矩。力矩可以是 0 到 10 牛顿米之间的任何实数——动作空间是一个 6 维连续空间，包含无穷多个可能的动作。路线一的思路是给每个动作打分再选最高的，但无穷多个动作意味着无穷多次打分，$\arg\max$ 彻底失灵。
 
 路线二提供了一种完全不同的思路：**跳过打分，直接学"在什么情况下该做什么"。**

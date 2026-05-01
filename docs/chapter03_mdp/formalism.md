@@ -1,5 +1,23 @@
 # MDP 五元组与价值函数
 
+## 本节导读
+
+**核心内容**
+
+- 掌握 MDP 五元组的每个组成部分及其在老虎机、CartPole、LLM 对话中的含义。
+- 理解折扣累积回报 $G_t$ 如何把多步奖励压成一个总目标。
+- 学会区分状态价值 $V(s)$、动作价值 $Q(s,a)$，以及两者之间的关系。
+
+**核心公式**
+
+$$\mathcal{M} = (\mathcal{S}, \mathcal{A}, P, R, \gamma)$$
+
+$$G_t = \sum_{k=0}^{\infty}\gamma^k r_{t+k}$$
+
+$$V^\pi(s) = \mathbb{E}_\pi[G_t \mid s_t=s], \qquad Q^\pi(s,a) = \mathbb{E}_\pi[G_t \mid s_t=s, a_t=a]$$
+
+$$V^\pi(s) = \sum_a \pi(a\mid s)Q^\pi(s,a)$$
+
 上一节我们用两台老虎机体验了 RL 的基本交互模式：选择动作，获得奖励，循环往复。但体验归体验——你能直觉地说出"状态"到底是什么吗？"策略"和"奖励"之间是什么关系？为什么有的任务需要一个叫 $\gamma$ 的参数，有的却不需要？
 
 这些问题需要一个统一的数学语言。这个语言就是马尔可夫决策过程（Markov Decision Process, MDP）。

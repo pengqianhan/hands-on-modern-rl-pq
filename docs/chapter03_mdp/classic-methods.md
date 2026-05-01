@@ -1,5 +1,25 @@
 # 经典方法速通：从理论到实践的桥梁
 
+## 本节导读
+
+**核心内容**
+
+- 掌握 DP、MC、TD 如何把价值函数和贝尔曼方程变成可运行的算法。
+- 理解 Q-Learning 如何把 TD 更新用于动作价值函数，并学习最优 $Q^*$。
+- 认识表格方法的容量瓶颈，以及用函数近似替代表格的必要性。
+
+**核心公式**
+
+$$V(s) \leftarrow \max_a\left[R(s,a)+\gamma\sum_{s'}P(s'\mid s,a)V(s')\right]$$
+
+$$V(s) \leftarrow V(s)+\alpha\left[G_t-V(s)\right]$$
+
+$$V(s) \leftarrow V(s)+\alpha\left[r+\gamma V(s')-V(s)\right]$$
+
+$$Q(s,a) \leftarrow Q(s,a)+\alpha\left[r+\gamma\max_{a'}Q(s',a')-Q(s,a)\right]$$
+
+$$V(s) \approx f(s;\theta)$$
+
 在前面的几个小节中，我们一步步搭建了 RL 的理论大厦：MDP 五元组是地基，价值函数是框架，贝尔曼方程是计算工具，TD Error 是学习信号。但理论归理论，怎么把这些数学工具变成能跑的算法？这就是本节要回答的问题。
 
 我们将沿着一条清晰的演进路线——从 DP 到 MC 到 TD——看看 RL 的研究者们是如何一步步从"理想但不可用"走向"实用但不够完美"的。然后在旅程的终点，你会发现一个共同的瓶颈——表格装不下——以及一个优雅的解决方案。

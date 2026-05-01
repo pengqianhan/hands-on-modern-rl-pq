@@ -1,5 +1,23 @@
 # 经典方法速览：DP、MC 与 TD
 
+## 本节导读
+
+**核心内容**
+
+- 掌握 DP、MC、TD 三类价值估计方法分别需要什么信息、何时更新、误差来自哪里。
+- 理解从已知模型到采样轨迹，再到一步自举更新的演进逻辑。
+- 学会用 TD Error 连接价值评估、Q-Learning、Critic 训练等后续算法。
+
+**核心公式**
+
+$$V(s) \leftarrow \sum_a \pi(a\mid s)\left[R(s,a)+\gamma\sum_{s'}P(s'\mid s,a)V(s')\right]$$
+
+$$V(s) \leftarrow V(s)+\alpha\left[G_t-V(s)\right]$$
+
+$$V(s) \leftarrow V(s)+\alpha\left[r+\gamma V(s')-V(s)\right]$$
+
+$$\delta = r+\gamma V(s')-V(s)$$
+
 上一节得到了贝尔曼方程——它给了计算 $V$ 的理论公式。但有个前提：你得知道环境的全部信息（转移概率 $P$、奖励函数 $R$）。CartPole 的物理模型你有，但围棋的 $10^{170}$ 个状态呢？大模型的 token 分布呢？现实中的 $P$ 和 $R$ 几乎总是未知的。
 
 所以问题变成了：**不知道 $P$ 和 $R$，怎么从数据中把 $V$ 估计出来？** 有三代方法，它们不是教科书按时间排列的三个备选方案，而是一条演进线——每一代都解决了前一代的核心局限：

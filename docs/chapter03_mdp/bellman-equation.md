@@ -1,5 +1,23 @@
 # 贝尔曼方程——递归地计算"这个局面值多少分"
 
+## 本节导读
+
+**核心内容**
+
+- 掌握贝尔曼方程的核心递归：当前价值由即时奖励和下一状态价值共同决定。
+- 理解贝尔曼期望方程、贝尔曼最优方程分别用于策略评估和最优控制。
+- 学会用 TD Error 衡量当前价值估计和贝尔曼目标之间的差距。
+
+**核心公式**
+
+$$V^\pi(s) = \mathbb{E}_\pi\left[\sum_{k=0}^{\infty}\gamma^k r_{t+k}\mid s_t=s\right]$$
+
+$$V^\pi(s) = \sum_{a \in A}\pi(a\mid s)\left[R(s,a)+\gamma\sum_{s'\in S}P(s'\mid s,a)V^\pi(s')\right]$$
+
+$$V^*(s) = \max_a\left[R(s,a)+\gamma\sum_{s'\in S}P(s'\mid s,a)V^*(s')\right]$$
+
+$$\delta = r + \gamma V(s') - V(s)$$
+
 上一节我们定义了价值函数 $V(s)$ 和 $Q(s, a)$。但当你真正坐下来想计算 $V(s)$ 的时候，会遇到一个计算上的困难：
 
 $$V^\pi(s) = \mathbb{E}_\pi \left[ \sum_{k=0}^{\infty} \gamma^k r_{t+k} \;\middle|\; s_t = s \right]$$
