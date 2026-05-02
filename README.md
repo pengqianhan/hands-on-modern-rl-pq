@@ -112,6 +112,8 @@
 
 ## 🔥 最新动态 (News)
 
+> ⚠️ **备注**：本教程由于有 AI 协助生成，目前尚未全面审稿结束，很有可能会有事实性或代码不可运行的错误。欢迎大家在阅读过程中提交 Issue 或 PR 帮助指正。
+
 - **[2026-05-02]** 🎉 教程初期浏览版正式开源发布，开放测试与建议收集。
 
 ## 🗺️ 演进路线图 (Roadmap)
@@ -139,21 +141,52 @@
 
 ### 第一部分：基础导论
 
-| 章节 | 主题                                                | 核心问题                                                               |
-| :--- | :-------------------------------------------------- | :--------------------------------------------------------------------- |
-| 01   | [CartPole 倒立摆](docs/chapter01_cartpole/intro.md) | 在真实环境中，状态、动作、奖励、策略、价值、熵和训练曲线是什么？       |
-| 02   | [DPO 偏好微调](docs/chapter02_dpo/intro.md)         | 偏好优化如何改变模型行为，损失、奖励裕度（margin）和准确率意味着什么？ |
-| 总结 | [本篇小结](docs/summaries/part1-summary.md)         | 在进入形式化理论之前，应该建立哪些直观认识？                           |
+| 章节 | 主题                                                        | 核心问题                                                               |
+| :--- | :---------------------------------------------------------- | :--------------------------------------------------------------------- |
+| 01   | [CartPole 倒立摆](docs/chapter01_cartpole/intro.md)         | 在真实环境中，状态、动作、奖励、策略、价值、熵和训练曲线是什么？       |
+| 1.1  | [状态、动作、奖励与策略](docs/chapter01_cartpole/principles.md) | 一个 RL 问题由哪些基本对象组成？                                       |
+| 1.2  | [奖励、熵、Value Loss 与 KL](docs/chapter01_cartpole/metrics.md) | 训练曲线里的关键指标分别反映什么？                                     |
+| 02   | [DPO 偏好微调](docs/chapter02_dpo/intro.md)                 | 偏好优化如何改变模型行为，损失、奖励裕度（margin）和准确率意味着什么？ |
+| 2.1  | [Post-Training 流水线与 DPO 推导](docs/chapter02_dpo/principles.md) | DPO 如何从偏好数据和参考模型中得到训练目标？                           |
+| 2.2  | [Loss、Reward Margin 与 Accuracy](docs/chapter02_dpo/metrics.md) | DPO 训练中的损失、奖励差和偏好准确率如何解读？                         |
+| 总结 | [本篇小结](docs/summaries/part1-summary.md)                 | 在进入形式化理论之前，应该建立哪些直观认识？                           |
 
 ### 第二部分：核心理论与方法
 
 | 章节 | 主题                                                            | 核心问题                                                        |
 | :--- | :-------------------------------------------------------------- | :-------------------------------------------------------------- |
 | 03   | [MDP 与价值函数](docs/chapter03_mdp/intro.md)                   | 老虎机、MDP、价值函数、贝尔曼方程和 TD 误差如何形式化序贯决策？ |
+| 3.1  | [两台老虎机：RL 的最小问题](docs/chapter03_mdp/bandit.md)       | 最简单的试错问题如何体现探索与利用？                            |
+| 3.2  | [MDP：RL 的形式化框架](docs/chapter03_mdp/mdp.md)               | 状态、动作、转移、奖励和折扣如何构成序列决策模型？              |
+| 3.3  | [V(s) 与贝尔曼方程](docs/chapter03_mdp/value-bellman.md)        | 如何用价值函数递归评估一个局面？                                |
+| 3.4  | [DP、MC、TD](docs/chapter03_mdp/dp-mc-td.md)                    | 动态规划、蒙特卡洛和时序差分分别怎样学习价值？                  |
+| 3.5  | [Q(s, a)](docs/chapter03_mdp/value-q.md)                        | 动作价值如何把“局面好不好”变成“动作该不该选”？                  |
+| 3.6  | [策略目标 J(theta)](docs/chapter03_mdp/policy-objective.md)     | 直接优化策略时，目标函数到底在最大化什么？                      |
+| 3.7  | [算法数据来源](docs/chapter03_mdp/algorithm-taxonomy.md)        | On-policy、off-policy 与数据来源如何影响算法设计？              |
+| 3.8  | [Reward Shaping](docs/chapter03_mdp/reward-design.md)           | 奖励函数如何引导学习，又可能怎样被误用？                        |
+| 3.9  | [本章总结](docs/chapter03_mdp/panorama.md)                      | MDP 章节里的概念如何连成一张算法地图？                          |
 | 04   | [Q-Learning 与 DQN](docs/chapter04_dqn/intro.md)                | 为什么经验回放、目标网络、CNN 编码器及 DQN 系列扩展很重要？     |
+| 4.1  | [动手：Q-Learning 与 GridWorld](docs/chapter04_dqn/q-learning.md) | 如何从表格 Q 学习开始亲手更新价值？                             |
+| 4.2  | [从表格 Q 到 DQN](docs/chapter04_dqn/from-q-to-dqn.md)          | 神经网络如何替代表格来近似 Q 函数？                             |
+| 4.3  | [Replay、Target 与 CNN](docs/chapter04_dqn/dqn-components.md)   | 经验回放、目标网络和编码器分别稳定了什么？                      |
+| 4.4  | [训练过程分析](docs/chapter04_dqn/training-analysis.md)         | DQN 训练曲线和 Q 值变化暴露了哪些学习现象？                     |
+| 4.5  | [Mountain Car 与稀疏奖励](docs/chapter04_dqn/mountain-car.md)   | 奖励很少出现时，探索和初始化为什么变得关键？                    |
+| 4.6  | [Double、Dueling 与 Rainbow](docs/chapter04_dqn/dqn-family.md)  | DQN 家族如何逐步修复高估、表示和采样问题？                      |
+| 4.7  | [项目：DQN 实战与视觉游戏](docs/chapter04_dqn/visual-game-projects.md) | 从低维控制到视觉游戏时，DQN 工程要改什么？                      |
 | 05   | [策略梯度与 REINFORCE](docs/chapter05_policy_gradient/intro.md) | 如何直接优化策略，为什么基线（baselines）能减少梯度方差？       |
+| 5.1  | [动手：摇骰子赌博机](docs/chapter05_policy_gradient/dice-game.md) | 如何用最小实验理解策略梯度的采样更新？                          |
+| 5.2  | [策略梯度与 REINFORCE](docs/chapter05_policy_gradient/policy-gradient.md) | REINFORCE 如何把高回报动作的概率推高？                          |
+| 5.3  | [动手：Baseline 降方差](docs/chapter05_policy_gradient/baseline-experiment.md) | Baseline 为什么不改变期望，却能让梯度更稳？                     |
 | 06   | [Actor-Critic](docs/chapter06_actor_critic/intro.md)            | Actor 和 Critic 如何分担学习问题，TD 误差如何转化为优势信号？   |
+| 6.1  | [优势函数](docs/chapter06_actor_critic/advantage-function.md)   | 优势函数如何回答“这个动作比平均水平好多少”？                   |
+| 6.2  | [TD 误差训练 Critic](docs/chapter06_actor_critic/critic-training.md) | Critic 如何用自举信号学习价值估计？                             |
+| 6.3  | [Actor-Critic 架构](docs/chapter06_actor_critic/actor-critic.md) | Actor 与 Critic 如何在同一个训练循环中协作？                    |
+| 6.4  | [项目：AlphaGo 简单复现](docs/chapter06_actor_critic/alphago.md) | 策略网络、价值网络和搜索如何组合成棋类智能体？                  |
 | 07   | [PPO](docs/chapter07_ppo/intro.md)                              | 截断、信任区域直觉、GAE 和奖励模型如何使策略优化更稳定？        |
+| 7.1  | [动手：PPO 训练 LunarLander](docs/chapter07_ppo/ppo-lunar-lander.md) | PPO 在更复杂控制任务上如何表现和调参？                          |
+| 7.2  | [PPO 数学推导](docs/chapter07_ppo/ppo-math.md)                  | PPO 目标如何从策略梯度一步步变成裁剪代理目标？                  |
+| 7.3  | [信任域与裁剪](docs/chapter07_ppo/trust-region-clipping.md)     | 裁剪机制如何限制策略更新幅度？                                  |
+| 7.4  | [GAE 与奖励模型](docs/chapter07_ppo/gae-reward-model.md)        | GAE 如何平衡偏差与方差，并连接到奖励模型训练？                  |
 | 总结 | [本篇小结](docs/summaries/part2-summary.md)                     | 经典和现代强化学习中反复出现哪些算法模式？                      |
 
 ### 第三部分：大模型 RL
@@ -161,8 +194,28 @@
 | 章节 | 主题                                             | 核心问题                                                       |
 | :--- | :----------------------------------------------- | :------------------------------------------------------------- |
 | 08   | [RLHF 全流程](docs/chapter08_rlhf/intro.md)      | 指令数据、奖励模型、PPO 训练、评估与扩展如何结合在一起？       |
+| 8.1  | [为什么 base model 还不是 assistant](docs/chapter08_rlhf/base-model-to-assistant.md) | 预训练模型和助手模型之间差在哪？                              |
+| 8.2  | [标准 RLHF 流水线](docs/chapter08_rlhf/standard-rlhf-pipeline.md) | SFT、RM 和 RL 三阶段如何衔接？                                |
+| 8.3  | [SFT：教模型按指令回答](docs/chapter08_rlhf/imitation-learning-pipeline.md) | 监督微调如何建立基础指令跟随能力？                            |
+| 8.4  | [Reward Model：教一个裁判](docs/chapter08_rlhf/reward-function-design.md) | 奖励模型如何把人类偏好变成可优化信号？                        |
+| 8.5  | [PPO-RLHF：按奖励练习](docs/chapter08_rlhf/ppo-rlhf-loop.md) | PPO 如何在 KL 约束下优化语言模型？                            |
+| 8.6  | [评估：RLHF 到底有没有变好](docs/chapter08_rlhf/evaluation.md) | 如何判断对齐训练真的改善了模型？                              |
+| 8.7  | [从小参数到大参数](docs/chapter08_rlhf/scaling-to-large-models.md) | 同一条 RLHF 流水线放大时会遇到哪些工程问题？                  |
+| 8.8  | [扩展实战：Reward Hacking 与数据飞轮](docs/chapter08_rlhf/extended-practice.md) | 如何识别奖励投机，并让数据迭代持续改进模型？                  |
 | 09   | [后训练对齐](docs/chapter09_alignment/intro.md)  | DPO、GRPO、DeepSeek-R1、可验证奖励（RLVR）如何训练推理行为？   |
+| 9.1  | [DPO、IPO 与 KTO](docs/chapter09_alignment/dpo-theory-and-family.md) | 偏好优化家族如何绕过显式奖励模型？                            |
+| 9.2  | [动手：DPO 对齐实验](docs/chapter09_alignment/dpo-hands-on.md) | 如何跑通一个可检查的 DPO 训练实验？                           |
+| 9.3  | [GRPO 实践与机制](docs/chapter09_grpo_rlvr/grpo-practice-and-mechanism.md) | GRPO 如何用组内相对优势替代 Critic？                          |
+| 9.4  | [DeepSeek-R1 与 DAPO](docs/chapter09_grpo_rlvr/deepseek-dapo.md) | 推理模型训练中有哪些新的 RL 经验？                            |
+| 9.5  | [RLVR：可验证奖励](docs/chapter09_grpo_rlvr/rlvr.md) | 规则可判定任务如何为 RL 提供稳定奖励？                        |
+| 9.6  | [On-Policy Distillation](docs/chapter09_grpo_rlvr/on-policy-distillation.md) | 如何把在线 RL 行为蒸馏回更可用的模型？                        |
 | 10   | [Agentic RL](docs/chapter10_agentic_rl/intro.md) | 多轮交互、工具调用、轨迹合成与智能体系统工程如何改变 RL 问题？ |
+| 10.1 | [多轮交互与信用分配（含 ORM vs PRM 实验）](docs/chapter10_agentic_rl/multi-turn-rl.md) | 多步任务中如何把最终结果分配回中间动作？                      |
+| 10.2 | [工具调用、轨迹合成与 Agentic 工程](docs/chapter10_agentic_rl/tool-use-and-trajectory.md) | 工具执行结果如何进入 RL 轨迹和训练数据？                      |
+| 10.3 | [工业实践、评测与 Badcase](docs/chapter10_agentic_rl/industrial-evaluation.md) | Agentic RL 在工程评测中最常见的失败点是什么？                 |
+| 10.4 | [项目一：多工具 Code Agent](docs/chapter10_agentic_rl/multi-tool-code-agent.md) | 如何训练模型在搜索、写代码和测试之间切换？                    |
+| 10.5 | [项目二：Deep Research Agent](docs/chapter10_agentic_rl/deep-research-agent.md) | 深度研究型智能体如何组织搜索、引用和答案质量奖励？            |
+| 10.6 | [延伸阅读](docs/chapter10_agentic_rl/extended-readings.md) | 继续深入 Agentic RL 应该读哪些资料？                          |
 | 总结 | [本篇小结](docs/summaries/part3-summary.md)      | 什么让 LLM 的强化学习不同于经典环境的强化学习？                |
 
 ### 第四部分：前沿与高级系统
@@ -170,7 +223,17 @@
 | 章节 | 主题                                              | 核心问题                                                               |
 | :--- | :------------------------------------------------ | :--------------------------------------------------------------------- |
 | 11   | [VLM 强化学习](docs/chapter11_vlm_rl/intro.md)    | 视觉奖励、多模态框架以及视觉生成 RL 如何改变训练循环？                 |
+| 11.1 | [动手：GRPO 训练 VLM](docs/chapter11_vlm_rl/vlm-grpo-hands-on.md) | 如何把 GRPO 训练扩展到视觉问答任务？                                  |
+| 11.2 | [视觉奖励与幻觉](docs/chapter11_vlm_rl/vlm-challenges.md) | 多模态奖励和视觉幻觉会带来哪些新问题？                                |
+| 11.3 | [Open-R1、R1-V 与 VLM-R1](docs/chapter11_vlm_rl/vlm-frameworks.md) | 前沿 VLM-RL 框架如何组织数据、奖励和训练？                            |
+| 11.4 | [视觉生成 RL](docs/chapter11_vlm_rl/visual-generation-rl.md) | 图像生成模型如何用偏好和奖励优化？                                    |
 | 12   | [未来趋势](docs/chapter12_future_trends/intro.md) | 具身智能、Model-Based RL、自我博弈、多智能体 RL 与离线 RL 的发展方向？ |
+| 12.1 | [具身智能](docs/chapter12_future_trends/embodied-intelligence/index.md) | RL 如何进入机器人和物理世界？                                         |
+| 12.2 | [Model-Based RL](docs/chapter12_future_trends/embodied-intelligence/model-based-rl/index.md) | 世界模型如何减少真实环境交互成本？                                    |
+| 12.3 | [Self-Play 与自进化](docs/chapter12_future_trends/self-play-outlook/index.md) | 自我博弈如何推动能力持续提升？                                        |
+| 12.4 | [LLM 多智能体 RL](docs/chapter12_future_trends/llm-multi-agent-rl/index.md) | 多个语言智能体如何协作、竞争和共同学习？                              |
+| 12.5 | [离线强化学习](docs/chapter12_future_trends/offline-rl/index.md) | 不能在线试错时，如何从固定数据中学习策略？                            |
+| 12.6 | [RL Scaling 展望](docs/chapter12_future_trends/rl-scaling-outlook.md) | RL 的规模化训练还会走向哪里？                                         |
 | 总结 | [本篇小结](docs/summaries/part4-summary.md)       | 完成核心课程后，学习者应关注哪些方向？                                 |
 
 ### 附录
@@ -179,8 +242,17 @@
 | :--- | :--------------------------------------------------------- | :----------------------------------------------------- |
 | A    | [训练调试指南](docs/appendix_common_pitfalls/intro.md)     | 强化学习训练的失败模式、症状、根本原因和修复策略。     |
 | B    | [RL 工程实践](docs/appendix_industrial_training/intro.md)  | 训练系统底座、Agent 沙箱、评估基准及工业实战练习。     |
+| B.1  | [训练系统底座](docs/appendix_industrial_training/rl-infrastructure.md) | RL 训练系统需要哪些基础组件？                          |
+| B.2  | [Agent 沙箱与工具调度](docs/appendix_industrial_training/agentic-rl-infra.md) | 工具型智能体训练如何隔离执行环境？                     |
+| B.3  | [RL 与 Agent Benchmark](docs/appendix_industrial_training/evaluation-badcase.md) | 如何设计评测并分析坏例？                               |
+| B.4  | [训练指标词典](docs/appendix_industrial_training/metrics-glossary.md) | 常见训练指标各自说明什么问题？                         |
+| B.5  | [工业实战练习](docs/appendix_industrial_training/industrial-exercises.md) | 如何把工程概念落到可练习任务里？                       |
 | D    | [学习资料与项目推荐](docs/appendix_game_projects/intro.md) | 精选的学习资源和复现项目参考，用于扩展课程示例。       |
 | E    | [数学基础](docs/appendix_math/intro.md)                    | 强化学习相关的线性代数、概率统计、微积分优化和信息论。 |
+| E.1  | [数学对象与线性代数](docs/appendix_math/linear-algebra.md) | 向量、矩阵和函数近似如何支撑 RL 表达？                 |
+| E.2  | [概率、期望与随机估计](docs/appendix_math/probability-statistics.md) | 回报、采样和轨迹估计依赖哪些概率工具？                 |
+| E.3  | [微积分与优化](docs/appendix_math/calculus-optimization.md) | 梯度、链式法则和优化器如何驱动策略更新？               |
+| E.4  | [信息论与分布距离](docs/appendix_math/information-theory.md) | 熵、交叉熵和 KL 如何解释探索与对齐约束？               |
 
 ## 实验代码
 
