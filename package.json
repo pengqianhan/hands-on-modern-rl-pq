@@ -5,9 +5,10 @@
   "type": "module",
   "scripts": {
     "dev": "vitepress dev docs",
-    "build": "npm run sitemap && vitepress build docs",
-    "build:force": "npm run sitemap && vitepress build docs --force",
+    "build": "npm run assets:optimize && npm run sitemap && vitepress build docs",
+    "build:force": "npm run assets:optimize && npm run sitemap && vitepress build docs --force",
     "preview": "vitepress preview docs",
+    "assets:optimize": "node scripts/optimize-assets.mjs",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint docs/.vitepress/theme",

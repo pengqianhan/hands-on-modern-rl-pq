@@ -544,6 +544,13 @@
   box-shadow: none;
 }
 
+.vp-doc .image-caption {
+  color: var(--vp-c-text-2);
+  font-size: 0.9em;
+  margin-top: -0.75rem;
+  text-align: center;
+}
+
 /* ---- Mermaid diagrams ---- */
 .vp-doc .mermaid,
 .vp-doc pre.mermaid,

@@ -235,6 +235,12 @@
     <priority>0.6</priority>
   </url>
   <url>
+    <loc>https://walkinglabs.github.io/hands-on-modern-rl/assets-sources/README/</loc>
+    <lastmod>2026-05-02T17:25:21.365Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
     <loc>https://walkinglabs.github.io/hands-on-modern-rl/chapter01_cartpole/intro/</loc>
     <lastmod>2026-05-01T06:46:41.648Z</lastmod>
     <changefreq>weekly</changefreq>
@@ -296,7 +302,7 @@
   </url>
   <url>
     <loc>https://walkinglabs.github.io/hands-on-modern-rl/chapter03_mdp/dp-mc-td/</loc>
-    <lastmod>2026-05-02T10:54:49.326Z</lastmod>
+    <lastmod>2026-05-02T11:12:57.726Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -512,85 +518,55 @@
   </url>
   <url>
     <loc>https://walkinglabs.github.io/hands-on-modern-rl/chapter08_rlhf/base-model-to-assistant/</loc>
-    <lastmod>2026-05-02T10:12:10.041Z</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://walkinglabs.github.io/hands-on-modern-rl/chapter08_rlhf/data-cycle/</loc>
-    <lastmod>2026-05-02T10:48:32.531Z</lastmod>
+    <lastmod>2026-05-02T12:13:22.247Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://walkinglabs.github.io/hands-on-modern-rl/chapter08_rlhf/evaluation/</loc>
-    <lastmod>2026-05-02T10:48:33.358Z</lastmod>
+    <lastmod>2026-05-02T12:13:23.768Z</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.6</priority>
+  </url>
+  <url>
+    <loc>https://walkinglabs.github.io/hands-on-modern-rl/chapter08_rlhf/extended-practice/</loc>
+    <lastmod>2026-05-02T12:13:24.524Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://walkinglabs.github.io/hands-on-modern-rl/chapter08_rlhf/imitation-learning-pipeline/</loc>
-    <lastmod>2026-05-02T10:24:54.161Z</lastmod>
+    <lastmod>2026-05-02T12:13:25.769Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://walkinglabs.github.io/hands-on-modern-rl/chapter08_rlhf/intro/</loc>
-    <lastmod>2026-05-02T10:12:10.028Z</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://walkinglabs.github.io/hands-on-modern-rl/chapter08_rlhf/legacy-materials/</loc>
-    <lastmod>2026-05-02T10:49:17.683Z</lastmod>
+    <lastmod>2026-05-02T12:13:26.349Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://walkinglabs.github.io/hands-on-modern-rl/chapter08_rlhf/ppo-rlhf-loop/</loc>
-    <lastmod>2026-05-02T10:48:33.044Z</lastmod>
+    <lastmod>2026-05-02T12:13:27.442Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://walkinglabs.github.io/hands-on-modern-rl/chapter08_rlhf/reward-function-design/</loc>
-    <lastmod>2026-05-02T10:24:54.437Z</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://walkinglabs.github.io/hands-on-modern-rl/chapter08_rlhf/reward-hacking-hands-on/</loc>
-    <lastmod>2026-05-02T10:48:31.060Z</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://walkinglabs.github.io/hands-on-modern-rl/chapter08_rlhf/rlaif-and-data-cycle/</loc>
-    <lastmod>2026-05-02T10:48:32.700Z</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://walkinglabs.github.io/hands-on-modern-rl/chapter08_rlhf/rlaif-self-play/</loc>
-    <lastmod>2026-05-02T10:48:56.850Z</lastmod>
+    <lastmod>2026-05-02T12:13:28.161Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://walkinglabs.github.io/hands-on-modern-rl/chapter08_rlhf/scaling-to-large-models/</loc>
-    <lastmod>2026-05-02T10:08:25.874Z</lastmod>
+    <lastmod>2026-05-02T12:13:28.594Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://walkinglabs.github.io/hands-on-modern-rl/chapter08_rlhf/standard-rlhf-pipeline/</loc>
-    <lastmod>2026-05-02T10:48:32.869Z</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://walkinglabs.github.io/hands-on-modern-rl/chapter08_rlhf/training-stability-hacking/</loc>
-    <lastmod>2026-05-02T10:48:56.097Z</lastmod>
+    <lastmod>2026-05-02T12:13:29.125Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -626,7 +602,7 @@
   </url>
   <url>
     <loc>https://walkinglabs.github.io/hands-on-modern-rl/chapter09_grpo_rlvr/on-policy-distillation/</loc>
-    <lastmod>2026-05-01T15:04:08.683Z</lastmod>
+    <lastmod>2026-05-02T12:17:22.078Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -800,7 +776,7 @@
   </url>
   <url>
     <loc>https://walkinglabs.github.io/hands-on-modern-rl/preface/intro/</loc>
-    <lastmod>2026-05-02T10:23:09.921Z</lastmod>
+    <lastmod>2026-05-02T13:30:23.216Z</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
   </url>

@@ -10,12 +10,9 @@
 >
 > —— Rich Sutton, 2019. 萨顿与导师安德鲁·巴托（Andrew Barto）因奠定了强化学习的理论基础，共同获得 2024 年 ACM 图灵奖。
 
-<div style="text-align: center; margin: 1.5rem 0;">
-  <img src="./images/richard_sutton.jpg" alt="Richard S. Sutton" style="display: block; margin: 0 auto; border-radius: 8px; max-width: 200px;" />
-  <p style="font-size: 0.9em; color: var(--vp-c-text-2); margin-top: 8px;">
-    <em>理查德·萨顿（Richard S. Sutton），强化学习奠基人之一，2024 年图灵奖得主。来源：<a href="https://commons.wikimedia.org/wiki/File:Rich_Sutton_on_Reinforcement_Learning-_Alpha_Go_Zero_to_60_(cropped).jpg" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a>（CC BY 2.0）</em>
-  </p>
-</div>
+![Richard S. Sutton](./images/richard_sutton.jpg)
+
+<p class="image-caption"><em>理查德·萨顿（Richard S. Sutton），强化学习奠基人之一，2024 年图灵奖得主。来源：<a href="https://commons.wikimedia.org/wiki/File:Rich_Sutton_on_Reinforcement_Learning-_Alpha_Go_Zero_to_60_(cropped).jpg" target="_blank" rel="noopener noreferrer">Wikimedia Commons</a>（CC BY 2.0）</em></p>
 
 为什么说它"苦涩"？因为同样的故事在 AI 历史上一遍又一遍地上演。在计算机国际象棋中，研究者精心编码开局定式和残局策略，结果被暴力搜索的深蓝击败；在语音识别和计算机视觉中，人们手工设计特征提取器，结果被从数据中自己学特征的深度网络全面取代。围棋更是登峰造极——研究者投入巨大精力利用人类知识来减少搜索量，而 AlphaGo Zero 干脆去掉一切人类输入，从零自我对弈，反而下得更好。
 

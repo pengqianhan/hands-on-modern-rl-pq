@@ -1,5 +1,6 @@
 /* global process */
 import { defineConfig } from 'vitepress'
+import { createLogger } from 'vite'
 import { MermaidMarkdown } from 'vitepress-plugin-mermaid'
 import { createRequire } from 'module'
 import fs from 'fs'
@@ -15,6 +16,23 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 const packageJsonPath = path.resolve(__dirname, '../../package.json')
 const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'))
+const docsRoot = path.resolve(__dirname, '..')
+const assetManifestPath = path.resolve(
+  docsRoot,
+  'public/optimized/asset-manifest.json'
+)
+
+function loadAssetManifest() {
+  if (!fs.existsSync(assetManifestPath)) return { assets: {} }
+
+  try {
+    return JSON.parse(fs.readFileSync(assetManifestPath, 'utf8'))
+  } catch {
+    return { assets: {} }
+  }
+}
+
+const assetManifest = loadAssetManifest()
 
 const isVercel = process.env.VERCEL === '1' || !!process.env.VERCEL_URL
 
@@ -391,6 +409,58 @@ function safeHeadingAttrs(md) {
   })
 }
 
+function isExternalAsset(value) {
+  return /^(?:[a-z][a-z0-9+.-]*:)?\/\//i.test(value) || value.startsWith('data:')
+}
+
+function resolveMarkdownAsset(relativePagePath, src) {
+  if (!src || isExternalAsset(src) || src.startsWith('/')) return null
+
+  const hashIndex = src.indexOf('#')
+  const queryIndex = src.indexOf('?')
+  const suffixIndexCandidates = [hashIndex, queryIndex].filter((idx) => idx >= 0)
+  const suffixIndex = suffixIndexCandidates.length
+    ? Math.min(...suffixIndexCandidates)
+    : -1
+  const cleanSrc = suffixIndex >= 0 ? src.slice(0, suffixIndex) : src
+  const suffix = suffixIndex >= 0 ? src.slice(suffixIndex) : ''
+  const pageDir = path.posix.dirname(relativePagePath || '')
+  const sourcePath = path.posix
+    .normalize(path.posix.join(pageDir, cleanSrc))
+    .replace(/^\.\//, '')
+
+  return {
+    sourcePath,
+    suffix
+  }
+}
+
+function optimizedImagesPlugin(md) {
+  const imageRule = md.renderer.rules.image
+
+  md.renderer.rules.image = (tokens, idx, options, env, self) => {
+    const token = tokens[idx]
+    const src = token.attrGet('src')
+    const resolved = resolveMarkdownAsset(env.relativePath, src)
+    const asset = resolved && assetManifest.assets?.[resolved.sourcePath]
+
+    if (asset?.status === 'optimized' && asset.optimized) {
+      token.attrSet('src', `${asset.optimized}${resolved.suffix}`)
+      token.attrSet('data-source-src', `/src/${resolved.sourcePath}`)
+    }
+
+    if (!token.attrGet('loading')) {
+      token.attrSet('loading', 'lazy')
+    }
+
+    if (!token.attrGet('decoding')) {
+      token.attrSet('decoding', 'async')
+    }
+
+    return imageRule(tokens, idx, options, env, self)
+  }
+}
+
 const zhNav = [
   { text: '前言与导论', link: '/preface/intro' },
   { text: '基础导论', link: '/chapter01_cartpole/intro' },
@@ -627,8 +697,8 @@ const zhSidebar = {
               link: '/chapter08_rlhf/scaling-to-large-models'
             },
             {
-              text: '8.8 旧稿补充与实战材料',
-              link: '/chapter08_rlhf/legacy-materials'
+              text: '8.8 扩展实战：Reward Hacking 与数据飞轮',
+              link: '/chapter08_rlhf/extended-practice'
             }
           ]
         },
@@ -931,6 +1001,13 @@ const enSidebar = {
   ]
 }
 
+const logger = createLogger()
+const originalWarn = logger.warn
+logger.warn = (msg, options) => {
+  if (msg.includes('Failed to resolve "/@siteData"')) return
+  originalWarn(msg, options)
+}
+
 export default defineConfig({
     lang: 'zh-CN',
     title: 'Hands-on Modern RL',
@@ -939,11 +1016,15 @@ export default defineConfig({
     cleanUrls: true,
     lastUpdated: true,
     markdown: {
+      image: {
+        lazyLoading: true
+      },
       attrs: {
         disable: true
       },
       config: (md) => {
         safeHeadingAttrs(md)
+        optimizedImagesPlugin(md)
         md.use(markdownItFootnote)
         katexMarkdown(md)
         MermaidMarkdown(md)
@@ -960,6 +1041,7 @@ export default defineConfig({
       }
     },
     vite: {
+      customLogger: logger,
       plugins: [mermaidConfigPlugin(), normalizeBrokenDocPathPlugin()],
       optimizeDeps: {
         include: [
