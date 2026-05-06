@@ -4,21 +4,21 @@
 
 本附录覆盖大模型后训练岗位面试中最常被要求手写的算法代码，按考查频率排序。每个算法提供四种视角：
 
-| 视角 | 用途 |
-|------|------|
-| **一句话记忆** | 上考场前默念的口诀 |
-| **伪代码** | 面试白板写的版本 |
-| **Python 实现** | 用 numpy / 原生 Python 讲清楚逻辑 |
-| **PyTorch 实现** | 面试中常问的工程版本 |
+| 视角             | 用途                              |
+| ---------------- | --------------------------------- |
+| **一句话记忆**   | 上考场前默念的口诀                |
+| **伪代码**       | 面试白板写的版本                  |
+| **Python 实现**  | 用 numpy / 原生 Python 讲清楚逻辑 |
+| **PyTorch 实现** | 面试中常问的工程版本              |
 
 ## 本附录目录
 
-| 节 | 算法 | 考查频率 |
-|----|------|----------|
-| [C.1 SFT Loss 与 KL 散度](./sft-kl) | SFT 自回归 loss、shift right、KL 估计 | ★★★★ |
-| [C.2 PPO 策略损失与 GAE](./ppo-gae) | Clipped surrogate、value loss、GAE 逆向递推 | ★★★★★ |
-| [C.3 DPO 及其变体](./dpo-family) | DPO loss、IPO、KTO、SimPO | ★★★★★ |
-| [C.4 GRPO 与 Reward Model](./grpo-rlvr) | GRPO 组内归一化、Bradley-Terry RM | ★★★★ |
+| 节                                      | 算法                                        | 考查频率 |
+| --------------------------------------- | ------------------------------------------- | -------- |
+| [C.1 SFT Loss 与 KL 散度](./sft-kl)     | SFT 自回归 loss、shift right、KL 估计       | ★★★★     |
+| [C.2 PPO 策略损失与 GAE](./ppo-gae)     | Clipped surrogate、value loss、GAE 逆向递推 | ★★★★★    |
+| [C.3 DPO 及其变体](./dpo-family)        | DPO loss、IPO、KTO、SimPO                   | ★★★★★    |
+| [C.4 GRPO 与 Reward Model](./grpo-rlvr) | GRPO 组内归一化、Bradley-Terry RM           | ★★★★     |
 
 ## 使用建议
 

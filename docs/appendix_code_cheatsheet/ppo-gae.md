@@ -180,22 +180,22 @@ total_loss = policy_loss + value_coeff * value_loss - entropy_coeff * entropy
 
 面试追问时，完整的 PPO loss 三件套：
 
-| 组成 | 作用 | 系数典型值 |
-|------|------|-----------|
-| policy loss (clipped) | 更新策略 | 权重 1 |
-| value loss (MSE) | 更新 Critic | `vf_coef=0.5` |
-| entropy bonus | 鼓励探索 | `ent_coef=0.01` |
+| 组成                  | 作用        | 系数典型值      |
+| --------------------- | ----------- | --------------- |
+| policy loss (clipped) | 更新策略    | 权重 1          |
+| value loss (MSE)      | 更新 Critic | `vf_coef=0.5`   |
+| entropy bonus         | 鼓励探索    | `ent_coef=0.01` |
 
 ---
 
 ## 易错点
 
-| 易错 | 说明 |
-|------|------|
-| ratio 用除法 | 应该用 `exp(logp_new - logp_old)`，数值更稳定 |
-| advantage 没归一化 | 实际工程中 advantage 通常做 batch 内归一化 |
-| min 还是 max | 对 loss 取 min（保守），对 value loss 取 max（也是保守方向） |
-| 忘了 stop gradient | `old_log_probs` 和 `old_values` 要 `.detach()` |
-| GAE 的 done mask | `done=1` 时截断递推：`gamma * lambda * (1-done) * next_adv` |
-| value 的 bootstrap | values 长度是 T+1，最后一个位置是 bootstrap value |
-| entropy 符号 | `- entropy_coeff * entropy`（entropy 本身是正的，前面要加负号让 loss 变小 = 鼓励高熵） |
+| 易错               | 说明                                                                                   |
+| ------------------ | -------------------------------------------------------------------------------------- |
+| ratio 用除法       | 应该用 `exp(logp_new - logp_old)`，数值更稳定                                          |
+| advantage 没归一化 | 实际工程中 advantage 通常做 batch 内归一化                                             |
+| min 还是 max       | 对 loss 取 min（保守），对 value loss 取 max（也是保守方向）                           |
+| 忘了 stop gradient | `old_log_probs` 和 `old_values` 要 `.detach()`                                         |
+| GAE 的 done mask   | `done=1` 时截断递推：`gamma * lambda * (1-done) * next_adv`                            |
+| value 的 bootstrap | values 长度是 T+1，最后一个位置是 bootstrap value                                      |
+| entropy 符号       | `- entropy_coeff * entropy`（entropy 本身是正的，前面要加负号让 loss 变小 = 鼓励高熵） |

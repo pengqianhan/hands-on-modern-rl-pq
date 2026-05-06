@@ -37,12 +37,12 @@ loss = policy_loss + kl_coeff * kl
 
 GRPO = **G**roup **R**elative **P**olicy **O**ptimization。和 PPO 的对比：
 
-| | PPO | GRPO |
-|---|---|---|
-| Advantage 来源 | Critic 预测 $V(s)$ → GAE | 组内 reward 归一化 |
-| 需要几个模型 | 4 个（actor, critic, ref, rm） | 2~3 个（actor, ref, rm/verifier） |
-| KL | 可选 | 几乎必加 |
-| 采样方式 | 单条 rollout | 同 prompt 采 G 条 |
+|                | PPO                            | GRPO                              |
+| -------------- | ------------------------------ | --------------------------------- |
+| Advantage 来源 | Critic 预测 $V(s)$ → GAE       | 组内 reward 归一化                |
+| 需要几个模型   | 4 个（actor, critic, ref, rm） | 2~3 个（actor, ref, rm/verifier） |
+| KL             | 可选                           | 几乎必加                          |
+| 采样方式       | 单条 rollout                   | 同 prompt 采 G 条                 |
 
 口诀：**"PPO 砍掉 Critic，换成组内 z-score，其余照抄"**
 
@@ -165,27 +165,27 @@ def reward_model_loss(r_chosen, r_rejected):
 
 面试官常问"DPO 相比 PPO 的优劣"，准备这个对比表：
 
-| 维度 | PPO-RLHF | DPO |
-|------|----------|-----|
-| 需要 Reward Model | 是 | 否（隐式学习） |
-| 需要 Critic | 是 | 否 |
-| 需要 Reference Model | 可选 | 必须 |
-| 在线/离线 | 在线（需要采样） | 离线（只用偏好数据） |
-| 训练成本 | 高（4 个模型） | 低（2 个模型） |
-| 奖励黑客风险 | 有（RM 可被钻空子） | 较低（无显式 RM） |
-| 理论最优性 | 更强（可以持续探索） | 受限于离线数据质量 |
-| 适用场景 | 大规模在线训练 | 偏好数据充足的场景 |
+| 维度                 | PPO-RLHF             | DPO                  |
+| -------------------- | -------------------- | -------------------- |
+| 需要 Reward Model    | 是                   | 否（隐式学习）       |
+| 需要 Critic          | 是                   | 否                   |
+| 需要 Reference Model | 可选                 | 必须                 |
+| 在线/离线            | 在线（需要采样）     | 离线（只用偏好数据） |
+| 训练成本             | 高（4 个模型）       | 低（2 个模型）       |
+| 奖励黑客风险         | 有（RM 可被钻空子）  | 较低（无显式 RM）    |
+| 理论最优性           | 更强（可以持续探索） | 受限于离线数据质量   |
+| 适用场景             | 大规模在线训练       | 偏好数据充足的场景   |
 
 ---
 
 ## 易错点
 
-| 易错 | 说明 |
-|------|------|
-| GRPO 的 advantage 是组内归一化 | 不是全局归一化，是**同一个 prompt** 的 G 条回答之间比较 |
-| GRPO 没有 value loss | 没有 Critic，所以没有 value loss，这是和 PPO 的核心区别 |
-| Reward Model 要 detach | 训练 RM 时 chosen/rejected 的 reward 都要参与梯度，但训练 policy 时 RM 要冻结 |
-| GRPO 的 KL 是对每条序列的 | 不是 token 级别，通常是对整条 completion 的 log_prob 求和后再算 KL |
-| DPO 隐式学到了 RM | DPO 的 `log_ratio_w - log_ratio_l` 本质上就是隐式 reward 差值 |
-| G 的大小 | 通常 G=4~16，太小 advantage 估计噪声大，太大采样成本高 |
-| RLVR 场景 | reward 来自规则验证器（如代码执行、数学答案检查），不是 RM 打分 |
+| 易错                           | 说明                                                                          |
+| ------------------------------ | ----------------------------------------------------------------------------- |
+| GRPO 的 advantage 是组内归一化 | 不是全局归一化，是**同一个 prompt** 的 G 条回答之间比较                       |
+| GRPO 没有 value loss           | 没有 Critic，所以没有 value loss，这是和 PPO 的核心区别                       |
+| Reward Model 要 detach         | 训练 RM 时 chosen/rejected 的 reward 都要参与梯度，但训练 policy 时 RM 要冻结 |
+| GRPO 的 KL 是对每条序列的      | 不是 token 级别，通常是对整条 completion 的 log_prob 求和后再算 KL            |
+| DPO 隐式学到了 RM              | DPO 的 `log_ratio_w - log_ratio_l` 本质上就是隐式 reward 差值                 |
+| G 的大小                       | 通常 G=4~16，太小 advantage 估计噪声大，太大采样成本高                        |
+| RLVR 场景                      | reward 来自规则验证器（如代码执行、数学答案检查），不是 RM 打分               |

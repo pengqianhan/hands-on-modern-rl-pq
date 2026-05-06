@@ -202,23 +202,23 @@ def simpo_loss(chosen_logps, rejected_logps,
 
 ## DPO 家族对比速查
 
-| 算法 | 需要 ref? | 需要配对? | 核心区别 |
-|------|-----------|-----------|----------|
-| DPO | 是 | 是 (chosen/rejected) | log-sigmoid，经典版 |
-| IPO | 是 | 是 | 平方损失替代 log-sigmoid |
-| KTO | 是 | 否 (好/坏标签) | 单样本级别优化 |
-| SimPO | **否** | 是 | 长度归一化 + 隐式奖励偏移 |
-| ORPO | **否** | 是 | odds ratio，合并 SFT + 对齐 |
+| 算法  | 需要 ref? | 需要配对?            | 核心区别                    |
+| ----- | --------- | -------------------- | --------------------------- |
+| DPO   | 是        | 是 (chosen/rejected) | log-sigmoid，经典版         |
+| IPO   | 是        | 是                   | 平方损失替代 log-sigmoid    |
+| KTO   | 是        | 否 (好/坏标签)       | 单样本级别优化              |
+| SimPO | **否**    | 是                   | 长度归一化 + 隐式奖励偏移   |
+| ORPO  | **否**    | 是                   | odds ratio，合并 SFT + 对齐 |
 
 ---
 
 ## 易错点
 
-| 易错 | 说明 |
-|------|------|
-| 四条 log_prob 搞混 | 记住：每个模型出两条（chosen + rejected），一共四条 |
-| `log_sigmoid` 数值溢出 | PyTorch 的 `F.logsigmoid` 内置处理；手写时用 `logaddexp` |
-| DPO 的 beta | beta 越大，对偏好差距越敏感，一般 0.1~0.5 |
-| 忘了 detach ref | `ref_chosen_logps` 和 `ref_rejected_logps` 要 `.detach()`，不参与梯度 |
-| chosen/rejected 反了 | 检查数据集：chosen 是人类偏好的那条 |
-| IPO 没有 sigmoid | IPO 用平方损失，不需要 sigmoid，这是和 DPO 的关键区别 |
+| 易错                   | 说明                                                                  |
+| ---------------------- | --------------------------------------------------------------------- |
+| 四条 log_prob 搞混     | 记住：每个模型出两条（chosen + rejected），一共四条                   |
+| `log_sigmoid` 数值溢出 | PyTorch 的 `F.logsigmoid` 内置处理；手写时用 `logaddexp`              |
+| DPO 的 beta            | beta 越大，对偏好差距越敏感，一般 0.1~0.5                             |
+| 忘了 detach ref        | `ref_chosen_logps` 和 `ref_rejected_logps` 要 `.detach()`，不参与梯度 |
+| chosen/rejected 反了   | 检查数据集：chosen 是人类偏好的那条                                   |
+| IPO 没有 sigmoid       | IPO 用平方损失，不需要 sigmoid，这是和 DPO 的关键区别                 |

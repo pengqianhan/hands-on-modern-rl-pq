@@ -128,19 +128,19 @@ def kl_penalty(log_probs, ref_log_probs, mode="unbiased"):
 
 ### 两种估计的区别
 
-| 估计方法 | 公式 | 特点 |
-|----------|------|------|
-| 有偏 | $\mathbb{E}_p[\log \frac{p}{q}]$ | 简单，但样本少时可能为负 |
-| 无偏 | $\mathbb{E}_p[\frac{p}{q} - 1 - \log \frac{p}{q}]$ | 保证 $\geq 0$，GRPO 默认 |
+| 估计方法 | 公式                                               | 特点                     |
+| -------- | -------------------------------------------------- | ------------------------ |
+| 有偏     | $\mathbb{E}_p[\log \frac{p}{q}]$                   | 简单，但样本少时可能为负 |
+| 无偏     | $\mathbb{E}_p[\frac{p}{q} - 1 - \log \frac{p}{q}]$ | 保证 $\geq 0$，GRPO 默认 |
 
 ---
 
 ## 易错点
 
-| 易错 | 说明 |
-|------|------|
-| shift 方向反了 | logits 砍**尾**，labels 砍**头**。口诀："预测看左边，目标看右边" |
-| 忘了 `ignore_index` | prompt 部分的 token 不参与 loss，设为 `-100` |
-| KL 符号搞反 | KL(p \|\| q) 里 p 是当前策略、q 是参考策略，写反了变成负数 |
-| softmax 溢出 | 先减 `max(x)` 再 `exp`，面试手写必加 |
-| `contiguous()` | PyTorch 里 slice 后 view 会报错，加 `.contiguous()` |
+| 易错                | 说明                                                             |
+| ------------------- | ---------------------------------------------------------------- |
+| shift 方向反了      | logits 砍**尾**，labels 砍**头**。口诀："预测看左边，目标看右边" |
+| 忘了 `ignore_index` | prompt 部分的 token 不参与 loss，设为 `-100`                     |
+| KL 符号搞反         | KL(p \|\| q) 里 p 是当前策略、q 是参考策略，写反了变成负数       |
+| softmax 溢出        | 先减 `max(x)` 再 `exp`，面试手写必加                             |
+| `contiguous()`      | PyTorch 里 slice 后 view 会报错，加 `.contiguous()`              |
