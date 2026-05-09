@@ -39,8 +39,7 @@ import gymnasium as gym
 import numpy as np
 
 env = gym.make("MountainCar-v0")
-rng = np.random.default_rng(0)
-obs, info = env.reset()
+obs, info = env.reset(seed=0)
 print(f"状态空间: {env.observation_space}")
 print(f"动作空间: {env.action_space}")
 print(f"初始状态: {obs}")
@@ -68,6 +67,7 @@ import gymnasium as gym
 import numpy as np
 
 env = gym.make("MountainCar-v0")
+rng = np.random.default_rng(0)
 
 # 离散化：把连续状态分成 20 个格子
 N_BINS = 20
@@ -137,7 +137,8 @@ Mountain Car 的状态空间是连续的二维区域，离散化为 20×20 = 400
 先看一个常见但容易误解的技巧：乐观初始化。它不是要求把 Q 表格初始化为"正值"，而是要求初始估计**高于真实动作价值**。在 Mountain Car 里，回报通常是负数，所以 `0`、`-5` 甚至某些状态下的 `-100` 都可能比真实 Q 值更乐观；正值当然也可以，但不是必要条件。
 
 ```python
-# 关键改动：把 Q 初始化为高于真实动作价值的估计
+# 这是一个片段：假设已经定义了 N_BINS。
+# 关键改动是把 Q 初始化为高于真实动作价值的估计。
 
 # MountainCar-v0 每一步 reward 都是 -1，包括到达终点那一步。
 # 真正终止以后没有后续状态，所以终止后的 bootstrap 价值才是 0。
@@ -153,6 +154,9 @@ Q = np.ones((N_BINS, N_BINS, 3)) * (-100) # 是否乐观要看具体状态
 **直觉**：如果 agent 相信某个动作能得到比真实情况更好的回报，那么它第一次尝试后往往会发现"没有想象中好"，于是这个动作的 Q 值被拉低。被频繁尝试的动作会逐渐接近真实值，而还没怎么试过的动作仍保持较高初始值——这就自然地产生了"优先探索不确定动作"的压力。
 
 ```python
+import gymnasium as gym
+import numpy as np
+
 env = gym.make("MountainCar-v0")
 rng = np.random.default_rng(0)
 N_BINS = 20
