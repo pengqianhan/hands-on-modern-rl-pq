@@ -319,7 +319,21 @@ for episode in range(800):
 
 下图是训练好的模型实际运行 3 个 episode 的着陆过程。每个 episode 独立渲染，动作按 Q 值最大选取（无探索）。为了让页面阅读不被长动画打断，动图都压到 150 帧以内；括号里的步数仍然是环境中的真实交互步数。正式评估仍应使用多局完整 episode 的平均回报。
 
+如果想重新查看这组可视化，可以运行本节配套脚本 `code/chapter04_dqn/render_lunarlander_split.py`。下面的命令会用指定 seed 重新渲染三个原始 episode；讲义中的 GIF 为了页面加载速度，又在此基础上做了抽帧压缩。
+
+```bash
+python code/chapter04_dqn/render_lunarlander_split.py \
+  --model output/dqn_gym/LunarLander-v3/final_model.zip \
+  --output-dir output/lunarlander_episodes \
+  --episodes 3 \
+  --seeds 9 10019 171 \
+  --max-steps 1000 \
+  --fps 30
+```
+
 先明确标准。LunarLander 的单局"成功降落"不是只看飞船有没有碰到地面，而是看它是否在两个旗帜之间平稳落下：接近落地区域、水平和垂直速度较小、机身角度稳定、支架接触地面，并且没有坠毁。回报可以把这些因素合在一起读：单局超过 200 通常可以看作一次高质量成功降落；100 到 200 说明策略大体有效但动作仍有浪费或风险；明显低于 100 往往意味着落点、速度、姿态或终止方式出了问题。环境层面的"解决"则不能靠单局判断，通常要看多局平均回报是否稳定超过 200。
+
+这里还要注意一个容易误读的地方：姿态扣分并不是没有，Gymnasium 的 LunarLander 会在 shaping 中使用 `-100 * abs(angle)` 惩罚机身角度，同时也惩罚位置偏差、速度偏差，并奖励支架接触。真正加入每步回报的是相邻两步 shaping 的差值，再叠加燃料惩罚和终止奖励。因此，一个 episode 的总回报不是只由最后姿态决定；如果飞船没有坠毁、位置和速度改善较多，即使过程中姿态看起来不够漂亮，也可能得到中等正回报。反过来，姿态失控如果导致偏离落地区域、硬着陆或坠毁，就会通过终止方式和前面的速度、位置项一起表现为低分。
 
 **Episode 1（回报 313.7，263 步）** — 这是一局高分成功降落。飞船较快进入可控下降状态，接近地面前把速度压住，最后在落地区域内接触地面。它的分数最高，主要来自落点、速度和姿态都较好；但肉眼看不一定处处比 Episode 2 更漂亮，因为回报还包含燃料消耗、位置 shaping 和接触奖励等细节。
 
@@ -329,9 +343,9 @@ for episode in range(800):
 
 ![LunarLander Episode 2：多次修正后降落，回报 173.2](./images/lunarlander_ep2.gif)
 
-**Episode 3（回报 -6.4，107 步）** — 这是一局明显失败。飞船很快偏离稳定下降路径，姿态和速度没有及时回到可控范围，后续动作更像是在补救已经扩大的偏差。它不是“慢慢悬停到低分”，而是短时间内进入不可控局面，因此适合用来展示失败案例。
+**Episode 3（回报 5.9，104 步）** — 这是一局明显失败。飞船偏离稳定下降路径后没有恢复姿态，落地时两条支架都没有形成正常接触，更接近"飘出去后坠毁/硬着陆"的失败，而不是悬停到超时。它的回报虽然不是最小的负数，但视觉上更清楚地展示了失败的终止方式。
 
-![LunarLander Episode 3：快速偏离稳定下降路径并失败，回报 -6.4](./images/lunarlander_ep3.gif)
+![LunarLander Episode 3：偏离稳定下降路径后坠毁，回报 5.9](./images/lunarlander_ep3.gif)
 
 三个 episode 按回报从高到低排列，差异直接体现了评估的关键原则：不能只看单局表现。Episode 1 是高分成功，Episode 2 是 100 多分的中等成功，Episode 3 是明显失败。评估时应看多次平均，而非单局。
 
@@ -486,18 +500,29 @@ CleanRL 的 `dqn_atari.py`、Stable-Baselines3 的 DQN，
 ::: details 实验入口：从短实验到长实验
 
 ```bash
-cd code
-pip install -r chapter04_dqn/requirements.txt
+pip install -r code/chapter04_dqn/requirements.txt
 
-# 短实验：确认环境、wrapper、日志和模型保存彼此连通
-python chapter04_dqn/dqn_atari_sb3.py \
+# 讲义图像使用的 smoke run：只验证真实 Atari 训练链路
+python code/chapter04_dqn/dqn_atari_sb3.py \
+  --env-id ALE/Pong-v5 \
+  --total-timesteps 5000 \
+  --learning-starts 10000 \
+  --eval-freq 2500 \
+  --eval-episodes 1 \
+  --checkpoint-freq 5000 \
+  --output-dir output/dqn_atari_runs \
+  --run-name ALE_Pong-v5_dqn_seed0 \
+  --no-swanlab
+
+# 课堂短实验：确认环境、wrapper、日志和模型保存彼此连通
+python code/chapter04_dqn/dqn_atari_sb3.py \
   --env-id ALE/Pong-v5 \
   --total-timesteps 200000 \
   --learning-starts 10000 \
   --swanlab-run-name DQN-Pong-smoke
 
 # 长实验：观察评估回报是否形成稳定趋势
-python chapter04_dqn/dqn_atari_sb3.py \
+python code/chapter04_dqn/dqn_atari_sb3.py \
   --env-id ALE/Pong-v5 \
   --total-timesteps 5000000 \
   --learning-starts 100000 \
@@ -515,7 +540,16 @@ python chapter04_dqn/dqn_atari_sb3.py \
 tensorboard --logdir output/dqn_atari
 
 # 将本地 eval CSV 重新导出为讲义图片
-python chapter04_dqn/export_dqn_curves.py --run pong
+python code/chapter04_dqn/export_dqn_curves.py --run pong
+
+# 将训练好的模型渲染成讲义中的 Pong GIF
+python code/chapter04_dqn/render_atari.py \
+  --model output/dqn_atari_runs/ALE_Pong-v5_dqn_seed0/final_model.zip \
+  --output docs/chapter04_dqn/images/dqn-atari-pong-smoke.gif \
+  --seed 0 \
+  --max-steps 1200 \
+  --render-every 4 \
+  --fps 20
 ```
 
 :::
@@ -526,14 +560,32 @@ python chapter04_dqn/export_dqn_curves.py --run pong
 本节也实际运行了一个 `ALE/Pong-v5` 的短实验：
 训练 `5000` 个环境步，
 每 `2500` 步评估 1 个 episode，
-并写入 SwanLab 本地日志、评估 CSV 和曲线图。
+并写入评估 CSV、曲线图和模型文件。
 两次评估回报都是 `-21.0`，
 这符合预期：
 这个规模只能证明真实 ALE 环境、Atari wrapper、CNN DQN、
-SwanLab 和评估链路已经打通，
+模型保存和评估链路已经打通，
 还不能说明策略学会了 Pong。
 
 ![Atari Pong DQN 短实验曲线：5k 环境步内评估回报仍为 -21，说明这是训练链路验证，而不是策略收敛结果](./images/dqn-atari-pong-5k-eval-curve.png)
+
+训练曲线只告诉我们"分数没有变好"，
+还不能告诉我们智能体具体错在哪里。
+因此，本节也把同一个 5k smoke 模型渲染成一局 Pong 回放：
+模型使用训练时相同的 wrapper 和 4 帧堆叠来选动作，
+讲义中的 GIF 则保存原始 RGB 游戏画面，
+便于直接观察球、球拍和得分变化。
+
+**Pong smoke run（回报 -21.0，757 步）** — 这是一局失败回放。球拍没有稳定跟随球的垂直位置，几乎没有形成有效防守，最后以 `-21` 结束。这个 GIF 的作用不是证明 DQN 已经学会 Pong，而是把短实验的结论可视化：环境能跑通，CNN DQN 能输出动作，评估和渲染链路能保存下来；但 5k 步远远不够让像素策略学到可用的击球规律。
+
+![Atari Pong DQN smoke run：5k 训练步后的策略仍然输掉整局，回报 -21.0](./images/dqn-atari-pong-smoke.gif)
+
+把这段回放和 LunarLander 的成功着陆对比，会看到两个任务的差别。
+LunarLander 的 8 维状态已经把位置、速度、角度和支架接触直接给了网络；
+Pong 的网络看到的是像素堆叠，必须先从画面中分辨球和球拍，
+再从连续帧里推断球的运动方向。
+所以，在 Atari 中，"能显示 GIF"只是实验链路完成，
+"GIF 里出现稳定策略"才说明训练开始真正有效。
 
 RL-Zoo 的 Atari DQN 默认训练 `1e7` 步，
 使用 `CnnPolicy`、4 帧堆叠、
