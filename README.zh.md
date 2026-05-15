@@ -70,18 +70,18 @@
   </tr>
   <tr>
     <td width="50%" align="center">
-      <img src="docs/public/readme/feature-agentic-rl.png" alt="Agentic RL 项目截图" width="100%" />
+      <img src="docs/public/readme/feature-agentic-rl.png" alt="Agentic RL 实验页面截图" width="100%" />
       <br />
-      <strong>Agentic RL 项目化</strong>
+      <strong>Agentic RL 实验</strong>
       <br />
-      <sub>工具调用、轨迹合成、评测与多工具 Code Agent 走向完整工程练习。</sub>
+      <sub>DeepCoder 风格的 GRPO 训练曲线，把工具调用智能体、回复长度和奖励变化放进可复现实验。</sub>
     </td>
     <td width="50%" align="center">
-      <img src="docs/public/readme/feature-vlm-rl.png" alt="VLM 强化学习截图" width="100%" />
+      <img src="docs/public/readme/feature-atari-game.png" alt="Atari Pong DQN 实验页面截图" width="100%" />
       <br />
-      <strong>多模态与前沿方向</strong>
+      <strong>Atari 游戏实验</strong>
       <br />
-      <sub>VLM 强化学习、视觉生成 RL、具身智能和未来趋势延伸到前沿系统。</sub>
+      <sub>Atari Pong 游戏画面与 DQN 训练说明放在同一页，展示像素输入如何转化为动作决策。</sub>
     </td>
   </tr>
 </table>

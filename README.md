@@ -70,18 +70,18 @@
   </tr>
   <tr>
     <td width="50%" align="center">
-      <img src="docs/public/readme/feature-agentic-rl.png" alt="Agentic RL project screenshot" width="100%" />
+      <img src="docs/public/readme/feature-agentic-rl.png" alt="Agentic RL experiment page screenshot" width="100%" />
       <br />
-      <strong>Project-oriented Agentic RL</strong>
+      <strong>Agentic RL experiment</strong>
       <br />
-      <sub>Tool use, trajectory synthesis, evaluation, and multi-tool code agents turn into full engineering exercises.</sub>
+      <sub>DeepCoder-style GRPO training curves connect tool-use agents, response length, and reward dynamics in a reproducible lab.</sub>
     </td>
     <td width="50%" align="center">
-      <img src="docs/public/readme/feature-vlm-rl.png" alt="VLM reinforcement learning screenshot" width="100%" />
+      <img src="docs/public/readme/feature-atari-game.png" alt="Atari Pong DQN experiment page screenshot" width="100%" />
       <br />
-      <strong>Multimodal and frontier directions</strong>
+      <strong>Atari game experiment</strong>
       <br />
-      <sub>VLM reinforcement learning, visual generation RL, embodied intelligence, and future trends extend into frontier systems.</sub>
+      <sub>Atari Pong gameplay screenshots and DQN training notes show how pixel-based agents turn screens into decisions.</sub>
     </td>
   </tr>
 </table>
