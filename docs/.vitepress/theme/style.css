@@ -250,6 +250,12 @@
   text-underline-offset: 0.2em;
 }
 
+.vp-doc img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 /* ---- Headings (d2l 风格: 无衬线, 层级分明) ---- */
 .vp-doc h1,
 .vp-doc h2,

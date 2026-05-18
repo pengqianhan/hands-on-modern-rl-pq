@@ -1,8 +1,8 @@
 ---
-title: '6.6 Hands-On: BipedalWalker'
+title: '6.5 Hands-On: BipedalWalker'
 ---
 
-# 6.6 Hands-On: BipedalWalker
+# 6.5 Hands-On: BipedalWalker
 
 > **Goal**: Train `BipedalWalker-v3` with A2C, observe how Actor-Critic handles high-dimensional continuous control — and understand why the next chapter needs PPO.
 
