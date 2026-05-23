@@ -11,6 +11,7 @@ dependencies = [
     "scipy>=1.15.3",
     "seaborn>=0.13.2",
     "stable-baselines3[extra]>=2.8.0",
+    "swanlab[dashboard]>=0.7.19",
     "tensorboard>=2.20.0",
     "torch>=2.12.0",
     "torchvision>=0.27.0",
