@@ -97,4 +97,23 @@ print('=' * 50)
 Once configuration completes, always display a notification or print a reminder to the user:
 > [!TIP]
 > Environment setup is complete!
-> Remember to run all your code, Jupyter Notebooks, or commands inside the `code/` directory (e.g., prefixing them with `uv run` inside the `code/` folder).
+> Please follow these steps to work with the code:
+> 1. Change directory to the `code/` folder:
+>    ```bash
+>    cd code
+>    ```
+> 2. Activate the virtual environment:
+>    ```bash
+>    source .venv/bin/activate
+>    ```
+> 3. Now you can run Python scripts or start Jupyter Notebooks natively:
+>    ```bash
+>    python chapter01_cartpole/xxx.py
+>    ```
+>
+> [!TIP]
+> **Dependency Management Recommendation (Optional)**:
+> After activating the environment, you can install new packages using standard `pip install`. However, it is highly recommended to use `uv add <package>` instead (run inside the `code/` directory). 
+> This automatically records the dependency in `pyproject.toml` and updates `uv.lock`, making it easier to share or reproduce the environment later.
+
+
