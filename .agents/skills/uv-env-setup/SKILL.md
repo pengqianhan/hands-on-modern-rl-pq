@@ -1,16 +1,25 @@
 ---
 name: uv-env-setup
-description: Automatically set up the Python reinforcement learning environment for hands-on-modern-rl-pq under the `code/` directory, especially optimized for macOS M1/arm64 architecture using uv.
+description: Automatically set up the Python reinforcement learning environment for hands-on-modern-rl-pq in the repository root by default, or in a user-specified path when provided, especially optimized for macOS M1/arm64 architecture using uv.
 ---
 
 # uv-env-setup
 
-This skill automates the setup of the Python development environment for the **hands-on-modern-rl-pq** repository. It ensures the environment is created under the `code/` subdirectory (rather than the repository root) to avoid conflict with node-based doc site configs, and configures modern packages using the `uv` tool.
+This skill automates the setup of the Python development environment for the **hands-on-modern-rl-pq** repository. By default, create the environment in the repository root. If the user explicitly provides a target path, create and manage the environment in that path instead. The workflow configures modern packages using the `uv` tool.
 
-## Target Audience & Directory Warning
+## Target Directory
 > [!IMPORTANT]
-> **Warning**: All Python code execution, script running, and package management MUST be performed inside the `code/` directory.
-> Do NOT create or run Python environments at the repository root level.
+> Default to the repository root for Python environment creation, script running, and package management.
+> Only use another directory when the user explicitly specifies a target path.
+
+If using the bundled script:
+```bash
+# Default: repository root
+.agents/skills/uv-env-setup/setup.sh
+
+# User-specified target path
+.agents/skills/uv-env-setup/setup.sh code
+```
 
 ## Prerequisites
 Before starting, ensure `uv` is installed.
@@ -26,14 +35,14 @@ If not installed, install via:
 
 ## Automation Workflow
 
-### 1. Change directory to `code/`
-All operations must start from `code/`:
+### 1. Choose the Target Directory
+Use the repository root unless the user specified a target path:
 ```bash
-cd code
+cd <repository-root>
 ```
 
 ### 2. Initialize `pyproject.toml`
-Create a `pyproject.toml` in the `code/` directory if it does not already exist:
+Create a `pyproject.toml` in the target directory if it does not already exist:
 ```toml
 [project]
 name = "hands-on-modern-rl-pq"
@@ -50,7 +59,7 @@ uv python pin 3.10
 ```
 
 ### 4. Create the Virtual Environment
-Initialize the `.venv` inside `code/`:
+Initialize the `.venv` inside the target directory:
 ```bash
 uv sync
 ```
@@ -98,9 +107,9 @@ Once configuration completes, always display a notification or print a reminder 
 > [!TIP]
 > Environment setup is complete!
 > Please follow these steps to work with the code:
-> 1. Change directory to the `code/` folder:
+> 1. Change directory to the environment folder:
 >    ```bash
->    cd code
+>    cd <target-directory>
 >    ```
 > 2. Activate the virtual environment:
 >    ```bash
@@ -108,12 +117,14 @@ Once configuration completes, always display a notification or print a reminder 
 >    ```
 > 3. Now you can run Python scripts or start Jupyter Notebooks natively:
 >    ```bash
+>    # Default repository-root setup:
+>    python code/chapter01_cartpole/xxx.py
+>
+>    # If the user specified `code` as the target directory:
 >    python chapter01_cartpole/xxx.py
 >    ```
 >
 > [!TIP]
 > **Dependency Management Recommendation (Optional)**:
-> After activating the environment, you can install new packages using standard `pip install`. However, it is highly recommended to use `uv add <package>` instead (run inside the `code/` directory). 
+> After activating the environment, you can install new packages using standard `pip install`. However, it is highly recommended to use `uv add <package>` instead (run inside the target directory).
 > This automatically records the dependency in `pyproject.toml` and updates `uv.lock`, making it easier to share or reproduce the environment later.
-
-
