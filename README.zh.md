@@ -16,7 +16,7 @@
   </p>
 
   <p>
-    <a href="#wechat-group-微信">WeChat Group (微信)</a>
+    <a href="#读者交流群微信">读者交流群（微信）</a>
   </p>
 
   <p>
@@ -258,7 +258,7 @@
 | 深度 Q 学习    | [`code/chapter04_dqn/`](code/chapter04_dqn/)                                                                       | 实现经验回放、目标网络和 Double DQN 变体。                     |
 | 策略梯度       | [`code/chapter05_policy_gradient/`](code/chapter05_policy_gradient/)                                               | 比较 REINFORCE、基线变体和 Actor-Critic 更新。                 |
 | PPO            | [`code/chapter07_ppo/`](code/chapter07_ppo/)                                                                       | 训练 LunarLander，检查截断机制，可视化 GAE，并比较训练稳定性。 |
-| RLHF           | [`code/chapter08_rlhf/`](code/chapter08_rlhf/)                                                                     | 走通 SFT、奖励模型训练和 PPO 风格对齐的完整流程。              |
+| RLHF           | [`code/chapter08_rlhf/`](code/chapter08_rlhf/)                                                                     | 走通 SFT、奖励模型训练、PPO 风格对齐和 veRL/GSM8K 适配脚本。   |
 | 对齐与 RLVR    | [`code/chapter09_alignment/`](code/chapter09_alignment/), [`code/chapter09_grpo_rlvr/`](code/chapter09_grpo_rlvr/) | 探索 DPO 奖励、GRPO 组优势和基于规则的可验证奖励。             |
 | VLM 与智能体   | [`code/chapter10_agentic_rl/`](code/chapter10_agentic_rl/), [`code/chapter11_vlm_rl/`](code/chapter11_vlm_rl/)     | 构建工具调用智能体轨迹综合，实现多模态模型强化学习等。         |
 | 高级主题       | [`code/chapter12_future_trends/`](code/chapter12_future_trends/)                                                   | 学习前沿方向包括多智能体强化学习、Model-Based RL等。           |
@@ -395,13 +395,14 @@ npm run verify        # 运行格式检查、Lint、构建和产物验证
 
 我们的团队还制作了其他课程！请查看：
 
-[![LEARN HARNESS ENGINEERING](https://img.shields.io/badge/LEARN_HARNESS_ENGINEERING-0052cc?style=for-the-badge)](https://github.com/walkinglabs/learn-harness-engineering)
+- [**Learn Harness Engineering**](https://github.com/walkinglabs/learn-harness-engineering) — 面向 AI 编程智能体的 Harness Engineering 课程。通过 12 节讲座和 6 个实战项目，教你构建指令、状态管理、验证与控制机制，让模型输出真正可靠。
+- [**Modern LLM Notebook**](https://github.com/walkinglabs/modern-llm-notebook) — 通过 23 个可运行的 Jupyter Notebook，从零用 PyTorch 实现现代 LLM 核心组件，涵盖 Tokenizer、Transformer、训练、推理、对齐与前沿主题。
 
-## WeChat Group (微信)
+## 读者交流群（微信）
 
-有任何建议 / 反馈，欢迎扫码加入 WeChat Group（微信）交流：
+有任何建议 / 反馈，欢迎扫码加入读者交流群（微信）：
 
-<img src="https://github.com/walkinglabs/.github/raw/main/profile/wechat.png" alt="WeChat Group" width="300" />
+<img src="https://github.com/walkinglabs/.github/raw/main/profile/wechat.png" alt="读者交流群" width="300" />
 
 ## 引用
 

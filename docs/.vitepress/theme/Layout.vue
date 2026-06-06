@@ -10,6 +10,7 @@ import {
 } from 'reka-ui'
 import { HandHeart, Moon, Settings, Sun } from 'lucide-vue-next'
 import ReadingProgress from './components/ReadingProgress.vue'
+import SidebarFooter from './components/SidebarFooter.vue'
 import TextType from './components/TextType.vue'
 import mediumZoom from 'medium-zoom'
 import { initGithubStars } from './githubStars.js'
@@ -20,6 +21,7 @@ const router = useRouter()
 
 const FONT_SIZE_STORAGE_KEY = 'ct-doc-font-size'
 const LINE_HEIGHT_STORAGE_KEY = 'ct-doc-line-height'
+const DOC_WIDTH_STORAGE_KEY = 'ct-doc-content-width'
 const SIDEBAR_COLLAPSED_KEY = 'ct-sidebar-collapsed'
 const SIDEBAR_WIDTH_KEY = 'ct-sidebar-width-compact-v3'
 
@@ -29,6 +31,9 @@ const DEFAULT_FONT_SIZE = 16
 const MIN_LINE_HEIGHT = 1.55
 const MAX_LINE_HEIGHT = 2
 const DEFAULT_LINE_HEIGHT = 1.75
+const MIN_DOC_WIDTH = 780
+const MAX_DOC_WIDTH = 1280
+const DEFAULT_DOC_WIDTH = 980
 
 const DEFAULT_SIDEBAR_WIDTH = 212
 const MIN_SIDEBAR_WIDTH = 160
@@ -36,6 +41,7 @@ const MAX_SIDEBAR_WIDTH = 520
 
 const fontSize = ref(DEFAULT_FONT_SIZE)
 const lineHeight = ref(DEFAULT_LINE_HEIGHT)
+const docWidth = ref(DEFAULT_DOC_WIDTH)
 const readingToolsOpen = ref(false)
 const supportOpen = ref(false)
 const sidebarCollapsed = ref(false)
@@ -107,9 +113,12 @@ const readingToolsCopy = computed(() =>
         dark: 'Dark',
         fontSize: 'Font size',
         lineHeight: 'Line height',
+        docWidth: 'Content width',
         decreaseFont: 'A-',
         increaseFont: 'A+',
         default: 'Default',
+        narrower: 'Narrower',
+        wider: 'Wider',
         tighter: 'Tighter',
         looser: 'Looser',
         switchLight: 'Switch to light mode',
@@ -121,14 +130,21 @@ const readingToolsCopy = computed(() =>
         dark: '深色',
         fontSize: '字号',
         lineHeight: '行距',
+        docWidth: '正文宽度',
         decreaseFont: 'A-',
         increaseFont: 'A+',
         default: '默认',
+        narrower: '更窄',
+        wider: '更宽',
         tighter: '更紧',
         looser: '更松',
         switchLight: '切换到浅色模式',
         switchDark: '切换到深色模式'
       }
+)
+const fontSizeLabel = computed(() => `${clampFontSize(fontSize.value)}px`)
+const lineHeightLabel = computed(() =>
+  clampLineHeight(lineHeight.value).toFixed(2)
 )
 const homeTypingText = computed(
   () =>
@@ -201,6 +217,12 @@ function clampLineHeight(value) {
   return Math.min(MAX_LINE_HEIGHT, Math.max(MIN_LINE_HEIGHT, numeric))
 }
 
+function clampDocWidth(value) {
+  const numeric = Number(value)
+  if (!Number.isFinite(numeric)) return DEFAULT_DOC_WIDTH
+  return Math.min(MAX_DOC_WIDTH, Math.max(MIN_DOC_WIDTH, numeric))
+}
+
 function getSidebarWidthBounds() {
   if (typeof window === 'undefined') {
     return { min: MIN_SIDEBAR_WIDTH, max: MAX_SIDEBAR_WIDTH }
@@ -232,6 +254,14 @@ function applyLineHeight(value) {
   document.documentElement.style.setProperty(
     '--ct-doc-line-height',
     String(value)
+  )
+}
+
+function applyDocWidth(width) {
+  if (typeof document === 'undefined') return
+  document.documentElement.style.setProperty(
+    '--vp-doc-content-max-width',
+    `${width}px`
   )
 }
 
@@ -511,19 +541,55 @@ function cleanupMermaidViewer() {
 }
 
 function resetFontSize() {
-  fontSize.value = DEFAULT_FONT_SIZE
+  setFontSize(DEFAULT_FONT_SIZE)
 }
 
 function resetLineHeight() {
-  lineHeight.value = DEFAULT_LINE_HEIGHT
+  setLineHeight(DEFAULT_LINE_HEIGHT)
+}
+
+function setFontSize(value) {
+  fontSize.value = clampFontSize(value)
+}
+
+function setLineHeight(value) {
+  lineHeight.value = clampLineHeight(value)
+}
+
+function resetDocWidth() {
+  docWidth.value = DEFAULT_DOC_WIDTH
 }
 
 function decreaseFontSize() {
-  fontSize.value = clampFontSize(fontSize.value - 1)
+  setFontSize(fontSize.value - 1)
 }
 
 function increaseFontSize() {
-  fontSize.value = clampFontSize(fontSize.value + 1)
+  setFontSize(fontSize.value + 1)
+}
+
+function decreaseLineHeight() {
+  setLineHeight(lineHeight.value - 0.05)
+}
+
+function increaseLineHeight() {
+  setLineHeight(lineHeight.value + 0.05)
+}
+
+function updateFontSizeFromRange(event) {
+  setFontSize(event.currentTarget.valueAsNumber)
+}
+
+function updateLineHeightFromRange(event) {
+  setLineHeight(event.currentTarget.valueAsNumber)
+}
+
+function narrowDocWidth() {
+  docWidth.value = clampDocWidth(docWidth.value - 40)
+}
+
+function widenDocWidth() {
+  docWidth.value = clampDocWidth(docWidth.value + 40)
 }
 
 function getSidebarLeftBoundary() {
@@ -662,8 +728,14 @@ function renderSidebarKatex() {
 function enhanceNavTitle() {
   if (typeof document === 'undefined') return
   const title = document.querySelector('.VPNavBar .title')
-  const titleText = title?.querySelector('span:last-of-type')
-  if (!titleText || titleText.dataset.ctEnhancedTitle === 'true') return
+  if (!title) return
+
+  if (title.tagName === 'A') {
+    title.href = withBase('/preface/intro')
+  }
+
+  const titleText = title.querySelector('span:last-of-type') || title
+  if (titleText.dataset.ctEnhancedTitle === 'true') return
 
   const text = titleText.textContent?.trim()
   if (text !== 'Hands on Modern RL') return
@@ -736,13 +808,18 @@ onMounted(() => {
   const savedLineHeight = clampLineHeight(
     localStorage.getItem(LINE_HEIGHT_STORAGE_KEY)
   )
+  const savedDocWidth = clampDocWidth(
+    localStorage.getItem(DOC_WIDTH_STORAGE_KEY)
+  )
   const savedSidebarWidth = localStorage.getItem(SIDEBAR_WIDTH_KEY)
   const savedCollapsed = localStorage.getItem(SIDEBAR_COLLAPSED_KEY)
 
   fontSize.value = savedFontSize
   lineHeight.value = savedLineHeight
+  docWidth.value = savedDocWidth
   applyFontSize(savedFontSize)
   applyLineHeight(savedLineHeight)
+  applyDocWidth(savedDocWidth)
 
   if (savedSidebarWidth) {
     setSidebarWidth(savedSidebarWidth, false)
@@ -786,6 +863,9 @@ onBeforeUnmount(() => {
 
 watch(fontSize, (next) => {
   const normalized = clampFontSize(next)
+  if (fontSize.value !== normalized) {
+    fontSize.value = normalized
+  }
   applyFontSize(normalized)
   if (typeof localStorage !== 'undefined') {
     localStorage.setItem(FONT_SIZE_STORAGE_KEY, String(normalized))
@@ -794,9 +874,20 @@ watch(fontSize, (next) => {
 
 watch(lineHeight, (next) => {
   const normalized = clampLineHeight(next)
+  if (lineHeight.value !== normalized) {
+    lineHeight.value = normalized
+  }
   applyLineHeight(normalized)
   if (typeof localStorage !== 'undefined') {
     localStorage.setItem(LINE_HEIGHT_STORAGE_KEY, String(normalized))
+  }
+})
+
+watch(docWidth, (next) => {
+  const normalized = clampDocWidth(next)
+  applyDocWidth(normalized)
+  if (typeof localStorage !== 'undefined') {
+    localStorage.setItem(DOC_WIDTH_STORAGE_KEY, String(normalized))
   }
 })
 
@@ -847,127 +938,179 @@ watch(
           <PopoverPortal>
             <Transition name="ct-reading-tools-fade">
               <PopoverContent
-                class="ct-reading-tools-panel"
+                class="ct-popover-content"
                 :side-offset="10"
                 align="end"
                 side="bottom"
               >
-                <div class="ct-reading-tools-group">
-                  <div class="ct-reading-tools-header">
-                    <div class="ct-reading-tools-title">
-                      {{ readingToolsCopy.appearance }}
+                <div class="ct-popover-surface ct-reading-tools-panel">
+                  <div class="ct-reading-tools-group">
+                    <div class="ct-reading-tools-header">
+                      <div class="ct-reading-tools-title">
+                        {{ readingToolsCopy.appearance }}
+                      </div>
+                      <div class="ct-reading-tools-value">
+                        {{
+                          isDark
+                            ? readingToolsCopy.dark
+                            : readingToolsCopy.light
+                        }}
+                      </div>
                     </div>
-                    <div class="ct-reading-tools-value">
-                      {{
-                        isDark ? readingToolsCopy.dark : readingToolsCopy.light
-                      }}
+                    <div
+                      class="ct-appearance-toggle"
+                      role="group"
+                      :aria-label="readingToolsCopy.appearance"
+                    >
+                      <button
+                        class="ct-reading-tools-action"
+                        :class="{ active: !isDark }"
+                        type="button"
+                        :aria-label="readingToolsCopy.switchLight"
+                        @click="setAppearance(false)"
+                      >
+                        <Sun :size="18" :stroke-width="2" aria-hidden="true" />
+                      </button>
+                      <button
+                        class="ct-reading-tools-action"
+                        :class="{ active: isDark }"
+                        type="button"
+                        :aria-label="readingToolsCopy.switchDark"
+                        @click="setAppearance(true)"
+                      >
+                        <Moon
+                          :size="18"
+                          :stroke-width="2"
+                          aria-hidden="true"
+                        />
+                      </button>
                     </div>
                   </div>
-                  <div
-                    class="ct-appearance-toggle"
-                    role="group"
-                    :aria-label="readingToolsCopy.appearance"
-                  >
-                    <button
-                      class="ct-reading-tools-action"
-                      :class="{ active: !isDark }"
-                      type="button"
-                      :aria-label="readingToolsCopy.switchLight"
-                      @click="setAppearance(false)"
-                    >
-                      <Sun :size="18" :stroke-width="2" aria-hidden="true" />
-                    </button>
-                    <button
-                      class="ct-reading-tools-action"
-                      :class="{ active: isDark }"
-                      type="button"
-                      :aria-label="readingToolsCopy.switchDark"
-                      @click="setAppearance(true)"
-                    >
-                      <Moon :size="18" :stroke-width="2" aria-hidden="true" />
-                    </button>
+
+                  <div class="ct-reading-tools-group">
+                    <div class="ct-reading-tools-header">
+                      <div class="ct-reading-tools-title">
+                        {{ readingToolsCopy.fontSize }}
+                      </div>
+                      <div class="ct-reading-tools-value">
+                        {{ fontSizeLabel }}
+                      </div>
+                    </div>
+                    <div class="ct-reading-tools-actions">
+                      <button
+                        class="ct-reading-tools-action"
+                        type="button"
+                        @click="decreaseFontSize"
+                      >
+                        {{ readingToolsCopy.decreaseFont }}
+                      </button>
+                      <button
+                        class="ct-reading-tools-action"
+                        type="button"
+                        @click="resetFontSize"
+                      >
+                        {{ readingToolsCopy.default }}
+                      </button>
+                      <button
+                        class="ct-reading-tools-action"
+                        type="button"
+                        @click="increaseFontSize"
+                      >
+                        {{ readingToolsCopy.increaseFont }}
+                      </button>
+                    </div>
+                    <input
+                      class="ct-reading-tools-range"
+                      type="range"
+                      :value="fontSize"
+                      :min="MIN_FONT_SIZE"
+                      :max="MAX_FONT_SIZE"
+                      step="1"
+                      @input="updateFontSizeFromRange"
+                    />
+                  </div>
+
+                  <div class="ct-reading-tools-group">
+                    <div class="ct-reading-tools-header">
+                      <div class="ct-reading-tools-title">
+                        {{ readingToolsCopy.lineHeight }}
+                      </div>
+                      <div class="ct-reading-tools-value">
+                        {{ lineHeightLabel }}
+                      </div>
+                    </div>
+                    <div class="ct-reading-tools-actions">
+                      <button
+                        class="ct-reading-tools-action"
+                        type="button"
+                        @click="decreaseLineHeight"
+                      >
+                        {{ readingToolsCopy.tighter }}
+                      </button>
+                      <button
+                        class="ct-reading-tools-action"
+                        type="button"
+                        @click="resetLineHeight"
+                      >
+                        {{ readingToolsCopy.default }}
+                      </button>
+                      <button
+                        class="ct-reading-tools-action"
+                        type="button"
+                        @click="increaseLineHeight"
+                      >
+                        {{ readingToolsCopy.looser }}
+                      </button>
+                    </div>
+                    <input
+                      class="ct-reading-tools-range"
+                      type="range"
+                      :value="lineHeight"
+                      :min="MIN_LINE_HEIGHT"
+                      :max="MAX_LINE_HEIGHT"
+                      step="0.05"
+                      @input="updateLineHeightFromRange"
+                    />
                   </div>
                 </div>
 
                 <div class="ct-reading-tools-group">
                   <div class="ct-reading-tools-header">
                     <div class="ct-reading-tools-title">
-                      {{ readingToolsCopy.fontSize }}
+                      {{ readingToolsCopy.docWidth }}
                     </div>
-                    <div class="ct-reading-tools-value">{{ fontSize }}px</div>
+                    <div class="ct-reading-tools-value">{{ docWidth }}px</div>
                   </div>
                   <div class="ct-reading-tools-actions">
                     <button
                       class="ct-reading-tools-action"
                       type="button"
-                      @click="decreaseFontSize"
+                      @click="narrowDocWidth"
                     >
-                      {{ readingToolsCopy.decreaseFont }}
+                      {{ readingToolsCopy.narrower }}
                     </button>
                     <button
                       class="ct-reading-tools-action"
                       type="button"
-                      @click="resetFontSize"
+                      @click="resetDocWidth"
                     >
                       {{ readingToolsCopy.default }}
                     </button>
                     <button
                       class="ct-reading-tools-action"
                       type="button"
-                      @click="increaseFontSize"
+                      @click="widenDocWidth"
                     >
-                      {{ readingToolsCopy.increaseFont }}
+                      {{ readingToolsCopy.wider }}
                     </button>
                   </div>
                   <input
-                    v-model="fontSize"
+                    v-model.number="docWidth"
                     class="ct-reading-tools-range"
                     type="range"
-                    :min="MIN_FONT_SIZE"
-                    :max="MAX_FONT_SIZE"
-                    step="1"
-                  />
-                </div>
-
-                <div class="ct-reading-tools-group">
-                  <div class="ct-reading-tools-header">
-                    <div class="ct-reading-tools-title">
-                      {{ readingToolsCopy.lineHeight }}
-                    </div>
-                    <div class="ct-reading-tools-value">
-                      {{ lineHeight.toFixed(2) }}
-                    </div>
-                  </div>
-                  <div class="ct-reading-tools-actions">
-                    <button
-                      class="ct-reading-tools-action"
-                      type="button"
-                      @click="lineHeight = clampLineHeight(lineHeight - 0.05)"
-                    >
-                      {{ readingToolsCopy.tighter }}
-                    </button>
-                    <button
-                      class="ct-reading-tools-action"
-                      type="button"
-                      @click="resetLineHeight"
-                    >
-                      {{ readingToolsCopy.default }}
-                    </button>
-                    <button
-                      class="ct-reading-tools-action"
-                      type="button"
-                      @click="lineHeight = clampLineHeight(lineHeight + 0.05)"
-                    >
-                      {{ readingToolsCopy.looser }}
-                    </button>
-                  </div>
-                  <input
-                    v-model="lineHeight"
-                    class="ct-reading-tools-range"
-                    type="range"
-                    :min="MIN_LINE_HEIGHT"
-                    :max="MAX_LINE_HEIGHT"
-                    step="0.05"
+                    :min="MIN_DOC_WIDTH"
+                    :max="MAX_DOC_WIDTH"
+                    step="20"
                   />
                 </div>
               </PopoverContent>
@@ -990,37 +1133,43 @@ watch(
           <PopoverPortal>
             <Transition name="ct-reading-tools-fade">
               <PopoverContent
-                class="ct-support-panel"
+                class="ct-popover-content"
                 :side-offset="10"
                 align="end"
                 side="bottom"
               >
-                <a
-                  class="ct-support-link"
-                  href="https://github.com/walkinglabs"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <span>WalkingLab</span>
-                  <span>GitHub</span>
-                </a>
-                <div class="ct-support-qr-card">
-                  <img
-                    src="https://github.com/walkinglabs/.github/raw/main/profile/wechat.png"
-                    alt="WalkingLab 微信二维码"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <div>{{ supportQrLabel }}</div>
+                <div class="ct-popover-surface ct-support-panel">
+                  <a
+                    class="ct-support-link"
+                    href="https://github.com/walkinglabs"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <span>WalkingLab</span>
+                    <span>GitHub</span>
+                  </a>
+                  <div class="ct-support-qr-card">
+                    <img
+                      src="https://github.com/walkinglabs/.github/raw/main/profile/wechat.png"
+                      alt="WalkingLab 微信二维码"
+                      loading="lazy"
+                      decoding="async"
+                    />
+                    <div>{{ supportQrLabel }}</div>
+                  </div>
+                  <p class="ct-support-note">
+                    {{ supportNote }}
+                  </p>
                 </div>
-                <p class="ct-support-note">
-                  {{ supportNote }}
-                </p>
               </PopoverContent>
             </Transition>
           </PopoverPortal>
         </PopoverRoot>
       </div>
+    </template>
+
+    <template v-if="showDocChrome" #sidebar-nav-after>
+      <SidebarFooter @open-settings="readingToolsOpen = true" />
     </template>
 
     <template v-if="isHomePage && homeTypingText" #home-hero-info-after>
@@ -1219,17 +1368,24 @@ watch(
   color: rgba(29, 29, 31, 0.82);
 }
 
+.ct-popover-content {
+  z-index: 40;
+  outline: none;
+}
+
+.ct-popover-surface {
+  transform: translateY(0) scale(1);
+  transform-origin: var(--reka-popover-content-transform-origin, top right);
+  will-change: transform;
+}
+
 .ct-reading-tools-panel {
-  position: absolute;
-  top: calc(100% + 10px);
-  right: 0;
   width: 280px;
   padding: 14px;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.96);
+  background: #fff;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
-  z-index: 40;
 }
 
 .ct-reading-tools-group {
@@ -1299,6 +1455,13 @@ watch(
   gap: 8px;
 }
 
+.ct-appearance-toggle .ct-reading-tools-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
 .ct-reading-tools-range {
   width: 100%;
   accent-color: var(--vp-c-brand-1);
@@ -1309,9 +1472,8 @@ watch(
   padding: 12px;
   border: 1px solid rgba(0, 0, 0, 0.08);
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.96);
+  background: #fff;
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
-  z-index: 40;
 }
 
 .ct-support-link {
@@ -1371,15 +1533,59 @@ watch(
 
 .ct-reading-tools-fade-enter-active,
 .ct-reading-tools-fade-leave-active {
-  transition:
-    opacity 0.18s ease,
-    transform 0.18s ease;
+  transition: opacity 0.18s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.ct-reading-tools-fade-enter-active .ct-popover-surface {
+  animation: ct-popover-surface-enter 0.18s cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+.ct-reading-tools-fade-leave-active .ct-popover-surface {
+  animation: ct-popover-surface-leave 0.14s ease both;
 }
 
 .ct-reading-tools-fade-enter-from,
 .ct-reading-tools-fade-leave-to {
   opacity: 0;
-  transform: translateY(-6px);
+}
+
+@keyframes ct-popover-surface-enter {
+  from {
+    transform: translateY(-4px) scale(0.98);
+  }
+
+  to {
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes ct-popover-surface-leave {
+  from {
+    transform: translateY(0) scale(1);
+  }
+
+  to {
+    transform: translateY(-4px) scale(0.98);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ct-reading-tools-fade-enter-active,
+  .ct-reading-tools-fade-leave-active,
+  .ct-reading-tools-fade-enter-active .ct-popover-surface,
+  .ct-reading-tools-fade-leave-active .ct-popover-surface {
+    transition: none;
+  }
+
+  .ct-reading-tools-fade-enter-active .ct-popover-surface,
+  .ct-reading-tools-fade-leave-active .ct-popover-surface {
+    animation: none;
+  }
+
+  .ct-popover-surface {
+    transform: none;
+  }
 }
 
 .ct-route-loading {
@@ -1587,11 +1793,16 @@ watch(
 }
 
 .dark .ct-nav-tool-button,
-.dark .ct-reading-tools-panel,
-.dark .ct-support-panel,
 .dark .ct-sidebar-toggle-btn {
   border-color: rgba(255, 255, 255, 0.12);
   background: rgba(30, 30, 40, 0.92);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
+}
+
+.dark .ct-reading-tools-panel,
+.dark .ct-support-panel {
+  border-color: rgba(255, 255, 255, 0.12);
+  background: rgb(30, 30, 40);
   box-shadow: 0 12px 32px rgba(0, 0, 0, 0.35);
 }
 

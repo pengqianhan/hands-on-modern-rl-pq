@@ -16,7 +16,7 @@
   </p>
 
   <p>
-    <a href="#wechat-group-微信">WeChat Group (微信)</a>
+    <a href="#discussion-group-wechat">Discussion Group (WeChat)</a>
   </p>
 
   <p>
@@ -258,7 +258,7 @@ The [`code/`](code/) directory contains runnable examples aligned with course ch
 | Deep Q-learning        | [`code/chapter04_dqn/`](code/chapter04_dqn/)                                                                       | Implement replay buffers, target networks, and Double DQN variants.                                |
 | Policy gradient        | [`code/chapter05_policy_gradient/`](code/chapter05_policy_gradient/)                                               | Compare REINFORCE, baseline variants, and Actor-Critic updates.                                    |
 | PPO                    | [`code/chapter07_ppo/`](code/chapter07_ppo/)                                                                       | Train LunarLander, inspect clipping, visualize GAE, and compare training stability.                |
-| RLHF                   | [`code/chapter08_rlhf/`](code/chapter08_rlhf/)                                                                     | Walk through SFT, reward model training, and PPO-style alignment.                                  |
+| RLHF                   | [`code/chapter08_rlhf/`](code/chapter08_rlhf/)                                                                     | Walk through SFT, reward model training, PPO-style alignment, and veRL/GSM8K adapter scripts.      |
 | Alignment and RLVR     | [`code/chapter09_alignment/`](code/chapter09_alignment/), [`code/chapter09_grpo_rlvr/`](code/chapter09_grpo_rlvr/) | Explore DPO rewards, GRPO group advantages, and rule-based verifiable rewards.                     |
 | VLM and agents         | [`code/chapter10_agentic_rl/`](code/chapter10_agentic_rl/), [`code/chapter11_vlm_rl/`](code/chapter11_vlm_rl/)     | Build tool-use agent trajectory synthesis and implement multimodal model RL examples.              |
 | Advanced topics        | [`code/chapter12_future_trends/`](code/chapter12_future_trends/)                                                   | Study frontier directions including multi-agent RL and model-based RL.                             |
@@ -395,13 +395,14 @@ For repository-specific maintenance rules, see [`AGENTS.md`](AGENTS.md).
 
 Our team has also created other courses. Take a look:
 
-[![LEARN HARNESS ENGINEERING](https://img.shields.io/badge/LEARN_HARNESS_ENGINEERING-0052cc?style=for-the-badge)](https://github.com/walkinglabs/learn-harness-engineering)
+- [**Learn Harness Engineering**](https://github.com/walkinglabs/learn-harness-engineering) — A course on Harness Engineering for AI coding agents. Through 12 lectures and 6 projects, it teaches you to build instructions, state management, verification, and control mechanisms that make model output reliable.
+- [**Modern LLM Notebook**](https://github.com/walkinglabs/modern-llm-notebook) — Build modern LLMs from scratch through 23 runnable Jupyter Notebooks in PyTorch, covering Tokenizer, Transformer, training, inference, alignment, and frontier topics.
 
-## WeChat Group (微信)
+## Discussion Group (WeChat)
 
-For suggestions or feedback, scan the QR code to join the WeChat group (微信):
+For suggestions or feedback, scan the QR code to join the discussion group (WeChat):
 
-<img src="https://github.com/walkinglabs/.github/raw/main/profile/wechat.png" alt="WeChat Group" width="300" />
+<img src="https://github.com/walkinglabs/.github/raw/main/profile/wechat.png" alt="Discussion Group" width="300" />
 
 ## Citation
 
