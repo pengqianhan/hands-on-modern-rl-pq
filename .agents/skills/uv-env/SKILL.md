@@ -99,6 +99,17 @@ deactivate                  # exit
 
 Prefer `uv run` for one-off commands and scripts — it's stateless and avoids the "wrong env activated" footgun.
 
+### 5. Use the environment from notebooks
+
+For `.ipynb` files, ensure the project environment has `ipykernel`, then choose the `.venv` interpreter or registered kernel in the notebook UI:
+
+```bash
+uv add --dev ipykernel
+uv run python -m ipykernel install --user --name <project-name> --display-name "Python (<project-name> .venv)"
+```
+
+In VS Code/Cursor, use the notebook kernel picker and select the project interpreter path such as `.venv/bin/python`; for nested projects, use the exact path such as `code/.venv/bin/python`. Shell activation does not automatically change an already-open notebook kernel.
+
 ## Quick reference
 
 | Task | Command |
@@ -108,6 +119,7 @@ Prefer `uv run` for one-off commands and scripts — it's stateless and avoids t
 | Add a dev package | `uv add --dev <pkg>` |
 | Remove a package | `uv remove <pkg>` |
 | Run a command in the env | `uv run <cmd>` |
+| Register notebook kernel | `uv run python -m ipykernel install --user --name <name> --display-name "Python (<name> .venv)"` |
 | Pin Python version | `uv python pin <version>` |
 | Update lockfile | `uv lock` |
 | Upgrade all deps | `uv sync --upgrade` |
