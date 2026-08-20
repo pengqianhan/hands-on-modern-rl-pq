@@ -1,4 +1,4 @@
-# E.3.6 微积分与优化公式速查与练习
+# D.3.6 微积分与优化公式速查与练习
 
 > **前置知识**：本页汇总 E.3 模块所有公式，建议在读完 [E.3.1](./calculus-basics) 到 [E.3.5](./calculus-advanced-formulas) 后再来回顾。如果你是第一次读，先跳到正文章节。
 
@@ -16,7 +16,7 @@
 | 策略梯度         | $\nabla J \approx G_t\nabla\log\pi_\theta(a_t\mid s_t)$                                | 好结果对应动作概率上升         |
 | 策略梯度定理     | $\nabla_\theta J=\sum_s d^\pi(s)\sum_a\nabla_\theta\pi_\theta(a\mid s)Q^\pi(s,a)$      | 参数变化如何影响平均回报       |
 | 对数导数技巧     | $\nabla_\theta\pi=\pi\nabla_\theta\log\pi$                                             | 把难算的概率梯度改成易采样形式 |
-| 优势加权更新     | $\nabla J \approx \hat{A}_t\nabla\log\pi_\theta(a_t\mid s_t)$                          | 相对平均更好的动作被加强       |
+| 优势加权更新     | $`\nabla J \approx \hat{A}_t\nabla\log\pi_\theta(a_t\mid s_t)`$                        | 相对平均更好的动作被加强       |
 | PPO 概率比       | $r_t=\frac{\pi_\theta(a_t\mid s_t)}{\pi_{old}(a_t\mid s_t)}$                           | 衡量新旧策略变化               |
 | 二阶 Taylor 展开 | $f(\theta+\Delta)\approx f(\theta)+\nabla f^\top\Delta+\frac{1}{2}\Delta^\top H\Delta$ | 理解曲率和信任域               |
 | PPO 裁剪项       | $\min(r_t\hat{A}_t,\mathrm{clip}(r_t,1-\epsilon,1+\epsilon)\hat{A}_t)$                 | 限制策略更新过大               |
@@ -24,7 +24,7 @@
 
 ---
 
-## 从直觉到公式：回顾这条线索
+## 从直觉到公式 与 回顾这条线索
 
 到这里，整条学习路径可以串起来：先从一维导数和一次参数更新出发，理解"梯度告诉我们往哪走"；然后通过链式法则和偏导数把这个工具扩展到多参数网络；接着策略梯度把"好动作概率上升"的直觉写成数学表达式；优势函数让更新信号更精确；PPO 裁剪和 Adam 控制更新步长；最后 GRPO 用组内相对比较替代了 Critic。读到任何一个复杂的优化公式时，可以试着找出三件事：目标函数是什么、梯度方向来自哪里、更新幅度如何被控制。
 

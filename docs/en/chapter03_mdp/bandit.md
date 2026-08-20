@@ -1,8 +1,76 @@
 ---
-title: 3.1 The Two-Armed Bandit Problem
+title: 2.1 Exploration and Exploitation
 ---
 
-# 3.1 Two Slot Machines: RL as the Smallest Decision Problem
+# 2.1 Exploration and Exploitation
+
+**Core Content**
+
+- Master the unified language of the MDP tuple, discounted cumulative return, value functions, and the Bellman equation.
+- Understand how DP, MC, and TD estimate value functions under different assumptions.
+- Distinguish the $Q(s,a)$ route from the $J(\theta)$ route, and understand how the reward function determines the optimization objective.
+
+**Core Formulas**
+
+$$
+\mathcal{M} = \langle \mathcal{S}, \mathcal{A}, P, R, \gamma \rangle \quad \text{(MDP tuple: defining the rules of the environment)}
+$$
+
+$$
+G_t = \sum_{k=0}^{\infty} \gamma^k r_{t+k} \quad \text{(Discounted cumulative return: defining the long-term objective)}
+$$
+
+$$
+V^\pi(s) = \mathbb{E}_\pi[G_t \mid s_t = s], \quad Q^\pi(s,a) = \mathbb{E}_\pi[G_t \mid s_t = s, a_t = a] \quad \text{(State value and action value: evaluating states and actions)}
+$$
+
+$$
+J(\theta) = \mathbb{E}_{\pi_\theta}\left[\sum_{t=0}^{\infty}\gamma^t r_t\right] \quad \text{(Policy optimization objective: measuring a policy's average return)}
+$$
+
+**Role of This Chapter's Formulas**
+
+This part establishes a unified formulation of reinforcement learning through a set of foundational formulas. The MDP tuple is used to characterize the sequential decision-making environment the agent operates in; the discounted cumulative return $G_t$ defines the long-term optimization objective; the state value function and action value function evaluate the long-term return of states and actions; the policy objective $J(\theta)$ formulates the optimization problem for parameterized policies. Subsequent topics — DQN, policy gradient, Actor-Critic, and PPO — all build on these basic objects.
+
+Chapter 1 trained a CartPole agent end to end. That run already contained the full reinforcement-learning loop, but action selection, state transitions, delayed return, and policy updates all appeared at once. Before formalizing the complete process, this section isolates the smallest decision problem: choosing among actions with unknown rewards.
+
+The CartPole run let us use RL before defining its objects precisely. We now move from “how to run it” to “why it works”: what a reward measures, how actions acquire value, and how a sequence of decisions becomes an optimization problem.
+
+Back to the most fundamental question: **What does reinforcement learning study?** The answer is **sequential decision-making** — the agent chooses an action at each step, the environment provides feedback and transitions to the next state, and so on. The key is that the agent pursues not the immediate reward at any single step, but the **cumulative return over the entire process**. Greedily taking the largest immediate reward is often not the optimal strategy.
+
+To formally describe this process requires a unified formal framework — the **Markov Decision Process** (MDP). The MDP packages **states, actions, transition probabilities, reward functions, and discount factors** into a tuple $\langle \mathcal{S}, \mathcal{A}, P, R, \gamma \rangle$. With it, value functions, the Bellman equation, Q-Learning, policy gradient, PPO — these seemingly diverse algorithms — all share a common language.
+
+After defining the problem, the next step is to define a **measure of "goodness."** The **discounted cumulative return** $G_t$ describes the total reward obtainable from a trajectory starting at a given time, while the **value function** distributes the expectation of this reward to specific states or actions. Building on this, the **Bellman equation** reveals a key recursive structure: the value of a state equals "the immediate reward for the current step" plus "the discounted value of the next state." This seemingly simple equation is the common starting point for dynamic programming, Monte Carlo methods, and temporal difference methods.
+
+Following the value function further naturally splits into **two algorithmic routes**:
+
+- **Value-based route**: Learn $Q(s,a)$, score each action, then choose the action with the highest score — leading to Q-Learning and Deep Q-Networks.
+- **Policy-based route**: Directly define a policy objective $J(\theta)$ and optimize the policy parameters through gradient methods — leading to policy gradient, Actor-Critic, and PPO.
+
+This chapter serves as the **theoretical foundation** for the entire book. Chapter 5's Deep Q-Networks depend on $Q(s,a)$, Chapter 6's policy gradient depends on $J(\theta)$, and Chapters 7–8 use both value estimation and policy optimization in Actor-Critic and PPO. After understanding this chapter, many formulas in subsequent algorithms will no longer appear as isolated techniques, but as natural consequences derived from **the same decision modeling framework**.
+
+## Section Outline
+
+| Section                                                     | Core Content                                                                                  |
+| ----------------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| [Two-Armed Bandit](./bandit)                                | Understand exploration, exploitation, and expected return from the smallest decision problem  |
+| [Markov Decision Process](./mdp)                            | Define the MDP tuple, discounted return, and policy                                           |
+| [Value Functions and the Bellman Equation](./value-bellman) | Introduce the state value function and derive its recursive structure                         |
+| [DP, MC, and TD](./dp-mc-td)                                | Compare three value estimation methods by assumptions, data requirements, and update rules    |
+| [From Q to Q-Learning](./value-q)                           | Use GridWorld to illustrate action value, TD targets, exploration, and tabular boundaries     |
+| [Policy, Value, and Return](./policy-value)                 | Define the objective function from the perspective of directly optimizing the policy          |
+| [Where Does Data Come From](./algorithm-taxonomy)           | Discuss On-policy vs. Off-policy, Online vs. Offline                                          |
+| [Reward Function Design](./reward-design)                   | Discuss how rewards express task objectives and the problems that incorrect rewards can cause |
+
+## Learning Objectives
+
+After reading this chapter, you should be able to:
+
+- Formally describe a reinforcement learning problem using the MDP tuple $\langle \mathcal{S}, \mathcal{A}, P, R, \gamma \rangle$;
+- Understand how the **Bellman equation** writes long-term return as a recursive structure, and grasp the core differences among dynamic programming, Monte Carlo, and temporal difference methods for value estimation;
+- Articulate the distinction between two algorithmic routes — the **$Q(s,a)$ route** scores actions and selects the best, while the **$J(\theta)$ route** directly optimizes policy parameters — leading respectively to Deep Q-Networks and PPO.
+
+We begin with the multi-armed bandit, observe the exploration-exploitation tradeoff in a minimal environment, and then lift that intuition into the formal language of MDPs.
 
 ## What This Section Solves
 
@@ -12,7 +80,7 @@ title: 3.1 The Two-Armed Bandit Problem
 - Learn to compare policies (uniform random, oracle-optimal, explore-then-commit) using expected return.
 - See why the **policy** is the core object in RL: in the same environment, different action-selection rules can lead to completely different long-term outcomes.
 
-In the first two chapters, you ran CartPole and DPO end to end. But there is an even more basic question hiding underneath: **how does an agent know which action is better?** If we cannot answer "which of two options should I pick?", then dealing with continuously changing states in CartPole is even harder.
+In Chapter 1, you ran CartPole end to end. But there is an even more basic question hiding underneath: **how does an agent know which action is better?** If we cannot answer "which of two options should I pick?", then dealing with continuously changing states in CartPole is even harder.
 
 RL differs from supervised learning in two core ways. First, it is **trial-and-error**: nobody gives you the correct action, you must try. Second, it often involves **delayed reward**: the consequences of an action may only show up many steps later [^5]. Together, these create the characteristic difficulty of RL.
 
@@ -88,11 +156,11 @@ Sum up **(outcome value) × (its probability)** across outcomes.
 
 Example: flip a fair coin. Heads wins $+1$, tails loses $-1$. Any single flip can lose money, but across 1000 flips you will see about 500 heads and 500 tails:
 
-$$\\text{total profit} = 500 \times (+1) + 500 \times (-1) = 0 \quad \Rightarrow \quad \\text{average per trial} = \frac{0}{1000} = 0$$
+$$\text{total profit} = 500 \times (+1) + 500 \times (-1) = 0 \quad \Rightarrow \quad \text{average per trial} = \frac{0}{1000} = 0$$
 
 Alternatively, compute it directly from probabilities:
 
-$$\\text{average per trial} = \frac{500 \times (+1) + 500 \times (-1)}{1000}$$
+$$\text{average per trial} = \frac{500 \times (+1) + 500 \times (-1)}{1000}$$
 
 Since 500 is 0.5 × 1000 (50% probability times 1000 trials), we can rewrite:
 
@@ -102,7 +170,7 @@ Cancel the 1000:
 
 $$= 0.5 \times (+1) + 0.5 \times (-1) = 0$$
 
-This matches the definition $\\mathbb{E}[X] = 0.5 \\times 1 + 0.5 \\times (-1) = 0$.
+This matches the definition $\mathbb{E}[X] = 0.5 \times 1 + 0.5 \times (-1) = 0$.
 :::
 
 With this tool, we can compute the **expected payoff** for each machine per play:
@@ -333,11 +401,11 @@ So even if A's true win probability is 60%, winning only 4 times out of 10 still
 
 The probability that B wins exactly 5 times is:
 
-$$P(n_B = 5) = \binom{10}{5} \times 0.4^5 \times 0.6^5 \approx 20.1\%$$
+$$P(n_B = 5) = \binom{10}{5} \times 0.4^5 \times 0.6^5 \approx 19.1\%$$
 
 Therefore, a misleading observation such as "A wins 4/10 while B wins 5/10" is not only possible, it has a nontrivial probability. For this specific pair of events, the joint probability is roughly:
 
-$$11.1\% \times 20.1\% \approx 2.2\%$$
+$$11.1\% \times 19.1\% \approx 2.2\%$$
 
 This is not large, but it is certainly possible. More importantly, misidentification is not limited to this one case: any time A's observed wins are fewer than B's, you will make the wrong call. Later we will account for all such cases.
 
@@ -587,6 +655,102 @@ Using the bandit as the simplest RL environment, this section established three 
 
 The bandit problem deliberately removes delayed reward and state dynamics, so we can see trial-and-error and exploration-vs-exploitation in their simplest form. Real RL problems (CartPole, LLM post-training, etc.) add state transitions: the situation changes as actions are taken, and the policy expands from "which action" to "which action in which state". Next we will formalize these ideas with the MDP framework: [MDP tuple, discounted return, and policies](./mdp).
 
+::: details What is Thompson sampling?
+Thompson sampling is a way to explore **according to uncertainty**. Instead of keeping only one estimated win rate for each machine, it keeps a range of plausible win rates.
+
+Imagine that machine A has won 6 of 10 pulls and machine B has won 1 of 2:
+
+- A's observed win rate is 60%, backed by ten observations.
+- B's observed win rate is 50%, backed by only two observations.
+
+A currently looks better, but B is much less certain. A greedy policy always chooses A and may stop learning about B. Uniform random exploration chooses B half the time, even after strong evidence shows that B is worse. Thompson sampling takes a middle path: **choose each machine in proportion to how likely it currently seems to be the best.**
+
+### The three-step idea
+
+For every round:
+
+1. Keep a probability distribution for each machine's unknown true win rate.
+2. Draw one possible win rate from each distribution.
+3. Pull the machine with the largest draw, then update its distribution using the result.
+
+The draw is not treated as the true win rate. It is one plausible answer to the question, "Given everything I have seen, what might this machine's win rate be?"
+
+Suppose one round produces:
+
+$$
+\tilde p_A = 0.58,\qquad \tilde p_B = 0.72
+$$
+
+Then Thompson sampling chooses B. On another round it might draw:
+
+$$
+\tilde p_A = 0.63,\qquad \tilde p_B = 0.41
+$$
+
+and choose A. B is explored because its uncertainty sometimes produces a high draw, not because the algorithm follows a fixed random-exploration schedule.
+
+### Representing uncertainty with a Beta distribution
+
+For a machine whose outcome is win ($1$) or loss ($0$), a convenient model is:
+
+$$
+p_a \sim \operatorname{Beta}(\alpha_a,\beta_a)
+$$
+
+You can read the parameters as accumulated evidence:
+
+- $\alpha_a = 1 +$ number of observed wins;
+- $\beta_a = 1 +$ number of observed losses.
+
+Starting with $\operatorname{Beta}(1,1)$ means every win rate between 0 and 1 is initially plausible. After observing a win, add 1 to $\alpha_a$. After a loss, add 1 to $\beta_a$:
+
+$$
+\text{win: }\alpha_a \leftarrow \alpha_a+1,
+\qquad
+\text{loss: }\beta_a \leftarrow \beta_a+1
+$$
+
+For example, six wins and four losses produce:
+
+$$
+p_A \sim \operatorname{Beta}(7,5)
+$$
+
+Its center is near the observed 60% win rate, but it still has some width because ten observations are limited. After 600 wins and 400 losses, the center remains near 60%, while the distribution becomes much narrower. The estimate has not changed much; our **confidence** has.
+
+### Why exploration happens automatically
+
+An arm tried only a few times has a wide distribution. Its samples sometimes land very high, so it continues to receive occasional trials. An arm tried many times has a narrow distribution. If its results are consistently poor, it rarely produces the largest sample and is selected less often.
+
+This gives Thompson sampling its useful behavior:
+
+- uncertain arms receive opportunities to prove themselves;
+- strong arms are exploited frequently;
+- clearly weak arms gradually stop consuming many trials.
+
+This behavior is called **probability matching**. If the current evidence says A has roughly an 80% chance of being the best arm, Thompson sampling will choose A roughly 80% of the time. It does not need a separate exploration probability such as $\epsilon$.
+
+### Minimal pseudocode
+
+```python
+alpha = [1, 1]
+beta = [1, 1]
+
+for _ in range(num_rounds):
+    samples = [
+        random.betavariate(alpha[a], beta[a])
+        for a in range(2)
+    ]
+    action = max(range(2), key=lambda a: samples[a])
+    reward = pull(action)  # 1 for win, 0 for loss
+
+    alpha[action] += reward
+    beta[action] += 1 - reward
+```
+
+The essential idea is simple: **sample one believable world, act optimally in that world, then revise what worlds remain believable.**
+:::
+
 ## Further Reading: Regret
 
 This part is optional. Feel free to skip it on a first pass.
@@ -610,6 +774,8 @@ The smaller the regret, the better the policy. Uniform random "wastes" about 20 
 **One goal of RL exploration is to design policies whose regret grows as slowly as possible.** UCB and Thompson sampling are classic near-optimal answers: their regret grows only logarithmically with time and matches theoretical lower bounds [^4]. If you want to go deeper, follow the references.
 
 ## References
+
+For further reading, see Auer et al.'s [finite-time analysis of multi-armed bandits](https://link.springer.com/article/10.1023/A:1013689704352), Russo et al.'s [tutorial on Thompson sampling](https://arxiv.org/abs/1707.02038), and Lattimore and Szepesvári's open textbook [Bandit Algorithms](https://banditalgs.com/).
 
 [^1]: Thompson, W. R. (1933). On the likelihood that one unknown probability exceeds another in view of the evidence of two samples. _Biometrika_, 25(3/4), 285-294.
 

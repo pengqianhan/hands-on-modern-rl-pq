@@ -1,6 +1,6 @@
 <div align="center">
   <img src="docs/public/readme/readmelogo.png" alt="Hands-On Modern RL" width="500" />
-  <p><em>现代强化学习实战指南：涵盖经典控制、LLM 后训练、RLVR 与多模态智能体。</em></p>
+  <p><em>从马尔可夫决策过程与策略优化，到大模型推理、智能体和多模态系统</em></p>
 
   <p>
     <a href="https://walkinglabs.github.io/hands-on-modern-rl/"><img src="https://img.shields.io/badge/Course-Online-2563eb?style=flat-square" alt="Online Course" /></a>
@@ -16,70 +16,112 @@
   </p>
 
   <p>
+    <a href="https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment01-cartpole">ModelScope 一键训练</a> ·
+    <a href="https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment01-cartpole.ipynb">运行 CartPole Notebook</a> ·
+    <a href="https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment01-cartpole/file/view/master/train.py">ModelScope 训练脚本</a>
+  </p>
+
+  <p>
     <a href="#读者交流群微信">读者交流群（微信）</a>
   </p>
 
   <p>
-    <a href="#课程简介">课程简介</a> ·
-    <a href="#简介">简介</a> ·
+    <a href="#本书特色">本书特色</a> ·
+    <a href="#本书介绍">本书介绍</a> ·
     <a href="#🔥-最新动态-news">最新动态</a> ·
     <a href="#目录">目录</a> ·
-    <a href="#课程大纲">课程大纲</a> ·
+    <a href="#全书结构">全书结构</a> ·
     <a href="#实验代码">实验代码</a> ·
     <a href="#快速开始">快速开始</a> ·
     <a href="#参与贡献">参与贡献</a>
   </p>
 </div>
 
-## 课程简介
+> **📣 公告**
+>
+> 感谢大家对教程的支持！近期将会有版本更新，目前很多内容还在整理和完善中，请大家多点耐心。也欢迎大家多提建议。
+
+## 🔥 最新动态 (News)
+
+> ⚠️ **备注**：本教程由于有 AI 协助生成，目前尚未全面审稿结束，很有可能会有事实性或代码不可运行的错误。欢迎大家在阅读过程中提交 Issue 或 PR 帮助指正。
+
+- **[2026-08-19]** 🎮 **经典强化学习在线环境与脚本更新**：过去两周，我们集中上线并完善了一批强化学习在线环境、训练脚本和配套 Notebook。现在可以直接在线运行经典强化学习实验，查看训练日志与评估结果，更方便地学习经典强化学习。同时，我们还修复了此前反馈的许多 Bug，涉及课程内容、链接和实验代码。
+- **[2026-05-15]** 📖 **全量英文翻译与 PDF 发布**：全部章节英文翻译完成，中英文版 PDF 均通过 CI 自动构建发布。
+- **[2026-05-13]** 🚀 **全面升级大模型与传统强化学习实战**：新增可复现的 **Agentic RL**（Deep Research / rLLM）与 **传统 RL**（Actor-Critic 连续控制）训练实例。包含从零构建 Agentic 训练系统的完整代码与微调过程解析，并同步上线 VLM 强化学习（GeoQA 几何推理）动手实验！
+- **[2026-05-02]** 🎉 教程初期浏览版正式开源发布，开放测试与建议收集。
+
+## 在线训练 Notebook
+
+WalkingLab 与 ModelScope 合作，为经典强化学习实验提供在线训练环境。ModelScope 创空间将实验界面、运行环境和训练入口集中在一个页面中，读者无需先配置本地环境，即可通过浏览器启动训练并观察智能体的行为。
+
+每个创空间都在 [`code/online-experiments`](code/online-experiments/README.md) 下配有实验 Notebook。Notebook 与创空间复用同一份训练运行时，可以调整实验参数、查看完整训练日志与检查点评估曲线，并显示本次训练生成的策略回放或结果文件。
+
+| 实验                        | 资源 | 配套 Notebook                                                                                                                                                                          | 在线创空间                                                                                                |
+| --------------------------- | ---- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| 01 · CartPole PPO           | CPU  | [运行 Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment01-cartpole.ipynb)           | [打开创空间](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment01-cartpole)           |
+| Gymnasium 训练合集          | CPU  | [运行 Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment-gymnasium.ipynb)            | [打开创空间](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment-gymnasium)            |
+| 02 · ViZDoom                | CPU  | [运行 Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment02-vizdoom.ipynb)            | [打开创空间](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment02-vizdoom)            |
+| 03 · Atari / ALE            | xGPU | [运行 Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment03-atari.ipynb)              | [打开创空间](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment03-atari)              |
+| 04 · 棋盘游戏与自博弈       | CPU  | [运行 Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment04-board-selfplay.ipynb)     | [打开创空间](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment04-board-selfplay)     |
+| 05 · 多智能体游戏           | CPU  | [运行 Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment05-multiagent-games.ipynb)   | [打开创空间](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment05-multiagent-games)   |
+| 06 · MiniGrid 探索          | CPU  | [运行 Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment06-minigrid-adventure.ipynb) | [打开创空间](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment06-minigrid-adventure) |
+| 07 · JAX MinAtar            | CPU  | [运行 Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment07-jax-games.ipynb)          | [打开创空间](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment07-jax-games)          |
+| 08 · ManiSkill              | xGPU | [运行 Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment08-maniskill.ipynb)          | [打开创空间](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment08-maniskill)          |
+| 10 · MineStudio / Minecraft | xGPU | [运行 Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment10-minestudio.ipynb)         | [打开创空间](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment10-minestudio)         |
+| 11 · Unity ML-Agents        | xGPU | [运行 Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment11-unity-mlagents.ipynb)     | [打开创空间](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment11-unity-mlagents)     |
+| 12 · AI2-THOR               | xGPU | [运行 Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment12-ai2thor-embodied.ipynb)   | [打开创空间](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment12-ai2thor-embodied)   |
+
+CPU 实验可使用普通 Notebook 运行；实验 03、08、10、11、12 需要调度 ModelScope xGPU Notebook，训练单元会在开始前检查 CUDA。
+
+## 本书特色
 
 <table>
   <tr>
     <td width="50%" align="center">
       <img src="docs/public/readme/feature-learning-path.png" alt="课程学习地图截图" width="100%" />
       <br />
-      <strong>一眼看懂的学习地图</strong>
+      <strong>一条连续的知识主线</strong>
       <br />
-      <sub>从前言、基础导论到前沿专题，章节树和页内大纲帮助你快速定位。</sub>
+      <sub>从一次 CartPole 试错出发，逐步走向价值学习、策略优化与现代智能体。</sub>
     </td>
     <td width="50%" align="center">
       <img src="docs/public/readme/feature-code-focus.png" alt="PPO 代码聚焦截图" width="100%" />
       <br />
-      <strong>代码逐行聚焦</strong>
+      <strong>公式与代码互相印证</strong>
       <br />
-      <sub>PPO、DPO、GRPO 关键实现配有代码地图，把公式落到可读代码。</sub>
+      <sub>PPO、DPO、GRPO 的关键推导紧邻实现，让每个张量都有明确含义。</sub>
     </td>
   </tr>
   <tr>
     <td width="50%" align="center">
       <img src="docs/public/readme/feature-training-metrics.png" alt="CartPole 训练指标截图" width="100%" />
       <br />
-      <strong>训练指标可视化</strong>
+      <strong>用实验检验判断</strong>
       <br />
-      <sub>真实曲线、指标解释和失败信号放在一起，方便边跑实验边诊断。</sub>
+      <sub>真实训练曲线、消融结果和失败信号帮助读者理解算法何时有效。</sub>
     </td>
     <td width="50%" align="center">
       <img src="docs/public/readme/feature-rlhf-pipeline.png" alt="RLHF 流水线截图" width="100%" />
       <br />
-      <strong>LLM 后训练流水线</strong>
+      <strong>连接经典 RL 与大模型</strong>
       <br />
-      <sub>RLHF、DPO、GRPO、RLVR 等主题以流程、artifact 和案例串联起来。</sub>
+      <sub>从策略梯度和 PPO 出发，自然推导 RLHF、DPO、GRPO 与 RLVR。</sub>
     </td>
   </tr>
   <tr>
     <td width="50%" align="center">
       <img src="docs/public/readme/feature-agentic-rl.png" alt="Agentic RL 实验页面截图" width="100%" />
       <br />
-      <strong>Agentic RL 实验</strong>
+      <strong>把智能体还原为序贯决策</strong>
       <br />
-      <sub>DeepCoder 风格的 GRPO 训练曲线，把工具调用智能体、回复长度和奖励变化放进可复现实验。</sub>
+      <sub>把工具调用、浏览器操作和代码修复写成状态、动作、轨迹与信用分配问题。</sub>
     </td>
     <td width="50%" align="center">
       <img src="docs/public/readme/feature-atari-game.png" alt="Atari Pong DQN 实验页面截图" width="100%" />
       <br />
-      <strong>Atari 游戏实验</strong>
+      <strong>从现象进入理论</strong>
       <br />
-      <sub>Atari Pong 游戏画面与 DQN 训练说明放在同一页，展示像素输入如何转化为动作决策。</sub>
+      <sub>CartPole、LunarLander、Atari 与大模型实验先提出问题，再引出所需数学工具。</sub>
     </td>
   </tr>
 </table>
@@ -97,65 +139,42 @@
 
 ## 目录
 
-- [课程简介](#课程简介)
-- [简介](#简介)
-- [课程大纲](#课程大纲)
+- [本书特色](#本书特色)
+- [本书介绍](#本书介绍)
+- [全书结构](#全书结构)
 - [实验代码](#实验代码)
+- [推荐学习路径](#推荐学习路径)
 - [快速开始](#快速开始)
 - [参与贡献](#参与贡献)
 - [引用](#引用)
+- [致谢](#致谢)
 - [开源协议](#开源协议)
 
-## 简介
+## 本书介绍
 
-**Hands-On Modern RL** 是一门面向现代强化学习实践的开放课程。与传统的“先讲公式，再给黑盒 API”不同，本课程采用 **“实践优先”** 的路径：从一行行可运行的代码和直观的训练现象出发，让学习者先看到智能体如何在环境中试错并从奖励中改进行为，再回头深入剖析其背后的状态、价值函数、策略梯度、奖励建模与信用分配等核心数学结构。
+强化学习研究一个朴素而困难的问题：一个系统采取行动、观察结果，再根据结果改进下一次行动。当奖励会延迟出现、环境信息并不完整、一次更新还会改变后续采样分布时，监督学习中熟悉的“输入—标签”框架便不再够用。我们需要描述交互过程，估计长期回报，并在有限数据下稳定地改进策略。
 
-课程内容跨越经典控制理论，直接连接到当前最前沿的 AI 进展，包括大语言模型（LLM）后训练、偏好对齐（DPO/GRPO）、可验证奖励（RLVR）、多轮工具调用的 Agentic RL 以及视觉语言模型（VLM）强化学习等核心主题。
+**Hands-On Modern RL** 围绕这条问题主线展开。全书从 CartPole 和多臂老虎机开始，让状态、动作、奖励与策略先成为可以观察的对象；随后用马尔可夫决策过程、价值函数和贝尔曼方程建立统一语言，再依次进入 DQN、策略梯度、Actor-Critic、PPO、连续控制和离线强化学习。掌握这些工具后，大模型后训练中的 RLHF、DPO、GRPO 与 RLVR 就不再是一组孤立名词，而是同一套序贯决策思想在语言模型上的延伸。
 
-我们希望为你铺设一条坚实的阶梯——从解出 CartPole 的第一步，一直通往构建大模型后训练与智能体系统的前沿实践。
+后半部分把环境扩展到工具、浏览器、代码仓库、视觉与音频世界。动作可能是一段文字、一次函数调用或一组界面操作，奖励也可能来自人类偏好、规则验证器或过程奖励模型。问题的形式变得更丰富，但贯穿全书的三个问题保持一致：**如何表示决策过程，如何把结果归因给此前的动作，如何确认策略真的变得更好。**
 
-### 设计原则
+### 如何讲解
 
-课程围绕以下工程和教学原则组织：
+每章遵循“问题—方法—实验—反思”的节奏。先用一个具体任务暴露困难，再引入解决困难所需的概念和公式；随后把公式落到可运行代码、训练曲线与评测指标上；最后检查方法的假设、失败模式和适用边界。数学用于解释现象，实验用于检验推理，两者共同组成完整论证。
 
-1. **实践先于形式化。** 每个主要主题都从实验、指标、失败案例或实现细节开始，然后再引入数学抽象。
-2. **理论用于解释行为。** MDP、贝尔曼方程、策略梯度、GAE、PPO 截断、DPO 目标和 GRPO 风格的组优势，都是作为解释代码行为的工具引入的。
-3. **现代强化学习，不止于经典强化学习。** 课程涵盖经典控制和深度强化学习，然后进入 RLHF、偏好优化、RLVR、VLM 强化学习和多轮智能体训练。
-4. **将调试能力视为一等公民。** 训练崩溃、奖励破解（Reward hacking）、KL 漂移、熵衰减、OOM 故障和评估盲区被视为核心内容，而不是补充说明。
-5. **可读的系统优于黑盒。** 代码示例倾向于显式的实现、可检查的指标和清晰的实验边界，以便学习者可以修改和扩展它们。
+书中的代码尽量保留算法骨架。你会看到轨迹如何收集、优势如何估计、损失如何组成、指标如何变化，也会看到奖励黑客、KL 漂移、熵坍缩、分布偏移与评测泄漏怎样使一个看似成功的训练失效。
 
-### 目标受众
+### 适合谁读
 
-本课程专为希望通过构建和检查工作系统来理解强化学习的学习者而设计。
+本书适合学过基础机器学习、希望系统掌握现代强化学习的学生、研究者与工程师。读者应具备 Python 编程经验和基础 PyTorch 能力，并了解线性代数、概率论与微积分的基本概念。数学附录会在相关章节所需的深度上重新建立这些工具，因此无需先修完一整套高等数学课程。
 
-它特别适合：
+读完并完成核心实验后，你将能够：
 
-- 从监督学习转向强化学习的机器学习工程师；
-- 准备阅读现代强化学习和对齐论文的研究人员和学生；
-- 希望了解 RLHF、DPO、GRPO、RLVR 和后训练系统的大语言模型（LLM）从业者；
-- 工具使用智能体、Web 智能体、代码智能体和评估流水线的构建者；
-- 喜欢在密集的公式推导前先看代码、实验和直观可视化的自主学习者。
-
-推荐背景：
-
-- Python 编程经验；
-- 基础的 PyTorch 熟练度；
-- 了解入门机器学习级别的线性代数、概率论和微积分；
-- 能够阅读论文并追踪开源训练脚本。
-
-课程附带了数学基础复习附录，因此不要求从第一天起就完全精通数学。
-
-### 学习目标
-
-完成本课程后，学习者应能够：
-
-- 实现并解释核心的强化学习循环：环境交互、轨迹收集、奖励反馈、策略更新和评估；
-- 将 MDP、价值函数、贝尔曼方程、TD 学习、策略梯度和优势估计与具体的训练行为联系起来；
-- 阅读并修改 DQN、REINFORCE、Actor-Critic、PPO、DPO、GRPO 及相关实现；
-- 推理大模型（LLM）的后训练流水线，包括 SFT、奖励建模、PPO 风格的 RLHF、DPO 系列方法和可验证奖励（RLVR）训练；
-- 理解多轮交互与信用分配，构建工具调用、轨迹合成与 Agentic RL 智能体系统；
-- 将强化学习延伸到 VLM（视觉语言模型）、具身智能与多智能体自我博弈等前沿领域；
-- 诊断常见的强化学习失败模式，为新的 RL 问题设计合理的算法、工程评测与调试方案。
+- 用 MDP、价值函数、贝尔曼方程和信用分配描述一个新的决策问题；
+- 实现、阅读并诊断 DQN、REINFORCE、Actor-Critic、PPO、DPO 与 GRPO；
+- 解释 SFT、奖励建模、偏好优化、RLHF 与 RLVR 在大模型后训练中的关系；
+- 为工具调用、代码智能体和多模态系统设计轨迹、奖励、训练与评测流程；
+- 识别训练曲线背后的失败模式，并用对照实验检验算法改进。
 
 ### 当前状态
 
@@ -169,14 +188,6 @@
 
 欢迎提交 Issue 和 Pull Request 来修复拼写错误、修正概念、改进可复现性、补充参考文献以及在合理范围内的课程扩展。
 
-## 🔥 最新动态 (News)
-
-> ⚠️ **备注**：本教程由于有 AI 协助生成，目前尚未全面审稿结束，很有可能会有事实性或代码不可运行的错误。欢迎大家在阅读过程中提交 Issue 或 PR 帮助指正。
-
-- **[2026-05-15]** 📖 **全量英文翻译与 PDF 发布**：全部章节英文翻译完成，中英文版 PDF 均通过 CI 自动构建发布。
-- **[2026-05-13]** 🚀 **全面升级大模型与传统强化学习实战**：新增可复现的 **Agentic RL**（Deep Research / rLLM）与 **传统 RL**（Actor-Critic 连续控制）训练实例。包含从零构建 Agentic 训练系统的完整代码与微调过程解析，并同步上线 VLM 强化学习（GeoQA 几何推理）动手实验！
-- **[2026-05-02]** 🎉 教程初期浏览版正式开源发布，开放测试与建议收集。
-
 ## 🗺️ 演进路线图 (Roadmap)
 
 本课程正在持续迭代中，以下是接下来的开发计划：
@@ -188,63 +199,101 @@
 - [ ] **2026-06 下旬**：增加基于 Unity 的具身强化学习（Embodied RL）可训练模型环境与项目。
 - [ ] **2026-07 及以后**：扩展多模态前沿，补充 VLM 强化学习或 Diffusion RL 的完整实战案例。
 
-## 课程大纲
+## 全书结构
 
-课程分为四个部分以及附录。README 只保留主要模块；完整的小节树、图表、代码引用和详细导航请以在线网站为准。
+全书共七部分、二十六章。前三部分建立强化学习的统一语言和算法基础；第四部分把这些工具带入大语言模型后训练；第五、六部分研究动作空间扩展到工具和多模态世界后出现的新问题；第七部分讨论如何发现失败、建立可靠评测并继续推进研究。附录提供算法实现、数学基础与工程查阅资料。
 
-### 前言
+### 序章：从试错学习到现代智能体
 
-| 模块                                                | 内容                                     |
-| :-------------------------------------------------- | :--------------------------------------- |
-| [课程导读](docs/preface/intro.md)                   | 课程定位、学习路径及资料使用说明。       |
-| [强化学习简史](docs/preface/brief-history/index.md) | 从试错学习到 AlphaGo、RLHF 和 LLM 对齐。 |
-| [环境安装指南](docs/preface/env-setup.md)           | 课程所需环境与依赖的安装配置指南。       |
+| 内容                                                  | 要解决的问题                                               |
+| :---------------------------------------------------- | :--------------------------------------------------------- |
+| [强化学习导论](docs/preface/intro.md)                 | 强化学习研究什么，本书如何把经典方法与现代大模型连接起来。 |
+| [强化学习发展史](docs/preface/brief-history/index.md) | 从早期控制、TD 学习和 DQN，到 AlphaGo、RLHF 与推理模型。   |
+| [环境配置](docs/preface/env-setup.md)                 | 搭建文档、经典控制和大模型实验所需的运行环境。             |
 
-### 第一部分：基础导论
+### 第一部分：决策问题的基本语言
 
-| 章节 | 主要主题                                            | 内容概览                                                                         |
-| :--- | :-------------------------------------------------- | :------------------------------------------------------------------------------- |
-| 01   | [CartPole 倒立摆](docs/chapter01_cartpole/intro.md) | 通过第一个可运行控制任务理解状态、动作、奖励、策略、价值、熵和训练曲线。         |
-| 02   | [DPO 偏好微调](docs/chapter02_dpo/intro.md)         | 偏好数据、DPO 目标、奖励裕度、准确率，以及从 RL 直觉进入大模型后训练的第一座桥。 |
-| 总结 | [本篇小结](docs/summaries/part1-summary.md)         | 进入形式化强化学习理论前需要建立的实践直觉。                                     |
+先观察一个智能体如何失败与改进，再建立描述长期决策所需的数学对象。
 
-### 第二部分：核心理论与方法
+| 章  | 主题                                                        | 本章主线                                                       |
+| :-: | :---------------------------------------------------------- | :------------------------------------------------------------- |
+|  1  | [CartPole 入门](docs/chapter01_cartpole/principles.md)      | 从倒立摆的状态、动作、奖励和训练曲线认识完整的强化学习循环。   |
+|  2  | [强化学习问题与基本定义](docs/chapter03_mdp/bandit.md)      | 从探索与利用进入 MDP、策略、回报、轨迹与部分可观测性。         |
+|  3  | [价值函数与贝尔曼方程](docs/chapter03_mdp/value-bellman.md) | 用状态价值、动作价值和递推关系表达“当前行动对未来有多好”。     |
+|  4  | [经典强化学习方法](docs/chapter03_mdp/dp-mc-td.md)          | 比较动态规划、蒙特卡洛和时序差分，理解模型、采样与自举的取舍。 |
 
-| 章节 | 主要主题                                                        | 内容概览                                                                                      |
-| :--- | :-------------------------------------------------------------- | :-------------------------------------------------------------------------------------------- |
-| 03   | [MDP 与价值函数](docs/chapter03_mdp/intro.md)                   | 多臂老虎机、MDP、价值函数、贝尔曼方程、TD 学习、Q-learning、策略目标、数据来源与奖励设计。    |
-| 04   | [深度 Q 网络](docs/chapter04_dqn/intro.md)                      | 从表格 Q-learning 到 DQN，经验回放、目标网络、CNN 编码器、LunarLander、Atari 与视觉游戏项目。 |
-| 05   | [策略梯度与 REINFORCE](docs/chapter05_policy_gradient/intro.md) | 直接优化策略、采样式梯度、baseline 与方差降低。                                               |
-| 06   | [Actor-Critic](docs/chapter06_actor_critic/intro.md)            | Actor-Critic 架构、优势函数、基于 TD 误差的 Critic 训练与棋类智能体。                         |
-| 07   | [PPO](docs/chapter07_ppo/intro.md)                              | PPO 实验、裁剪目标、信任域直觉、GAE、奖励模型、长时程规划与 BipedalWalker 实战。              |
-| 总结 | [本篇小结](docs/summaries/part2-summary.md)                     | 经典和现代强化学习中反复出现的算法模式。                                                      |
+### 第二部分：用神经网络学习价值与策略
 
-### 第三部分：大模型 RL
+状态空间增大后，表格方法无法继续工作。这一部分引入函数近似，并沿着价值学习和策略学习两条路线走向 PPO 与连续控制。
 
-| 章节 | 主要主题                                         | 内容概览                                                                                                              |
-| :--- | :----------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------- |
-| 08   | [完整 RLHF 流水线](docs/chapter08_rlhf/intro.md) | SFT、奖励模型、PPO 风格 RLHF、评估、规模化与奖励破解。                                                                |
-| 09   | [后训练对齐](docs/chapter09_alignment/intro.md)  | DPO 家族、GRPO、DeepSeek-R1 与 DAPO、RLVR、金融工具调用 GRPO、策略蒸馏、沙箱训练与工业后训练实践。                    |
-| 10   | [Agentic RL](docs/chapter10_agentic_rl/intro.md) | 多轮信用分配、工具调用轨迹、智能体评估、SWE/DeepCoder/FinQA 风格实验、Deep Research 智能体与端到端 Agentic 训练系统。 |
-| 总结 | [本篇小结](docs/summaries/part3-summary.md)      | 当 RL 面向语言模型、工具和多步智能体行为时，问题发生了哪些变化。                                                      |
+| 章  | 主题                                                                   | 本章主线                                                      |
+| :-: | :--------------------------------------------------------------------- | :------------------------------------------------------------ |
+|  5  | [深度 Q 网络](docs/chapter07_dqn/from-q-to-dqn.md)                     | 用神经网络近似动作价值，并用经验回放和目标网络稳定训练。      |
+|  6  | [策略梯度方法](docs/chapter08_policy_gradient/policy-gradient.md)      | 直接优化策略，推导 REINFORCE，并用基线降低梯度方差。          |
+|  7  | [Actor-Critic 方法](docs/chapter09_actor_critic/advantage-function.md) | 让策略与价值估计协同学习，以优势函数连接两条算法路线。        |
+|  8  | [TRPO 与 PPO](docs/chapter10_ppo/trust-region-clipping.md)             | 控制单次策略更新的幅度，用 GAE 与裁剪目标获得稳定训练。       |
+|  9  | [连续控制与世界模型](docs/chapter11_continuous_control/intro.md)       | 从 DDPG、TD3、SAC 进入基于模型的强化学习、MuZero 与 Dreamer。 |
 
-### 第四部分：前沿与高级系统
+### 第三部分：数据、任务与智能体结构的扩展
 
-| 章节 | 主要主题                                          | 内容概览                                                                     |
-| :--- | :------------------------------------------------ | :--------------------------------------------------------------------------- |
-| 11   | [VLM 强化学习](docs/chapter11_vlm_rl/intro.md)    | VLM GRPO、视觉奖励、多模态推理框架、视觉生成 RL 与 EasyR1 GeoQA 实战。       |
-| 12   | [未来趋势](docs/chapter12_future_trends/intro.md) | 具身智能、Model-Based RL、自我博弈、多智能体系统、离线强化学习与规模化趋势。 |
-| 总结 | [本篇小结](docs/summaries/part4-summary.md)       | 完成核心课程后可以继续探索的前沿方向。                                       |
+当交互昂贵、专家数据可用，或任务需要多个主体和多层时间尺度时，训练对象随之改变。
 
-### 附录
+| 章  | 主题                                                                                  | 本章主线                                                   |
+| :-: | :------------------------------------------------------------------------------------ | :--------------------------------------------------------- |
+| 10  | [离线强化学习](docs/chapter12_offline_rl/intro.md)                                    | 在固定数据集上学习策略，处理分布偏移、外推误差与序列建模。 |
+| 11  | [模仿学习、逆强化学习与元强化学习](docs/chapter13_imitation_meta_rl/bc-dagger.md)     | 从专家行为学习策略或奖励，并让智能体适应新任务。           |
+| 12  | [探索、多智能体与分层强化学习](docs/chapter14_exploration_marl_hierarchical/intro.md) | 研究稀疏奖励、主体协作和长时程任务的分层结构。             |
 
-| 附录 | 主要主题                                                       | 内容概览                                                           |
-| :--- | :------------------------------------------------------------- | :----------------------------------------------------------------- |
-| A    | [训练调试指南](docs/appendix_common_pitfalls/intro.md)         | 强化学习训练中的常见失败、症状、根因与修复策略。                   |
-| B    | [RL 工程实践](docs/appendix_industrial_training/intro.md)      | 训练系统、Agent 沙箱、并行化、监控、评估基准、指标词典与工业练习。 |
-| C    | [手写代码速记](docs/appendix_code_cheatsheet/intro.md)         | SFT、PPO、DPO、GRPO、采样、注意力与 DAPO 的核心代码速记。          |
-| D    | [学习资料与复现项目推荐](docs/appendix_game_projects/intro.md) | 精选学习资源与复现项目，用于扩展课程示例。                         |
-| E    | [强化学习的数学基础](docs/appendix_math/intro.md)              | 强化学习所需的线性代数、概率、微积分、优化与信息论。               |
+### 第四部分：大语言模型对齐与后训练
+
+语言模型把“动作”扩展为一段文本。前面学到的策略优化、分布约束和信用分配由此进入偏好对齐、可验证奖励与推理时计算。
+
+| 章  | 主题                                                                              | 本章主线                                                       |
+| :-: | :-------------------------------------------------------------------------------- | :------------------------------------------------------------- |
+| 13  | [RLHF 训练流水线](docs/chapter15_rlhf/base-model-to-assistant.md)                 | 从 SFT、AI 反馈和奖励建模，走到 PPO 式强化学习微调与对齐评测。 |
+| 14  | [偏好对齐与 DPO 家族](docs/chapter17_dpo/intro.md)                                | 从 KL 约束目标推导 DPO，并比较不同偏好优化方法的假设与指标。   |
+| 15  | [GRPO、RLVR 与 Verifier 工程](docs/chapter18_grpo/grpo-practice-and-mechanism.md) | 用组相对优势和可验证奖励训练数学、代码与工具调用能力。         |
+| 16  | [推理模型与推理时计算](docs/chapter19_reasoning/emergence-and-o1.md)              | 解释长推理的训练机制、计算预算控制与推理链对齐。               |
+| 17  | [过程奖励与推理时搜索](docs/chapter20_prm_search/outcome-vs-process.md)           | 把监督信号从最终答案推进到中间步骤，并结合搜索提高解题可靠性。 |
+| 18  | [大模型 RL 工业实践](docs/chapter16_llm_rl_industrial/intro.md)                   | 把单机算法扩展为数据、推理、训练、同步和评测协作的系统。       |
+
+### 第五部分：工具调用与 Agentic 强化学习
+
+智能体开始调用工具并跨越多个环境步骤后，训练单位从单段回答变成完整轨迹，信用分配、环境构造和安全边界成为核心问题。
+
+| 章  | 主题                                                                               | 本章主线                                                              |
+| :-: | :--------------------------------------------------------------------------------- | :-------------------------------------------------------------------- |
+| 19  | [工具调用、多轮交互与多智能体 RL](docs/chapter22_agentic/overview.md)              | 形式化 Agentic RL，构造工具轨迹，并完成 DeepCoder 与 FinQA 训练实验。 |
+| 20  | [代码智能体强化学习](docs/chapter23_rl_based_swe/swe-bench-and-rlvr.md)            | 用 SWE-bench、代码世界模型和自博弈研究软件工程智能体。                |
+| 21  | [Deep Research 与浏览器智能体](docs/chapter24_deep_research/browser-rl-harness.md) | 构建可训练的浏览器环境，并建立深度研究任务的评测方法。                |
+| 22  | [Computer Use 与 GUI Agent](docs/chapter25_computer_use/training.md)               | 训练界面操作智能体，处理指令层级与提示注入攻击。                      |
+
+### 第六部分：多模态世界中的强化学习
+
+视觉、音频、机器人动作和生成模型带来新的状态表示、奖励来源与评测标准。
+
+| 章  | 主题                                                                 | 本章主线                                                |
+| :-: | :------------------------------------------------------------------- | :------------------------------------------------------ |
+| 23  | [视觉语言模型强化学习](docs/chapter26_vlm/vlm-challenges.md)         | 设计视觉奖励与反思机制，并完成 VLM-GRPO 和 GeoQA 实验。 |
+| 24  | [音频、具身智能与视觉生成](docs/chapter27_audio_rl/reward-design.md) | 把 RLVR 与 RLHF 扩展到音频、VLA、图像生成和视频生成。   |
+
+### 第七部分：安全、评估与研究前沿
+
+训练奖励上升只说明优化器完成了目标。最后一部分检验目标是否正确、收益是否可信，以及智能体能力扩大后会出现哪些新风险。
+
+| 章  | 主题                                                                           | 本章主线                                                     |
+| :-: | :----------------------------------------------------------------------------- | :----------------------------------------------------------- |
+| 25  | [奖励黑客与 RL 评估](docs/chapter30_alignment_failures/classical-failures.md)  | 分析规范博弈、假性收益、潜伏行为与评测泄漏，并建立防御机制。 |
+| 26  | [自博弈、规模化与研究前沿](docs/chapter32_selfplay/self-play-outlook/index.md) | 研究自博弈、RL Scaling Laws、多智能体学习与进化式科学发现。  |
+
+### 附录：随学随查的工具箱
+
+| 附录 | 主题                                                                          | 内容                                                 |
+| :--: | :---------------------------------------------------------------------------- | :--------------------------------------------------- |
+|  A   | [训练调试与工程实践](docs/appendix_industrial_training/training-debugging.md) | 训练系统、并行策略、监控指标、Agent 沙箱与坏例分析。 |
+|  B   | [核心算法实现](docs/appendix_code_cheatsheet/sft-kl.md)                       | SFT、PPO、DPO、GRPO、DAPO、采样与注意力的紧凑实现。  |
+|  C   | [学习资源与参考资料](docs/appendix_paper_reading/intro.md)                    | 论文路线、GPU 小时估算、指标词典与工业实践练习。     |
+|  D   | [强化学习的数学基础](docs/appendix_math/linear-algebra-basics.md)             | 线性代数、概率、微积分、优化与信息论的渐进式复习。   |
 
 ## 实验代码
 
@@ -253,7 +302,7 @@
 | 领域           | 代码路径                                                                                                           | 代表性实验                                                     |
 | :------------- | :----------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------- |
 | 经典控制       | [`code/chapter01_cartpole/`](code/chapter01_cartpole/)                                                             | 训练 CartPole，检查奖励和回合长度，比较 PPO 实现。             |
-| 偏好微调       | [`code/chapter02_dpo/`](code/chapter02_dpo/)                                                                       | 生成偏好数据，使用 DPO 进行训练，比较微调前后的模型行为。      |
+| 偏好微调       | [`code/chapter17_dpo/`](code/chapter17_dpo/)                                                                       | 训练 DPO 模型，检查偏好准确率、奖励边际与 KL 漂移。            |
 | MDP 与价值学习 | [`code/chapter03_mdp/`](code/chapter03_mdp/)                                                                       | 运行老虎机策略，求解网格世界，用数值方法验证贝尔曼更新。       |
 | 深度 Q 学习    | [`code/chapter04_dqn/`](code/chapter04_dqn/)                                                                       | 实现经验回放、目标网络和 Double DQN 变体。                     |
 | 策略梯度       | [`code/chapter05_policy_gradient/`](code/chapter05_policy_gradient/)                                               | 比较 REINFORCE、基线变体和 Actor-Critic 更新。                 |
@@ -267,14 +316,11 @@
 
 ## 推荐学习路径
 
-本仓库的实用学习路径：
+第一次系统学习建议按章顺序阅读。第 1—4 章建立术语与递推思想，第 5—9 章给出深度强化学习的算法骨架，第 10—12 章扩展数据与任务设定。这三部分是后续内容的共同基础。
 
-1. 阅读[课程简介](docs/preface/intro.md)并运行 CartPole 示例。
-2. 尽早粗略阅读 DPO 章节（甚至在完整的理论之前），以锚定大模型后训练的动机。
-3. 按顺序学习第 03-07 章；这是概念核心。
-4. 在掌握策略梯度和 PPO 机制后，返回学习 RLHF、DPO、GRPO 和 RLVR。
-5. 每当训练运行出现异常时，使用调试和工程附录。
-6. 将前沿章节作为扩展学习：VLM 强化学习、Agentic RL、连续控制、多智能体系统和测试时推理。
+如果主要目标是大模型后训练，可以在完成第 6—8 章后进入第 13—18 章。策略梯度、优势估计、PPO 与 KL 约束会直接解释 RLHF、DPO 和 GRPO 的目标函数。学习 Agentic RL 或多模态 RL 时，再选择第 19—24 章中的对应专题。第 25—26 章适合与任何实验并行阅读，因为奖励设计和评测错误会影响全书所有方法。
+
+每章建议完成四件事：复述本章要解决的问题；手推核心公式；运行至少一个实验；改变一个关键假设并解释指标变化。遇到数学或工程细节时，按需查阅附录，无需先把附录顺序读完。
 
 ## 快速开始
 
@@ -402,7 +448,11 @@ npm run verify        # 运行格式检查、Lint、构建和产物验证
 
 有任何建议 / 反馈，欢迎扫码加入读者交流群（微信）：
 
-<img src="https://github.com/walkinglabs/.github/raw/main/profile/wechat.png" alt="读者交流群" width="300" />
+<img
+  src="https://github.com/walkinglabs/.github/raw/main/profile/wechat.png"
+  alt="读者交流群"
+  style="width: 100%; max-width: 520px; height: auto;"
+/>
 
 ## 引用
 
@@ -418,21 +468,15 @@ npm run verify        # 运行格式检查、Lint、构建和产物验证
 }
 ```
 
+## 致谢
+
+感谢 [OpenAI](https://openai.com/) 提供的开发资源支持，以及 [AMD](https://www.amd.com/) 提供的算力支持。没有他们的支持，本教程不可能迭代得如此之快。
+
 ## 开源协议
 
 本课程资料在 [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](LICENSE) 下发布。
 
 您可以出于非商业目的共享和修改本材料，前提是必须给出适当的署名，并且衍生作品也必须在相同的协议下分发。
-
-## Star History
-
-<a href="https://star-history.com/#walkinglabs/hands-on-modern-rl&Date">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=walkinglabs/hands-on-modern-rl&type=Date&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=walkinglabs/hands-on-modern-rl&type=Date" />
-    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=walkinglabs/hands-on-modern-rl&type=Date" />
-  </picture>
-</a>
 
 ---
 

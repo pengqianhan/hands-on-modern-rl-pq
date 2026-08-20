@@ -1,4 +1,4 @@
-# C.5 Softmax 与 Cross-Entropy
+# B.6 Softmax 与交叉熵
 
 面试热身题。写 DPO / PPO 之前，面试官可能先让你手写一个数值稳定的 softmax 和交叉熵。
 
@@ -6,21 +6,25 @@
 
 ## 数值稳定的 Softmax
 
+**核心问题**：把任意实数 logits 映射成概率分布（和为 1），同时避免 $\exp(1000)=\text{inf}$ 这类数值溢出。
+
+**核心变量**：
+
+- `x` / `logits`：模型输出的实数向量
+- `m = max(x)`：平移常数，所有元素减去它
+- `axis`：归一化方向，LLM 里通常是最后一维（词表）
+
 ### 一句话记忆
 
-> **先减 max 再 exp，分母是所有 exp 之和。**
+> **先减最大值，再 exp、再求和、再相除。**
 
 ### 伪代码
 
 ```
-x_shifted = x - max(x)
-exp_x = exp(x_shifted)
+m = max(x)
+exp_x = exp(x - m)
 softmax = exp_x / sum(exp_x)
 ```
-
-### 记忆方法
-
-为什么不直接 `exp(x) / sum(exp(x))`？因为 `exp(1000)` = inf。减去 max 后最大值变成 `exp(0)=1`，其余都小于 1，不会溢出。
 
 ### Python 实现
 
@@ -51,13 +55,25 @@ def manual_softmax(x, dim=-1):
 
 ---
 
-## Log-Sum-Exp 技巧
+## Log-Sum-Exp 与 Log-Softmax
+
+**核心问题**：LLM 训练需要的是 log 概率，不是概率本身。先 softmax 再 log 会损失精度，小概率位置还会下溢为 0 后 log 变 `-inf`。log-sum-exp 把减 max 与 log 合并成一步，得到数值稳定的 log 概率。
+
+**核心变量**：
+
+- `m = max(x)`：同 softmax，作为平移常数
+- `lse = m + log(sum(exp(x - m)))`：logistic normalizer 的对数
+- 输出：`log_softmax(x)_i = x_i - m - log(sum(exp(x - m)))`
+
+对应的等式：
+
+$$
+\log\sum_j \exp(x_j) = m + \log\sum_j \exp(x_j - m), \quad m = \max(x)
+$$
 
 ### 一句话记忆
 
-> **$\log\sum\exp(x) = \text{max}(x) + \log\sum\exp(x - \text{max}(x))$。**
-
-面试追问：`log(softmax(x))` 怎么算才不会溢出？答：不要先 softmax 再 log，直接用 log-softmax。
+> **别先 softmax 再 log——$\log\text{softmax}_i = x_i - \text{LSE}(x)$，LSE 内部减 max 防溢出。**
 
 ### Python 实现
 
@@ -83,9 +99,24 @@ def manual_log_softmax(x, dim=-1):
 
 ## Cross-Entropy Loss
 
+**核心问题**：分类 / SFT 任务需要一个标量损失来衡量"预测分布"和"真实标签"的差距。Cross-Entropy 把它压缩成"目标位置 log 概率的负数"——预测越准，loss 越小。
+
+**核心变量**：
+
+- `logits`：模型输出，形状 `[N, C]`，N 是样本数，C 是类别数
+- `targets`：真实类别索引，形状 `[N]`
+- `ignore_index`：跳过的位置（如 padding / prompt），默认 `-100`
+- `log_probs`：log_softmax 后的对数概率，用于取出目标位置
+
+当 $p$ 是 one-hot（只在 label 位置为 1）时，交叉熵退化为：
+
+$$
+H(p, q) = -\sum_i p_i \log q_i \;=\; -\log q_{\text{label}}
+$$
+
 ### 一句话记忆
 
-> **one-hot 标签的负对数概率：$-\sum_k y_k \log p_k$。简化版（整数标签）：$-\log p_{y}$。**
+> **`-log_softmax(logits)[target].mean()`——一步到位。**
 
 ### 伪代码
 
@@ -94,17 +125,13 @@ log_probs = log_softmax(logits)
 loss = -log_probs[target].mean()
 ```
 
-### 记忆方法
-
-交叉熵 = 一个预测对了多少的度量。预测越准，$p_{y}$ 越大，$-\log p_{y}$ 越小。loss 小 = 好。
-
 ### Python 实现
 
 ```python
 def cross_entropy(logits, targets, ignore_index=-100):
     """
-    logits: [N, C]
-    targets: [N]  (整数类别)
+    logits:  [N, C]
+    targets: [N] 整数类别
     """
     log_probs = log_softmax(logits, axis=-1)
     total, count = 0.0, 0
@@ -121,7 +148,7 @@ def cross_entropy(logits, targets, ignore_index=-100):
 ```python
 def manual_cross_entropy(logits, targets, ignore_index=-100):
     """
-    logits: [B, C]
+    logits:  [B, C]
     targets: [B]
     """
     log_probs = F.log_softmax(logits, dim=-1)
@@ -136,10 +163,10 @@ def manual_cross_entropy(logits, targets, ignore_index=-100):
 
 ## 易错点
 
-| 易错                       | 说明                                                                 |
-| -------------------------- | -------------------------------------------------------------------- |
-| softmax 忘了减 max         | 面试手写第一步就扣分                                                 |
-| 先 softmax 再 log          | 数值不稳定，用 `log_softmax` 一步到位                                |
-| Cross-Entropy 从 logits 算 | 不要先 softmax 再 log 再 CE，直接 `F.cross_entropy(logits, targets)` |
-| `ignore_index`             | 面试追问 SFT loss 时会问，padding token 怎么处理                     |
-| temperature                | `logits / temperature` 再 softmax，T 越大分布越平                    |
+| 易错                   | 说明                                                                 |
+| ---------------------- | -------------------------------------------------------------------- |
+| softmax 忘了减 max     | 面试手写第一步就扣分                                                 |
+| 先 softmax 再 log      | 数值不稳定，用 `log_softmax` 一步到位                                |
+| Cross-Entropy 从概率算 | 不要先 softmax 再 log 再 CE，直接 `F.cross_entropy(logits, targets)` |
+| `ignore_index`         | 面试追问 SFT loss 时会问，padding token 怎么处理                     |
+| temperature            | `logits / temperature` 再 softmax，T 越大分布越平                    |

@@ -9,6 +9,7 @@
     "build": "npm run assets:optimize && npm run sitemap && vitepress build docs",
     "build:force": "npm run assets:optimize && npm run sitemap && vitepress build docs --force",
     "pdf:build": "node scripts/build-pdf.mjs",
+    "epub:build": "node scripts/build-epub.mjs",
     "preview": "vitepress preview docs",
     "assets:optimize": "node scripts/optimize-assets.mjs",
     "format": "prettier --write .",
@@ -16,6 +17,8 @@
     "lint": "eslint docs/.vitepress/theme",
     "lint:fix": "eslint docs/.vitepress/theme --fix",
     "verify": "bash scripts/verify.sh",
+    "verify:bilingual": "node scripts/check-bilingual-sync.mjs",
+    "verify:english": "node scripts/check-english-quality.mjs",
     "sitemap": "node scripts/generate-sitemap.mjs",
     "fix:headings": "node scripts/fix-heading-numbers.mjs"
   },
@@ -35,8 +38,11 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.0.0",
+    "archiver": "^7.0.1",
     "eslint": "^9.0.0",
     "eslint-plugin-vue": "^9.30.0",
+    "gray-matter": "^4.0.3",
+    "markdown-it": "^14.2.0",
     "prettier": "^3.7.4",
     "puppeteer-core": "^24.42.0",
     "vue-eslint-parser": "^9.4.3"

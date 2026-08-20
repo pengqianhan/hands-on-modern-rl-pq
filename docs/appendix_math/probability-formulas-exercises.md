@@ -1,4 +1,4 @@
-# E.2.6 概率统计公式速查与练习
+# D.2.6 概率统计公式速查与练习
 
 > **前置知识**：本页汇总 E.2 模块所有公式，建议在读完 [E.2.1](./probability-basics) 到 [E.2.5](./probability-bellman-advanced) 后再来回顾。如果你是第一次读，先跳到正文章节。
 
@@ -18,7 +18,7 @@
 | 蒙特卡洛估计    | $\hat{v}(s)=\frac{1}{N}\sum_i G_i$                                                          | 用采样平均估计价值             |
 | 轨迹概率        | $p(\tau\mid\pi)=p(s_0)\prod_t\pi(a_t\mid s_t)p(s_{t+1}\mid s_t,a_t)$                        | 策略产生整条轨迹的概率         |
 | Baseline 去方差 | $\mathbb{E}[\nabla\log\pi(a\mid s)b(s)]=0$                                                  | 减 baseline 不改变梯度期望     |
-| GAE             | $\hat{A}_t^{GAE}=\sum_k(\gamma\lambda)^k\delta_{t+k}$                                       | 在 TD 和 MC 之间折中           |
+| GAE             | $`\hat{A}_t^{\mathrm{GAE}}=\sum_k(\gamma\lambda)^k\delta_{t+k}`$                            | 在 TD 和 MC 之间折中           |
 | 重要性权重      | $\rho=\frac{\pi(a\mid s)}{b(a\mid s)}$                                                      | 异策略校正                     |
 | PPO 裁剪目标    | $L^{CLIP}=\mathbb{E}[\min(r_t\hat{A}_t,\mathrm{clip}(r_t,1-\epsilon,1+\epsilon)\hat{A}_t)]$ | 限制重要性权重极端变化         |
 

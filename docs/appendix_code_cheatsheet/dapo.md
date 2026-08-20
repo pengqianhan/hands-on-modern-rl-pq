@@ -1,56 +1,60 @@
-# C.8 DAPO
+# B.5 DAPO
 
-DAPO（Decoupled Clip and Dynamic Sampling Policy Optimization）是 2025 年字节跳动提出的 GRPO 改进，面试中出现频率快速上升。
-
----
-
-## DAPO vs GRPO：三个改进
-
-| 改进     | GRPO                             | DAPO                                   |
-| -------- | -------------------------------- | -------------------------------------- |
-| 裁剪策略 | 对称裁剪 `clip(ratio, 1-ε, 1+ε)` | **解耦裁剪**：正/负 advantage 分开裁剪 |
-| 采样策略 | 固定 prompt                      | **动态采样**：过滤全对/全错的 prompt   |
-| 超长惩罚 | 二元（超长=0 分）                | **渐进惩罚**：超长越多扣越多           |
+DAPO（Decoupled Clip and Dynamic sAmpling Policy Optimization）是 2025 年字节跳动提出的 GRPO 改进，针对长链推理 RL 训练中的四个痛点给出四把刀：解耦裁剪、动态采样、Token 级 loss、超长软惩罚。面试高频。
 
 ---
 
-## 解耦裁剪（Decoupled Clip）
+## 核心问题
+
+GRPO 训练长链推理模型时遇到四个问题：对称裁剪把好动作的探索压得太死；全对/全错的 prompt 浪费采样算力却给不出梯度；序列级 loss 让长回答被低估；超长回答一刀切扣成 0 分，边界无梯度。DAPO 用四个独立改动分别应对。
+
+## 核心变量
+
+- `ratio`：新旧策略概率比 $r = \exp(\text{new\_logp} - \text{old\_logp})$
+- `advantage`：组内 z-score $\hat{A}_{i,t} = (R_i - \bar R)/\mathrm{std}(R)$（与 GRPO 相同）
+- `ε_{low}`、`ε_{high}`：解耦裁剪的下/上界（论文典型 0.2 / 0.28）
+- `reward_std`：组内 reward 标准差，用于动态采样过滤
+- `max_len`、`buffer_len`、`penalty_factor`：超长软惩罚的阈值、缓冲区宽度、最大罚分
+
+## 一句话记忆
+
+> **四刀：clip 上下用不同 ε、全对/全错的 prompt 跳过、loss 拉平 token 级、超长线性软扣。**
+
+---
+
+## 四个改动对比
+
+| 改动      | GRPO                                | DAPO                                              |
+| --------- | ----------------------------------- | ------------------------------------------------- |
+| 裁剪      | 对称 `clip(r, 1-ε, 1+ε)`            | 解耦 `clip(r, 1-ε_{low}, 1+ε_{high})`，上界更松   |
+| 采样      | 全部 prompt 都用                    | 过滤组内 reward 方差为 0（全对/全错）的 prompt    |
+| loss 粒度 | 序列级（先 token-mean 再 seq-mean） | token 级（所有 token 直接求和再除以总 token 数）  |
+| 超长回答  | 直接 reward=0（二元突变）           | 软惩罚：超出缓冲区线性扣分，封顶 `penalty_factor` |
+
+---
+
+## 解耦裁剪（Clip-Higher）
+
+### 核心问题
+
+对称裁剪 `clip(r, 1-ε, 1+ε)` 在两边用同一个 ε。但正 advantage 的好动作值得鼓励更大步幅，上界 ε 应该更大；负 advantage 的坏动作要稳一点，下界 ε 可以更小。DAPO 把上下界解耦，让两个方向独立调探索力度。
 
 ### 一句话记忆
 
-> **正 advantage 只裁上界（不贪心），负 advantage 只裁下界（不报复）。GRPO 两边都裁，DAPO 只裁一边。**
+> **PPO 同款 min-clipped，但上下用不同 $\varepsilon$：上界 $\varepsilon_{high}$ 宽、下界 $\varepsilon_{low}$ 紧。**
 
 ### 伪代码
 
 ```
 ratio = exp(new_logp - old_logp)
 
-# 正 advantage: 鼓励变好，但不要太贪 → 只裁上界
-pos_surr = min(ratio, 1 + eps) * advantage    # advantage > 0
-
-# 负 advantage: 允许回弹，不要过度惩罚 → 只裁下界
-neg_surr = max(ratio, 1 - eps) * advantage    # advantage < 0
-
-loss = -mean(pos_surr + neg_surr)
+# PPO 同款 min-clipped，但 clip 上下界用不同 ε
+surr1   = ratio * advantage
+surr2   = clip(ratio, 1 - eps_low, 1 + eps_high) * advantage
+loss_t  = -min(surr1, surr2)            # per-token loss
 ```
 
-### 记忆方法
-
-画图对比：
-
-```
-GRPO (对称裁剪):
-  advantage > 0:  min(ratio, 1+ε) * A    ← 裁上界
-  advantage < 0:  max(ratio, 1-ε) * A    ← 裁下界
-  → 两边都裁，比较保守
-
-DAPO (解耦裁剪):
-  advantage > 0:  min(ratio, 1+ε_high) * A   ← 裁上界，ε_high 可以更大
-  advantage < 0:  max(ratio, 1-ε_low)  * A   ← 裁下界，ε_low 可以更小
-  → 允许独立调两个方向的探索力度
-```
-
-口诀：**"正优裁上防贪心，负优裁下防报复，两个 ε 各自调"**
+> 注：当 advantage > 0 时下界不起作用（被 min 吃掉），advantage < 0 时上界不起作用，因此效果等价于"正优势只裁上界、负优势只裁下界"，但写法上直接照搬 PPO 的 min-clipped 更接近论文。
 
 ### Python 实现
 
@@ -58,32 +62,18 @@ DAPO (解耦裁剪):
 import numpy as np
 
 def dapo_policy_loss(new_logp, old_logp, advantages,
-                     clip_high=0.28, clip_low=0.28):
+                     eps_low=0.2, eps_high=0.28):
     """
-    new_logp: [T]
-    old_logp: [T]
+    new_logp:   [T]
+    old_logp:   [T]
     advantages: [T]
-    clip_high: 正 advantage 的上界裁剪
-    clip_low:  负 advantage 的下界裁剪
+    返回 token 级 loss（求和除以 token 数）
     """
     ratio = np.exp(new_logp - old_logp)
-
-    pos_mask = advantages >= 0
-    neg_mask = ~pos_mask
-
-    loss = np.zeros_like(advantages)
-
-    # 正 advantage: 只裁上界
-    if pos_mask.any():
-        clipped_ratio = np.minimum(ratio[pos_mask], 1 + clip_high)
-        loss[pos_mask] = -(clipped_ratio * advantages[pos_mask])
-
-    # 负 advantage: 只裁下界
-    if neg_mask.any():
-        clipped_ratio = np.maximum(ratio[neg_mask], 1 - clip_low)
-        loss[neg_mask] = -(clipped_ratio * advantages[neg_mask])
-
-    return loss.mean()
+    surr1 = ratio * advantages
+    surr2 = np.clip(ratio, 1 - eps_low, 1 + eps_high) * advantages
+    loss_per_token = -np.minimum(surr1, surr2)
+    return loss_per_token.sum() / len(loss_per_token)
 ```
 
 ### PyTorch 实现
@@ -92,47 +82,40 @@ def dapo_policy_loss(new_logp, old_logp, advantages,
 import torch
 
 def dapo_policy_loss(new_logps, old_logps, advantages,
-                     clip_high=0.28, clip_low=0.28):
+                     eps_low=0.2, eps_high=0.28):
     """
     new_logps:  [B, seq_len]
     old_logps:  [B, seq_len]
     advantages: [B, seq_len]
     """
     ratio = torch.exp(new_logps - old_logps)
-
-    pos_mask = advantages >= 0
-    neg_mask = ~pos_mask
-
-    loss = torch.zeros_like(advantages)
-
-    # 正 advantage: min(ratio, 1 + clip_high) * advantage
-    if pos_mask.any():
-        clipped = torch.clamp(ratio[pos_mask], max=1 + clip_high)
-        loss[pos_mask] = -(clipped * advantages[pos_mask])
-
-    # 负 advantage: max(ratio, 1 - clip_low) * advantage
-    if neg_mask.any():
-        clipped = torch.clamp(ratio[neg_mask], min=1 - clip_low)
-        loss[neg_mask] = -(clipped * advantages[neg_mask])
-
-    return loss.mean()
+    surr1 = ratio * advantages
+    surr2 = torch.clamp(ratio, 1 - eps_low, 1 + eps_high) * advantages
+    loss_per_token = -torch.minimum(surr1, surr2)
+    return loss_per_token.sum() / loss_per_token.numel()
 ```
 
 ---
 
 ## 动态采样（Dynamic Sampling）
 
+### 核心问题
+
+GRPO 的 advantage 是组内 z-score。若某 prompt 下 G 条回答全对或全错，组内 reward 方差为 0，z-score 退化，这条 prompt 给不出任何梯度信号却白白消耗采样算力。DAPO 在数据层面提前过滤这些无效 prompt，并继续采样直到 batch 填满有效样本。
+
 ### 一句话记忆
 
-> **如果同一个 prompt 的 G 条回答 reward 全一样（全对或全错），这个 prompt 不参与训练——没有区分度。**
+> **组内 reward 方差为 0（全对/全错）→ 没梯度信号 → 跳过，继续采到填满 batch。**
 
 ### 伪代码
 
 ```
-for each prompt:
-    rewards = [get_reward(completion) for completion in group]
-    if all rewards are the same:
-        skip this prompt  # 无区分度，训练信号为 0
+# 每个 prompt 采 G 条回答并打分
+rewards = [get_reward(c) for c in group]      # [G]
+
+# 组内 reward 全相同 → 跳过，继续采新 prompt 补位
+if std(rewards) == 0:
+    skip this prompt and resample
 ```
 
 ### PyTorch 实现
@@ -141,93 +124,121 @@ for each prompt:
 def dynamic_sampling_filter(rewards):
     """
     rewards: [B, G]  B 个 prompt，每个 G 条回答的 reward
-    返回: bool mask [B]，True = 保留
+    返回 bool mask [B]，True = 保留
     """
-    reward_std = rewards.std(dim=1)  # 每组的 reward 标准差
-    return reward_std > 1e-6         # 有区分度才保留
+    return rewards.std(dim=1) > 1e-6
 ```
-
-### 记忆方法
-
-GRPO 的 advantage 是组内 z-score 归一化。如果全组 reward 一样，std=0，advantage 全是 NaN/0。DAPO 直接在数据层面过滤掉这些无效样本，而不是等到 loss 计算时才发现问题。
 
 ---
 
-## 超长惩罚（Overlong Reward Shaping）
+## Token 级 Loss
+
+### 核心问题
+
+GRPO 默认按序列级聚合 loss：先对每条回答的 token 求平均得到序列 loss，再对序列求平均。这会让长回答（token 多）和短回答在最终 loss 里权重相同，长回答里的细节 token 被低估。DAPO 改成 token 级聚合：所有回答的所有 token 直接求和，再除以总 token 数，长回答自然贡献更多梯度。
 
 ### 一句话记忆
 
-> **超长不是一刀切扣到 0，而是按超出比例线性扣分。**
+> **别先 seq-mean——所有 token 拉平求和除以总数，长回答不被压低。**
 
 ### 伪代码
 
 ```
-if response_length > max_length:
-    penalty_ratio = (response_length - max_length) / max_length
-    reward = reward - penalty_weight * penalty_ratio
+loss_mat = -min(ratio*A, clip(ratio, 1-eps_low, 1+eps_high)*A)   # [B, T]
+
+# GRPO: 先 token-mean 再 seq-mean  →  长序列被压平
+seq_loss = mean(loss_mat, dim=token)        # 每条序列一个值
+loss_grpo = mean(seq_loss)
+
+# DAPO: 所有 token 拉平
+loss_dapo = sum(loss_mat) / total_num_tokens
+```
+
+### PyTorch 实现
+
+```python
+def token_level_loss(loss_mat, loss_mask):
+    """
+    loss_mat:  [B, T]  per-token policy loss
+    loss_mask: [B, T]  1 for valid token, 0 for padding
+    返回 token 级聚合的 loss
+    """
+    return (loss_mat * loss_mask).sum() / loss_mask.sum()
+```
+
+---
+
+## 超长软惩罚（Soft Overlong Punishment）
+
+### 核心问题
+
+GRPO 对超过最大长度的回答一刀切置零，边界处无梯度信号——策略只知道"被罚了"，不知道"短一点会更好"。DAPO 引入一段缓冲区：长度在 `[max_len - buffer_len, max_len]` 区间内不罚，超过 `max_len - buffer_len` 后线性扣分，扣到 `-penalty_factor` 封顶，给策略一个连续可微的方向信号。
+
+### 一句话记忆
+
+> **超过 `max_len − buffer_len` 后按比例线性扣，`-penalty_factor` 封顶——不一刀切零。**
+
+### 伪代码
+
+```
+expected_len = max_len - buffer_len
+exceed_len   = response_length - expected_len
+
+if exceed_len > 0:
+    # 线性罚分：超出越多扣越多，封顶 -penalty_factor（不会无限扣）
+    penalty = max(-penalty_factor, -(exceed_len / buffer_len) * penalty_factor)
+    reward = reward + penalty        # penalty ≤ 0
 ```
 
 ### Python 实现
 
 ```python
-def overlong_reward_shaping(reward, response_length,
-                            max_length, penalty_weight=0.1):
-    if response_length <= max_length:
-        return reward
-    penalty = penalty_weight * (response_length - max_length) / max_length
-    return reward - penalty
+def soft_overlong_penalty(response_length, max_len,
+                          buffer_len, penalty_factor=1.0):
+    """返回罚分（≤0），加到原始 reward 上"""
+    expected_len = max_len - buffer_len
+    exceed_len = response_length - expected_len
+    if exceed_len <= 0:
+        return 0.0
+    linear = -(exceed_len / buffer_len) * penalty_factor
+    return max(-penalty_factor, linear)        # 封顶，不无限扣
 ```
-
-### 记忆方法
-
-对比 GRPO 的做法：
-
-- GRPO：超长 → reward = 0（二元，突变）
-- DAPO：超长 → reward 线性递减（平滑，有梯度信号）
-
-RL 视角：二元奖励在边界处没有梯度，策略不知道"短一点就好了"。线性惩罚给出方向信号。
 
 ---
 
-## DAPO 总 Loss
+## DAPO 总 Loss 草图
 
 ```
-# 1. 组内归一化（和 GRPO 相同）
-advantages = (rewards - mean) / (std + eps)
+# 1. 组内 z-score 归一化（与 GRPO 相同）
+advantages = (rewards - rewards.mean(dim=G)) / (rewards.std(dim=G) + eps)
 
 # 2. 动态采样过滤
-valid_mask = dynamic_sampling_filter(rewards)
+valid = dynamic_sampling_filter(rewards)        # 丢掉全对/全错的 prompt
 
-# 3. 解耦裁剪 policy loss
-policy_loss = dapo_policy_loss(new_logp, old_logp, advantages, clip_high, clip_low)
+# 3. 解耦裁剪 + token 级 loss
+ratio = exp(new_logp - old_logp)
+surr1 = ratio * advantages
+surr2 = clip(ratio, 1 - eps_low, 1 + eps_high) * advantages
+loss_mat = -minimum(surr1, surr2)               # per-token
 
-# 4. KL 惩罚
-kl = kl_penalty(log_probs, ref_log_probs)
+# 4. token 级聚合（关键改动，长回答不被低估）
+policy_loss = (loss_mat * mask)[valid].sum() / mask[valid].sum()
 
-# 5. 总 loss
-loss = policy_loss[valid_mask].mean() + kl_coeff * kl
+# 5. KL 惩罚（与 GRPO 相同）
+kl = ((exp(ref_logp - new_logp) - 1) - (ref_logp - new_logp)).mean()
+
+loss = policy_loss + kl_coeff * kl
 ```
-
----
-
-## GRPO vs DAPO 完整对比
-
-| 维度       | GRPO                     | DAPO                             |
-| ---------- | ------------------------ | -------------------------------- |
-| 裁剪       | 对称 `clip(r, 1-ε, 1+ε)` | 解耦，正/负 advantage 各自一个 ε |
-| 无效数据   | 不处理（std=0 时 NaN）   | 动态采样过滤                     |
-| 超长奖励   | 二元（0/1）              | 渐进线性惩罚                     |
-| 探索灵活性 | 固定                     | 正方向可以更激进，负方向更保守   |
-| 代表工作   | DeepSeek-R1              | ByteDance/清华 DAPO              |
 
 ---
 
 ## 易错点
 
-| 易错                               | 说明                                                   |
-| ---------------------------------- | ------------------------------------------------------ |
-| 解耦裁剪不是取消裁剪               | 仍然有裁剪，只是正/负方向独立，ε 可以不同              |
-| 动态采样的判断条件                 | 不是"reward 低于阈值"，而是"组内 reward **方差为零**"  |
-| 超长惩罚是线性不是指数             | 简单的 `(len - max_len) / max_len`，不需要更复杂的形式 |
-| DAPO 的 advantage 仍然是组内归一化 | 这部分和 GRPO 完全一样                                 |
-| clip_high 和 clip_low 可以不同     | 面试追问时说"可以根据任务调整两个方向的探索力度"       |
+| 易错                                         | 说明                                                                   |
+| -------------------------------------------- | ---------------------------------------------------------------------- |
+| 解耦裁剪 ≠ 取消裁剪                          | 仍然是 PPO 的 `min(r*A, clip(r,lo,hi)*A)`，只是上下界用不同 $\epsilon$ |
+| 正/负 advantage 各自只受一个 $\epsilon$ 约束 | A>0 时下界无效、A<0 时上界无效（min 会吃掉），所以"正优裁上、负优裁下" |
+| 动态采样的判定                               | 不是"reward 低于阈值"，而是"组内 reward **方差为 0**"                  |
+| Token 级 loss 是第四个关键改动               | GRPO 是序列级聚合，DAPO 是 token 级聚合，长回答权重更高                |
+| 超长软惩罚是线性不是指数                     | 简单的 `exceed_len / buffer_len`，封顶 `-penalty_factor`               |
+| Advantage 仍是组内归一化                     | 这部分和 GRPO 完全一样，DAPO 没动                                      |

@@ -1,9 +1,8 @@
 ---
-title: 3.4 DP, MC, and TD
+title: 4.1 DP, MC, and TD
 ---
 
-# 3.4 DP, MC, and TD: Three Methods for Value Estimation
-
+# 4.1 Dynamic Programming, Monte Carlo and TD
 ## Section Preview
 
 **Key Ideas**
@@ -562,7 +561,7 @@ The TD error is the difference between a value estimate and the one-step Bellman
 
 DP, MC, and TD are not three unrelated algorithms. They are three ways to solve the same problem under different information constraints.
 
-They share the same starting point: the Bellman expectation equation (Section 3.3):
+They share the same starting point: the Bellman expectation equation (Section 3.1):
 
 $$
 V^\pi(s) = \mathbb{E}_\pi\left[R_{t+1} + \gamma V^\pi(S_{t+1}) \mid S_t = s\right].

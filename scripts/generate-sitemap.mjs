@@ -2,7 +2,8 @@
 
 import fs from 'fs'
 import path from 'path'
-import { fileURLToPath } from 'url'
+import matter from 'gray-matter'
+import { fileURLToPath, pathToFileURL } from 'url'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -11,6 +12,7 @@ const docsDir = path.join(rootDir, 'docs')
 const publicDir = path.join(docsDir, 'public')
 const packageJsonPath = path.join(rootDir, 'package.json')
 const packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'))
+const ignoredDirectoryNames = new Set(['.vitepress', 'public', 'node_modules'])
 
 function parseRepository() {
   const repositoryUrl =
@@ -54,7 +56,20 @@ function getSiteUrl() {
   return `https://${owner}.github.io/${repo}`
 }
 
-function scanMarkdownFiles(dir, basePath = '') {
+function shouldIgnoreDirectory(name) {
+  return ignoredDirectoryNames.has(name) || name.startsWith('_archive')
+}
+
+function shouldIncludeMarkdownFile(fullPath, relativePath) {
+  const basename = path.basename(relativePath)
+  if (!basename.endsWith('.md') || basename.startsWith('_archive')) {
+    return false
+  }
+
+  return matter(fs.readFileSync(fullPath, 'utf8')).data.sitemap !== false
+}
+
+export function scanMarkdownFiles(dir, basePath = '') {
   const files = []
   const entries = fs.readdirSync(dir, { withFileTypes: true })
 
@@ -63,14 +78,14 @@ function scanMarkdownFiles(dir, basePath = '') {
     const relativePath = path.join(basePath, entry.name)
 
     if (entry.isDirectory()) {
-      if (['.vitepress', 'public', 'node_modules'].includes(entry.name)) {
+      if (shouldIgnoreDirectory(entry.name)) {
         continue
       }
       files.push(...scanMarkdownFiles(fullPath, relativePath))
       continue
     }
 
-    if (entry.isFile() && entry.name.endsWith('.md')) {
+    if (entry.isFile() && shouldIncludeMarkdownFile(fullPath, relativePath)) {
       files.push(relativePath)
     }
   }
@@ -149,4 +164,9 @@ function main() {
   console.log(`Generated sitemap for ${urls.length} pages`)
 }
 
-main()
+if (
+  process.argv[1] &&
+  import.meta.url === pathToFileURL(process.argv[1]).href
+) {
+  main()
+}

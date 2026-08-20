@@ -2,9 +2,9 @@
 search: false
 ---
 
-# 旧页：分布式并行策略（已并入 B.1）
+# 分布式并行策略（已并入 B.1）
 
-> 这一页保留为旧链接入口。核心内容已经合并到 [B.1 RL 训练系统：采样、异步与分布式](./rl-infrastructure) 的“分布式并行与显存优化”部分。下面保留原文，方便从旧链接进入的读者对照。
+> 这一页保留为旧链接入口。核心内容已经合并到[附录 A.2 训练系统底座](./rl-infrastructure)的“分布式并行与显存优化”部分。下面保留原文，方便从旧链接进入的读者对照。
 
 > PPO 训练需要同时加载 4 个模型（Actor、Critic、Reference、Reward Model）。7B 模型 FP16 每个 ~14GB，4 个就是 ~56GB，一张 A100（80GB）装不下。更大的模型更不用说了。
 >
@@ -75,7 +75,7 @@ RL 训练（PPO/GRPO）比普通微调复杂，因为要同时管理多个模型
 
 **Training 阶段是计算密集型**：反向传播需要大量 GPU。
 
-**两个阶段对 GPU 的需求是波动的**：Rollout 时训练闲置，反之亦然。解法是异步架构——Rollout 和训练用不同的 GPU 组，详见 [B.1 RL 训练系统](./rl-infrastructure) 中的异步训练架构部分。
+**两个阶段对 GPU 的需求是波动的**：Rollout 时训练闲置，反之亦然。解法是异步架构——Rollout 和训练用不同的 GPU 组，详见 [A.2 RL 训练系统](./rl-infrastructure) 中的异步训练架构部分。
 
 **显存优化技巧**：
 
@@ -85,7 +85,7 @@ RL 训练（PPO/GRPO）比普通微调复杂，因为要同时管理多个模型
 | LoRA Rollout           | 推理时只加载 LoRA adapter           | ~50%           |
 | Gradient Checkpointing | 重计算代替存储中间激活              | ~40%（换时间） |
 
-## 前沿：MoE 和 PRM 带来的新问题
+## MoE 和 PRM 带来的新问题
 
 **MoE 路由不一致**：MoE 模型有多个专家网络，训练框架（Megatron）和推理框架（vLLM）对 Router 的浮点计算有微小差异，可能导致同一个 token 在训练时走 Expert A、推理时走 Expert B——梯度方向直接错了。DeepSeek-V3.2 的解法叫 Keep Routing：推理时记录路由决策，训练时强制执行相同路径。
 

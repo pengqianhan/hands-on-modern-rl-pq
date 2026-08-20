@@ -1,48 +1,48 @@
 ---
-title: C.2 PPO and GAE
+title: B.2 PPO and GAE
 ---
 
-# C.2 PPO and GAE
+# B.2 PPO and GAE
 
-PPO is one of the most frequently tested algorithms in LLM RL interviews. Interviewers often ask you to write the **clipped policy loss**, and then follow up with the value loss and GAE.
+PPO is the most frequently tested algorithm in LLM RL interviews. Interviewers typically ask you to write the **clipped policy loss**, and may follow up with the value loss and GAE.
 
 ---
 
 ## GAE (Generalized Advantage Estimation)
 
+**Core problem**: combine multi-step future returns into a low-variance advantage estimate $\hat{A}_t$ that tells the actor how much better than average this step was.
+
+**Core variables**:
+
+- `delta_t`: TD error $\delta_t = r_t + \gamma V(s_{t+1}) - V(s_t)$, the one-step "surprise"
+- `advantage_t`: accumulated advantage $\hat{A}_t$, computed backward
+- `gamma` ($\gamma$): discount factor, controls how far ahead we look
+- `lambda` ($\lambda$): bias-variance tradeoff; $\lambda=0$ reduces to TD(0), $\lambda=1$ to Monte-Carlo
+- `done_t`: episode-end flag, cuts the recursion across episodes
+
 ### One-Line Memory
 
-> Sweep backward: $\hat{A}_t = \delta_t + \gamma\lambda \hat{A}_{t+1}$, where $\delta_t = r_t + \gamma V(s_{t+1}) - V(s_t)$.
-
-GAE is prerequisite knowledge for PPO, and is often asked on its own.
+> Sweep backward: $\hat{A}_t = \delta_t + \gamma\lambda \hat{A}_{t+1}$.
 
 ### Pseudocode
 
 ```
-delta_t = reward_t + gamma * value_{t+1} * (1 - done_t) - value_t
+delta_t     = reward_t + gamma * value_{t+1} * (1 - done_t) - value_t
 advantage_t = delta_t + gamma * lambda * (1 - done_t) * advantage_{t+1}
-return_t = advantage_t + value_t
+return_t    = advantage_t + value_t
 ```
 
-### Intuition
+$\lambda = 0$ uses only one-step TD (low variance, high bias); $\lambda = 1$ sums all $\delta$ (high variance, low bias).
 
-You can view GAE as an exponentially weighted moving average over TD errors:
-
-- $\lambda = 0$: reduces to one-step TD (only $\delta_t$), low variance, higher bias
-- $\lambda = 1$: reduces to Monte Carlo-style returns (sums many $\delta$), higher variance, lower bias
-
-Mnemonic: "larger $\lambda$ means you dare to look further into the future."
-
-### Python (NumPy) Implementation
+### Python Implementation
 
 ```python
 import numpy as np
 
-
 def compute_gae(rewards, values, dones, gamma=0.99, lam=0.95):
     """
     rewards: [T]
-    values:  [T+1] (the last element is the bootstrap value)
+    values:  [T+1]  (last element is the bootstrap value)
     dones:   [T]
     """
     T = len(rewards)
@@ -62,7 +62,6 @@ def compute_gae(rewards, values, dones, gamma=0.99, lam=0.95):
 
 ```python
 import torch
-
 
 def compute_gae(rewards, values, dones, gamma=0.99, lam=0.95):
     """
@@ -87,9 +86,18 @@ def compute_gae(rewards, values, dones, gamma=0.99, lam=0.95):
 
 ## PPO Clipped Policy Loss
 
+**Core problem**: make policy improvement within a "trust region," using clip to approximate the KL constraint so that a single update can reuse old data (importance sampling) without blowing up when the ratio is large.
+
+**Core variables**:
+
+- `ratio`: $r_t(\theta) = \pi_\theta(a_t\mid s_t) / \pi_{\theta_{old}}(a_t\mid s_t)$, the new/old policy ratio (denominator is the sampling policy)
+- `advantage`: $\hat{A}_t$, from GAE
+- `eps` ($\epsilon$): clip range, typically `0.1` or `0.2`
+- `new_log_prob` / `old_log_prob`: log-probs under the current and sampling policies
+
 ### One-Line Memory
 
-> Multiply `ratio` by `advantage`. Clip `ratio` to $[1-\epsilon, 1+\epsilon]$. Take the more conservative of the two (the minimum).
+> Ratio $r_t = \pi_{new}/\pi_{old}$, clipped to $[1-\epsilon, 1+\epsilon]$; take min of the raw and clipped surrogate — trust only the more conservative one.
 
 $$L^{CLIP} = -\min\big(r_t(\theta) \cdot A_t,\;\text{clip}(r_t(\theta), 1-\epsilon, 1+\epsilon) \cdot A_t\big)$$
 
@@ -99,28 +107,20 @@ $$L^{CLIP} = -\min\big(r_t(\theta) \cdot A_t,\;\text{clip}(r_t(\theta), 1-\epsil
 ratio = exp(new_log_prob - old_log_prob)
 surr1 = ratio * advantage
 surr2 = clip(ratio, 1-eps, 1+eps) * advantage
-loss = -min(surr1, surr2).mean()
+loss  = -min(surr1, surr2).mean()
 ```
 
-### Intuition
+When `advantage > 0` the upper bound of ratio is clipped; when `advantage < 0` the lower bound is clipped; `min` keeps the more conservative target.
 
-Think of `ratio` on a number line:
-
-- When `advantage > 0`: improving the action should be encouraged, but once `ratio > 1+eps` we stop being greedy.
-- When `advantage < 0`: discouraging the action is fine, but once `ratio < 1-eps` we stop being vengeful.
-
-Mnemonic: "positive advantage clips the top; negative advantage clips the bottom; `min` keeps it conservative."
-
-### Python (NumPy) Implementation
+### Python Implementation
 
 ```python
 import numpy as np
 
-
 def ppo_policy_loss(new_logp, old_logp, advantages, clip_eps=0.2):
     """
-    new_logp:   [T] log-probs under the current policy
-    old_logp:   [T] log-probs under the behavior (sampling) policy
+    new_logp:   [T]  log-probs under the current policy
+    old_logp:   [T]  log-probs under the sampling policy
     advantages: [T]
     """
     ratio = np.exp(new_logp - old_logp)
@@ -134,12 +134,11 @@ def ppo_policy_loss(new_logp, old_logp, advantages, clip_eps=0.2):
 ```python
 import torch
 
-
 def ppo_policy_loss(new_logps, old_logps, advantages, clip_eps=0.2):
     """
-    new_logps:  [B, T]
-    old_logps:  [B, T]
-    advantages: [B, T]
+    new_logps:   [B, T]
+    old_logps:   [B, T]
+    advantages:  [B, T]
     """
     ratio = torch.exp(new_logps - old_logps)
     surr1 = ratio * advantages
@@ -151,26 +150,31 @@ def ppo_policy_loss(new_logps, old_logps, advantages, clip_eps=0.2):
 
 ## PPO Value Loss
 
+**Core problem**: train the critic to predict accumulated returns $V(s)$ accurately, and prevent it from drifting too far in a single update (value clipping).
+
+**Core variables**:
+
+- `value_pred`: critic's current prediction of $V(s_t)$
+- `old_values`: critic's prediction at sampling time, used as the clip reference
+- `returns`: $R_t = \hat{A}_t + V_{old}(s_t)$, regression target from GAE
+- `eps`: clip range, shared with the policy loss
+
 ### One-Line Memory
 
-> MSE between $V$ and `returns`. Optional clipping: keep the new value prediction close to the old one.
+> $(V_{pred} - R)^2$ averaged; optional clip: don't let the new prediction stray past $\epsilon$ from the old one.
 
 ### Pseudocode
 
 ```
-value_pred = critic(state)
 value_clipped = old_values + clip(value_pred - old_values, -eps, eps)
-loss1 = (value_pred - returns)^2
+loss1 = (value_pred    - returns)^2
 loss2 = (value_clipped - returns)^2
-loss = max(loss1, loss2).mean()    # take the larger one = more conservative
+loss  = 0.5 * max(loss1, loss2).mean()
 ```
 
 ### PyTorch Implementation
 
 ```python
-import torch
-
-
 def ppo_value_loss(values, old_values, returns, clip_eps=0.2):
     loss1 = (values - returns) ** 2
     values_clipped = old_values + torch.clamp(values - old_values, -clip_eps, clip_eps)
@@ -183,27 +187,30 @@ def ppo_value_loss(values, old_values, returns, clip_eps=0.2):
 ## Total PPO Loss
 
 ```
-total_loss = policy_loss + value_coeff * value_loss - entropy_coeff * entropy
+total_loss = policy_loss + vf_coeff * value_loss - ent_coeff * entropy
 ```
 
-If the interviewer asks for the full “three-piece set,” it is:
+| Component           | Purpose               | Typical coefficient |
+| ------------------- | --------------------- | ------------------- |
+| clipped policy loss | update the policy     | `1.0`               |
+| value loss (MSE)    | update the critic     | `vf_coef=0.5`       |
+| entropy bonus       | encourage exploration | `ent_coef=0.01`     |
 
-| Component           | Purpose                 | Typical coefficient |
-| ------------------- | ----------------------- | ------------------- |
-| clipped policy loss | update the actor/policy | weight 1.0          |
-| value loss (MSE)    | update the critic       | `vf_coef=0.5`       |
-| entropy bonus       | encourage exploration   | `ent_coef=0.01`     |
+A minus sign precedes entropy: maximizing entropy is equivalent to subtracting it from the loss.
 
 ---
 
 ## Common Pitfalls
 
-| Pitfall                       | Explanation                                                                                   |
-| ----------------------------- | --------------------------------------------------------------------------------------------- |
-| Using division for `ratio`    | Prefer `exp(logp_new - logp_old)`; it is more numerically stable.                             |
-| Advantages not normalized     | In practice, advantages are often normalized within a batch.                                  |
-| `min` vs `max` confusion      | Policy loss uses `min` (conservative). Value loss uses `max` (also conservative).             |
-| Forgot to stop gradients      | `old_log_probs` and `old_values` should be `.detach()`'d.                                     |
-| Missing `done` masking in GAE | When `done=1`, cut the recursion: multiply by `(1-done)`.                                     |
-| Missing bootstrap value       | `values` should have length `T+1`; the last value is the bootstrap.                           |
-| Wrong entropy sign            | Entropy is positive; use `- entropy_coeff * entropy` in the loss to encourage higher entropy. |
+| Pitfall                       | Explanation                                                                                                   |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| Using division for `ratio`    | Use `exp(logp_new - logp_old)`; it is more numerically stable.                                                |
+| Wrong `ratio` denominator     | The denominator must be the sampling policy $\pi_{old}$, not the current policy.                              |
+| Wrong clip range              | It is $[1-\epsilon, 1+\epsilon]$ around 1, not $[-\epsilon, \epsilon]$ around 0.                              |
+| `min`/`max` confusion         | Policy loss takes `min` over the **two surrogates** (conservative); value loss takes `max` over the two MSEs. |
+| Forgot to stop gradients      | `old_log_probs` and `old_values` should be `.detach()`'d.                                                     |
+| Advantages not normalized     | In practice, advantages are usually normalized within a batch (mean 0, std 1).                                |
+| GAE direction                 | Must be computed backward, starting from the last timestep.                                                   |
+| Missing `done` masking in GAE | When `done=1`, cut the recursion: multiply by `gamma * lambda * (1-done)`.                                    |
+| Missing bootstrap value       | `values` should have length `T+1`; the last value is the bootstrap.                                           |
+| Wrong entropy sign            | `- ent_coeff * entropy` (entropy is positive; the minus sign in the loss encourages higher entropy).          |

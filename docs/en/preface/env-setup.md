@@ -2,7 +2,7 @@
 title: Environment Setup Guide
 ---
 
-# Environment Setup Guide
+# Environment Setup
 
 > **Goal of this section**: build a complete development environment for this course from scratch, covering Python, PyTorch, the RL toolchain, and LLM training frameworks. Follow the steps end to end, and you will be able to run every experiment in the book.
 
@@ -38,6 +38,7 @@ import torch
 
 print(f"PyTorch: {torch.__version__}")
 print(f"CUDA:    {torch.cuda.is_available()}")
+print(f"MPS:     {torch.backends.mps.is_available()}")
 
 env = gym.make("CartPole-v1", render_mode="human")
 obs, info = env.reset()
@@ -51,7 +52,7 @@ print("Minimal environment verified!")
 ```
 
 ::: details No GPU? You can still run the course.
-The first half of the course (CartPole, DQN, etc.) can be trained on CPU; a GPU is not required. The second half on LLM fine-tuning (Chapters 7-10) recommends at least 24 GB of VRAM, or you can use the free GPUs on [Google Colab](https://colab.research.google.com/).
+The first half of the course (CartPole, DQN, etc.) can be trained on CPU; a GPU is not required. The second half on LLM fine-tuning (Chapters 7-10) recommends at least 24 GB of VRAM, or you can use a cloud GPU environment in [ModelScope Notebook](https://modelscope.cn/my/mynotebook).
 :::
 
 ---
@@ -203,7 +204,7 @@ pip install mlagents
 python -c "from mlagents_envs.environment import UnityEnvironment; print('ML-Agents ready')"
 ```
 
-Using ML-Agents also requires downloading or building Unity environments (`.exe` / `.app` / Linux executables). Pre-built environments are available from [ML-Agents GitHub Releases](https://github.com/Unity-Technologies/ml-agents/releases). For detailed usage instructions, see [Learning Resources and Reproduction Projects](../appendix_game_projects/intro).
+Using ML-Agents also requires downloading or building Unity environments (`.exe` / `.app` / Linux executables). Pre-built environments are available from [ML-Agents GitHub Releases](https://github.com/Unity-Technologies/ml-agents/releases). For detailed usage instructions, see [Learning Resources and Reproduction Projects](../appendix_game_projects/game-projects).
 
 ::: tip Unity ML-Agents use cases
 The unique value of ML-Agents is **3D spatial reasoning**: Atari uses 2D pixels, CartPole uses low-dimensional vectors, while ML-Agents provides a complete 3D physics environment (gravity, collisions, occlusion). If your research involves visual navigation, spatial reasoning, or multi-agent 3D coordination, ML-Agents is a strong complement to Gymnasium/PyBullet.
@@ -231,7 +232,7 @@ pip install lm-eval
 If you encounter version conflicts, you can install a tested combination with the following command:
 
 ```bash
-pip install "transformers==4.57.3" "trl==0.24.0" "datasets==4.4.1" "accelerate==1.10.1" "peft==0.17.1"
+pip install "transformers==4.57.3" "trl==0.23.0" "datasets==4.4.1" "accelerate==1.10.1" "peft==0.17.1"
 ```
 
 :::

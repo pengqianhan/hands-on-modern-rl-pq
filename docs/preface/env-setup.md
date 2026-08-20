@@ -1,4 +1,10 @@
-# 环境安装指南
+# 环境配置
+
+::: tip 请编码助手帮你安装
+如果你正在使用 Codex 等编码助手，可以先和它说清楚你的学习目标，再请它完成安装：
+
+> 你好，我准备开始学习这门强化学习课程，想先把实验环境配置好。请帮我检查操作系统、Python 版本和 GPU/CUDA 情况，创建名为 `rl-course` 的 Python 3.10 环境，安装课程最小可运行环境所需的依赖，然后运行 CartPole 验证程序。遇到安装问题时请继续排查和修复；如果需要管理员权限或修改系统级配置，请先征求我的确认。
+:::
 
 > **本节目标**：从零开始搭建本课程所需的完整开发环境，涵盖 Python、PyTorch、RL 工具链和 LLM 训练框架。跟着步骤走完，你就能跑通全书所有实验。
 
@@ -34,6 +40,7 @@ import torch
 
 print(f"PyTorch: {torch.__version__}")
 print(f"CUDA:    {torch.cuda.is_available()}")
+print(f"MPS:     {torch.backends.mps.is_available()}")
 
 env = gym.make("CartPole-v1", render_mode="human")
 obs, info = env.reset()
@@ -47,7 +54,7 @@ print("最小环境验证通过！")
 ```
 
 ::: details 没有 GPU 也能跑
-课程前半部分（CartPole、DQN 等）CPU 即可训练，不强制要求 GPU。后半部分 LLM 微调（Ch7-Ch10）建议至少 24 GB 显存，也可以用 [Google Colab](https://colab.research.google.com/) 免费 GPU 完成。
+课程前半部分（CartPole、DQN 等）CPU 即可训练，不强制要求 GPU。后半部分 LLM 微调（Ch7-Ch10）建议至少 24 GB 显存，也可以用 [魔搭 Notebook](https://modelscope.cn/my/mynotebook) 的云端 GPU 环境完成。
 :::
 
 ---
@@ -59,11 +66,11 @@ print("最小环境验证通过！")
 推荐使用 **Python 3.10+**（3.10、3.11 或 3.12 均可）。我们建议用 conda 管理环境，方便切换 CUDA 版本。
 
 ```bash
-# 方式一：使用 conda（推荐）
+# 使用 conda（推荐）
 conda create -n rl-course python=3.10 -y
 conda activate rl-course
 
-# 方式二：使用 venv（轻量级）
+# 使用 venv（轻量级）
 python3.10 -m venv rl-course
 source rl-course/bin/activate  # Linux/macOS
 # rl-course\Scripts\activate   # Windows
@@ -136,17 +143,17 @@ pip install tqdm tensorboard wandb
 不同章节用到不同的仿真环境，可以按需安装。
 
 ```bash
-# 第11章：PyBullet 机器人仿真
+# PyBullet 机器人仿真
 pip install pybullet
 
-# 第4章：Atari 游戏（需要 ale-py）
+# Atari 游戏（需要 ale-py）
 pip install "gymnasium[atari,accept-rom-license]"
 pip install ale-py
 
-# 第4章：ViZDoom 第一人称3D
+# ViZDoom 第一人称3D
 pip install vizdoom
 
-# 第4章：stable-retro（经典游戏）
+# stable-retro（经典游戏）
 pip install stable-retro
 ```
 
@@ -199,7 +206,7 @@ pip install mlagents
 python -c "from mlagents_envs.environment import UnityEnvironment; print('ML-Agents ready')"
 ```
 
-使用 ML-Agents 需要下载或自行构建 Unity 环境（`.exe` / `.app` / Linux 可执行文件）。预构建环境可从 [ML-Agents GitHub Releases](https://github.com/Unity-Technologies/ml-agents/releases) 获取。详细使用方式参见[学习资料与复现项目推荐](../appendix_game_projects/intro)。
+使用 ML-Agents 需要下载或自行构建 Unity 环境（`.exe` / `.app` / Linux 可执行文件）。预构建环境可从 [ML-Agents GitHub Releases](https://github.com/Unity-Technologies/ml-agents/releases) 获取。详细使用方式参见[学习资料与复现项目推荐](../appendix_paper_reading/learning-resources)。
 
 ::: tip Unity ML-Agents 适用场景
 ML-Agents 的独特价值在于**3D 空间推理**：Atari 是 2D 像素，CartPole 是低维向量，而 ML-Agents 提供完整的 3D 物理环境（重力、碰撞、遮挡）。如果你的研究涉及视觉导航、空间推理或多智能体 3D 协作，ML-Agents 是 Gymnasium/PyBullet 之外的有力补充。
@@ -227,7 +234,7 @@ pip install lm-eval
 如果遇到版本冲突，可以用以下命令安装经过测试的版本组合：
 
 ```bash
-pip install "transformers==4.57.3" "trl==0.24.0" "datasets==4.4.1" "accelerate==1.10.1" "peft==0.17.1"
+pip install "transformers==4.57.3" "trl==0.23.0" "datasets==4.4.1" "accelerate==1.10.1" "peft==0.17.1"
 ```
 
 :::
@@ -263,7 +270,7 @@ print("=" * 50)
 
 ## 常见安装问题与修复
 
-### 问题 1：CUDA 版本不匹配
+### CUDA 版本不匹配
 
 **症状**：`RuntimeError: CUDA out of memory` 或 `Found no NVIDIA driver`
 
@@ -279,7 +286,7 @@ pip uninstall torch torchvision -y
 # 再安装匹配的版本（参见 PyTorch 安装节）
 ```
 
-### 问题 2：包版本冲突
+### 包版本冲突
 
 **症状**：`ImportError` 或 `AttributeError`，提示某个包版本不对。
 
@@ -291,7 +298,7 @@ pip list | grep -E "torch|gymnasium|transformers|trl"
 pip install --force-reinstall <包名>
 ```
 
-### 问题 3：Apple Silicon (M 系列芯片) 兼容性
+### Apple Silicon (M 系列芯片) 兼容性
 
 ```bash
 # M 系列芯片使用 MPS 加速
@@ -303,7 +310,7 @@ python -c "import platform; print(platform.processor())"
 # export PYOPENGL_PLATFORM=egl
 ```
 
-### 问题 4：MuJoCo 渲染失败
+### MuJoCo 渲染失败
 
 ```bash
 # 无头服务器上设置环境变量

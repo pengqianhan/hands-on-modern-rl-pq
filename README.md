@@ -1,6 +1,6 @@
 <div align="center">
   <img src="docs/public/readme/readmelogo.png" alt="Hands-On Modern RL" width="500" />
-  <p><em>A practice-first guide to modern RL, from classic control to LLM post-training, RLVR, and multimodal agents.</em></p>
+  <p><em>From Markov decision processes and policy optimization to reasoning models, agents, and multimodal systems</em></p>
 
   <p>
     <a href="https://walkinglabs.github.io/hands-on-modern-rl/"><img src="https://img.shields.io/badge/Course-Online-2563eb?style=flat-square" alt="Online Course" /></a>
@@ -16,70 +16,112 @@
   </p>
 
   <p>
+    <a href="https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment01-cartpole">Train on ModelScope</a> ·
+    <a href="https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment01-cartpole.ipynb">Run the CartPole Notebook</a> ·
+    <a href="https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment01-cartpole/file/view/master/train.py">ModelScope Script</a>
+  </p>
+
+  <p>
     <a href="#discussion-group-wechat">Discussion Group (WeChat)</a>
   </p>
 
   <p>
-    <a href="#course-preview">Course Preview</a> ·
-    <a href="#overview">Overview</a> ·
+    <a href="#book-features">Book Features</a> ·
+    <a href="#about-this-book">About This Book</a> ·
     <a href="#news">News</a> ·
     <a href="#contents">Contents</a> ·
-    <a href="#course-outline">Course Outline</a> ·
+    <a href="#structure-of-the-book">Book Structure</a> ·
     <a href="#experiment-code">Experiment Code</a> ·
     <a href="#quick-start">Quick Start</a> ·
     <a href="#contributing">Contributing</a>
   </p>
 </div>
 
-## Course Preview
+> **📣 Announcement**
+>
+> We sincerely thank everyone for your support of this tutorial! A new version is coming soon. Many sections are still being organized and refined, so we appreciate your patience. Suggestions and feedback are always welcome!
+
+## News
+
+> **Note:** This course was created with AI assistance and has not yet been fully reviewed. It may contain factual mistakes or code that does not run as expected. Issues and pull requests are very welcome.
+
+- **[2026-08-19]** 🎮 **Online Classic RL Environments and Scripts**: Over the past two weeks, we have added and refined a collection of online reinforcement learning environments, training scripts, and companion notebooks. Learners can now run classic reinforcement learning experiments online, inspect training logs and evaluation results, and study the algorithms more conveniently. We also fixed many previously reported bugs in the course content, links, and experiment code.
+- **[2026-05-15]** 📖 **Full English Translation & PDF Release**: Complete English translation of all chapters is now available. PDF builds for both Chinese and English editions are released automatically via CI.
+- **[2026-05-13]** 🚀 **Major Upgrade: LLM and Traditional RL Hands-on Labs**: Added reproducible training examples for **Agentic RL** (Deep Research / rLLM) and **Traditional RL** (Actor-Critic continuous control). Includes complete code and fine-tuning analysis for building an Agentic training system from scratch, along with new VLM RL (GeoQA geometry reasoning) hands-on experiments!
+- **[2026-05-02]** Initial browsable open-source release for testing and feedback.
+
+## Online Training Notebooks
+
+WalkingLab is collaborating with ModelScope to provide online training environments for classic reinforcement learning experiments. A ModelScope Studio brings the experiment interface, runtime, and training entry point together on one page, so learners can start training in a browser and observe the agent without first configuring a local environment.
+
+Every Studio has a companion notebook under [`code/online-experiments`](code/online-experiments/README.md). The notebook imports the same training runtime as the Studio, exposes the experiment parameters, prints the full training log, plots checkpoint evaluations, and displays the learned-policy replay or result artifact.
+
+| Experiment                   | Resource | Companion notebook                                                                                                                                                                    | Live Studio                                                                                                |
+| ---------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| 01 · CartPole PPO            | CPU      | [Run Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment01-cartpole.ipynb)           | [Open Studio](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment01-cartpole)           |
+| Gymnasium Playground         | CPU      | [Run Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment-gymnasium.ipynb)            | [Open Studio](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment-gymnasium)            |
+| 02 · ViZDoom                 | CPU      | [Run Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment02-vizdoom.ipynb)            | [Open Studio](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment02-vizdoom)            |
+| 03 · Atari / ALE             | xGPU     | [Run Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment03-atari.ipynb)              | [Open Studio](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment03-atari)              |
+| 04 · Board Games & Self-Play | CPU      | [Run Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment04-board-selfplay.ipynb)     | [Open Studio](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment04-board-selfplay)     |
+| 05 · Multi-Agent Games       | CPU      | [Run Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment05-multiagent-games.ipynb)   | [Open Studio](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment05-multiagent-games)   |
+| 06 · MiniGrid Adventures     | CPU      | [Run Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment06-minigrid-adventure.ipynb) | [Open Studio](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment06-minigrid-adventure) |
+| 07 · JAX MinAtar             | CPU      | [Run Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment07-jax-games.ipynb)          | [Open Studio](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment07-jax-games)          |
+| 08 · ManiSkill               | xGPU     | [Run Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment08-maniskill.ipynb)          | [Open Studio](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment08-maniskill)          |
+| 10 · MineStudio / Minecraft  | xGPU     | [Run Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment10-minestudio.ipynb)         | [Open Studio](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment10-minestudio)         |
+| 11 · Unity ML-Agents         | xGPU     | [Run Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment11-unity-mlagents.ipynb)     | [Open Studio](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment11-unity-mlagents)     |
+| 12 · AI2-THOR                | xGPU     | [Run Notebook](https://modelscope.cn/notebook/share/github/walkinglabs/hands-on-modern-rl/blob/main/code/online-experiments/hands-on-modern-rl-experiment12-ai2thor-embodied.ipynb)   | [Open Studio](https://modelscope.cn/studios/walkinglab/hands-on-modern-rl-experiment12-ai2thor-embodied)   |
+
+CPU entries run on an ordinary notebook instance. Experiments 03, 08, 10, 11, and 12 require a scheduled ModelScope xGPU Notebook and check CUDA before training.
+
+## Book Features
 
 <table>
   <tr>
     <td width="50%" align="center">
       <img src="docs/public/readme/feature-learning-path.png" alt="Course learning map screenshot" width="100%" />
       <br />
-      <strong>A clear learning map</strong>
+      <strong>One continuous learning path</strong>
       <br />
-      <sub>From the preface and foundations to frontier topics, the chapter tree and page outline help you navigate quickly.</sub>
+      <sub>Begin with a CartPole trial and progress through value learning, policy optimization, and modern agents.</sub>
     </td>
     <td width="50%" align="center">
       <img src="docs/public/readme/feature-code-focus.png" alt="PPO code focus screenshot" width="100%" />
       <br />
-      <strong>Line-by-line code focus</strong>
+      <strong>Equations meet code</strong>
       <br />
-      <sub>Key PPO, DPO, and GRPO implementations include code maps that connect formulas to readable code.</sub>
+      <sub>Key PPO, DPO, and GRPO derivations sit beside their implementations, with every tensor accounted for.</sub>
     </td>
   </tr>
   <tr>
     <td width="50%" align="center">
       <img src="docs/public/readme/feature-training-metrics.png" alt="CartPole training metrics screenshot" width="100%" />
       <br />
-      <strong>Training metric visualization</strong>
+      <strong>Claims tested by experiments</strong>
       <br />
-      <sub>Real curves, metric explanations, and failure signals sit together so you can debug while running experiments.</sub>
+      <sub>Real training curves, ablations, and failure signals show when an algorithm works and when it does not.</sub>
     </td>
     <td width="50%" align="center">
       <img src="docs/public/readme/feature-rlhf-pipeline.png" alt="RLHF pipeline screenshot" width="100%" />
       <br />
-      <strong>LLM post-training pipelines</strong>
+      <strong>Classic RL to language models</strong>
       <br />
-      <sub>RLHF, DPO, GRPO, RLVR, and related topics are tied together through flows, artifacts, and cases.</sub>
+      <sub>Policy gradients and PPO lead naturally into RLHF, DPO, GRPO, and RLVR.</sub>
     </td>
   </tr>
   <tr>
     <td width="50%" align="center">
       <img src="docs/public/readme/feature-agentic-rl.png" alt="Agentic RL experiment page screenshot" width="100%" />
       <br />
-      <strong>Agentic RL experiment</strong>
+      <strong>Agents as sequential decisions</strong>
       <br />
-      <sub>DeepCoder-style GRPO training curves connect tool-use agents, response length, and reward dynamics in a reproducible lab.</sub>
+      <sub>Tool use, browser interaction, and code repair become problems of states, actions, trajectories, and credit assignment.</sub>
     </td>
     <td width="50%" align="center">
       <img src="docs/public/readme/feature-atari-game.png" alt="Atari Pong DQN experiment page screenshot" width="100%" />
       <br />
-      <strong>Atari game experiment</strong>
+      <strong>Phenomena before abstractions</strong>
       <br />
-      <sub>Atari Pong gameplay screenshots and DQN training notes show how pixel-based agents turn screens into decisions.</sub>
+      <sub>CartPole, LunarLander, Atari, and LLM experiments pose the problem before introducing the mathematics.</sub>
     </td>
   </tr>
 </table>
@@ -97,65 +139,42 @@
 
 ## Contents
 
-- [Course Preview](#course-preview)
-- [Overview](#overview)
-- [Course Outline](#course-outline)
+- [Book Features](#book-features)
+- [About This Book](#about-this-book)
+- [Structure of the Book](#structure-of-the-book)
 - [Experiment Code](#experiment-code)
+- [Recommended Learning Path](#recommended-learning-path)
 - [Quick Start](#quick-start)
 - [Contributing](#contributing)
 - [Citation](#citation)
+- [Acknowledgements](#acknowledgements)
 - [License](#license)
 
-## Overview
+## About This Book
 
-**Hands-On Modern RL** is an open course for learning modern reinforcement learning through practice. Instead of the usual "formula first, black-box API later" route, this course takes a **practice-first** path: learners begin with runnable code and observable training behavior, then use those concrete traces to understand states, value functions, policy gradients, reward modeling, credit assignment, and the rest of the mathematical structure behind RL.
+Reinforcement learning studies a simple but difficult problem: a system acts, observes the consequences, and uses them to improve its next action. When rewards arrive late, observations are incomplete, and each update changes the distribution of future experience, the familiar supervised-learning model of inputs and labels is no longer enough. We need a language for interaction, a way to estimate long-term return, and methods that improve a policy stably from limited data.
 
-The course spans classic control and connects directly to current AI frontiers, including large language model (LLM) post-training, preference alignment with DPO and GRPO, reinforcement learning with verifiable rewards (RLVR), multi-turn tool-use agents, Agentic RL, and vision-language model (VLM) reinforcement learning.
+**Hands-On Modern RL** follows that problem from beginning to end. CartPole and multi-armed bandits first make states, actions, rewards, and policies observable. Markov decision processes, value functions, and Bellman equations then provide a common language. From there, the book develops DQN, policy gradients, actor-critic methods, PPO, continuous control, and offline reinforcement learning. With those foundations in place, RLHF, DPO, GRPO, and RLVR become extensions of the same sequential-decision framework rather than an isolated collection of acronyms.
 
-The goal is to provide a solid ladder: from solving CartPole for the first time to building modern post-training and agent systems.
+The second half expands the environment to tools, browsers, code repositories, vision, and audio. An action may be a passage of text, a function call, or a sequence of interface operations. A reward may come from human preference, a rule-based verifier, or a process reward model. The setting changes, but three questions run through the entire book: **How should the decision process be represented? How should an outcome be credited to earlier actions? How can we tell whether a policy has actually improved?**
 
-### Design Principles
+### How the Material Is Taught
 
-The course is organized around these engineering and teaching principles:
+Each chapter follows a problem–method–experiment–reflection rhythm. A concrete task first exposes the difficulty. The concepts and equations needed to solve it come next. Runnable code, training curves, and evaluation metrics then test the argument. The chapter closes by examining assumptions, failure modes, and the limits of the method. Mathematics explains observed behavior; experiments check the mathematics.
 
-1. **Practice before formalism.** Each major topic starts from experiments, metrics, failure cases, or implementation details, then introduces the mathematical abstraction.
-2. **Theory explains behavior.** MDPs, Bellman equations, policy gradients, GAE, PPO clipping, DPO objectives, and GRPO-style group advantages are introduced as tools for explaining what the code does.
-3. **Modern RL goes beyond classic RL.** The course covers classic control and deep RL, then moves into RLHF, preference optimization, RLVR, VLM reinforcement learning, and multi-turn agent training.
-4. **Debugging is first-class.** Training collapse, reward hacking, KL drift, entropy decay, OOM failures, and evaluation blind spots are treated as core material.
-5. **Readable systems beat black boxes.** Examples favor explicit implementations, inspectable metrics, and clear experiment boundaries so learners can modify and extend them.
+Implementations retain the visible skeleton of each algorithm. Readers can trace trajectory collection, advantage estimation, loss construction, and metric changes—and see how reward hacking, KL drift, entropy collapse, distribution shift, or evaluation leakage can invalidate an apparently successful run.
 
-### Audience
+### Who Should Read It
 
-This course is for learners who want to understand reinforcement learning by building and inspecting working systems.
+This book is for students, researchers, and engineers with basic machine-learning experience who want a systematic understanding of modern reinforcement learning. Readers should be comfortable with Python and basic PyTorch, and should know introductory linear algebra, probability, and calculus. The mathematical appendices rebuild these tools to the depth required by the chapters, so a separate advanced-mathematics sequence is not a prerequisite.
 
-It is especially useful for:
+After completing the core chapters and labs, you should be able to:
 
-- Machine learning engineers moving from supervised learning into RL.
-- Researchers and students preparing to read modern RL and alignment papers.
-- LLM practitioners interested in RLHF, DPO, GRPO, RLVR, and post-training systems.
-- Builders of tool-use agents, web agents, code agents, and evaluation pipelines.
-- Self-learners who prefer code, experiments, and visual intuition before dense derivations.
-
-Recommended background:
-
-- Python programming experience.
-- Basic PyTorch familiarity.
-- Introductory linear algebra, probability, and calculus for machine learning.
-- Ability to read papers and trace open-source training scripts.
-
-The course includes math review appendices, so full mathematical fluency is not required on day one.
-
-### Learning Goals
-
-After completing the course, learners should be able to:
-
-- Implement and explain the core RL loop: environment interaction, trajectory collection, reward feedback, policy updates, and evaluation.
-- Connect MDPs, value functions, Bellman equations, TD learning, policy gradients, and advantage estimation to concrete training behavior.
-- Read and modify implementations of DQN, REINFORCE, Actor-Critic, PPO, DPO, GRPO, and related methods.
-- Reason about LLM post-training pipelines, including SFT, reward modeling, PPO-style RLHF, DPO-family methods, and RLVR training.
-- Understand multi-turn interaction and credit assignment, and build tool-use, trajectory-synthesis, and Agentic RL systems.
-- Extend reinforcement learning ideas to VLMs, embodied intelligence, multi-agent self-play, and other frontier areas.
-- Diagnose common RL failure modes and design reasonable algorithms, engineering evaluations, and debugging workflows for new RL problems.
+- formulate a new decision problem using MDPs, value functions, Bellman equations, and credit assignment;
+- implement, read, and diagnose DQN, REINFORCE, actor-critic methods, PPO, DPO, and GRPO;
+- explain how SFT, reward modeling, preference optimization, RLHF, and RLVR fit together in LLM post-training;
+- design trajectories, rewards, training loops, and evaluation protocols for tool-use, code, and multimodal agents;
+- identify failure modes behind training curves and test proposed improvements with controlled experiments.
 
 ### Current Status
 
@@ -169,14 +188,6 @@ This repository is an active courseware project. Content is being expanded chapt
 
 Issues and pull requests are welcome for typo fixes, conceptual corrections, reproducibility improvements, references, and focused course extensions.
 
-## News
-
-> **Note:** This course was created with AI assistance and has not yet been fully reviewed. It may contain factual mistakes or code that does not run as expected. Issues and pull requests are very welcome.
-
-- **[2026-05-15]** 📖 **Full English Translation & PDF Release**: Complete English translation of all chapters is now available. PDF builds for both Chinese and English editions are released automatically via CI.
-- **[2026-05-13]** 🚀 **Major Upgrade: LLM and Traditional RL Hands-on Labs**: Added reproducible training examples for **Agentic RL** (Deep Research / rLLM) and **Traditional RL** (Actor-Critic continuous control). Includes complete code and fine-tuning analysis for building an Agentic training system from scratch, along with new VLM RL (GeoQA geometry reasoning) hands-on experiments!
-- **[2026-05-02]** Initial browsable open-source release for testing and feedback.
-
 ## Roadmap
 
 The course is under active development. Planned milestones:
@@ -188,93 +199,128 @@ The course is under active development. Planned milestones:
 - [ ] **Late June 2026:** Add Unity-based embodied RL environments and trainable project examples.
 - [ ] **July 2026 and later:** Expand multimodal frontier content with full VLM RL or Diffusion RL hands-on cases.
 
-## Course Outline
+## Structure of the Book
 
-The course is divided into four parts plus appendices. The README keeps only the main modules; the online site contains the full chapter tree, diagrams, code references, and detailed navigation.
+The book contains seven parts and twenty-six chapters. Parts I–III establish the common language and algorithmic foundations of reinforcement learning. Part IV brings those tools into LLM post-training. Parts V and VI study what changes when the action space expands to tools and multimodal environments. Part VII asks how to detect failures, build trustworthy evaluations, and move the research frontier forward. The appendices provide implementation, mathematics, and engineering references.
 
-### Preface
+### Prologue: From Trial and Error to Modern Agents
 
-| Module                                                                           | Description                                                        |
-| :------------------------------------------------------------------------------- | :----------------------------------------------------------------- |
-| [Course Guide](docs/preface/intro.md)                                            | Course positioning, learning path, and how to use the materials.   |
-| [A Brief History of Reinforcement Learning](docs/preface/brief-history/index.md) | From trial-and-error learning to AlphaGo, RLHF, and LLM alignment. |
-| [Environment Setup](docs/preface/env-setup.md)                                   | Installation and dependency setup for the course.                  |
+| Reading                                                                    | Central question                                                                               |
+| :------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------- |
+| [Introduction to Reinforcement Learning](docs/preface/intro.md)            | What does RL study, and how does the book connect classical methods to modern language models? |
+| [A History of Reinforcement Learning](docs/preface/brief-history/index.md) | How did control, TD learning, DQN, AlphaGo, RLHF, and reasoning models develop?                |
+| [Environment Setup](docs/preface/env-setup.md)                             | How do you prepare the environments for documentation, control tasks, and LLM experiments?     |
 
-### Part 1: Foundations by Practice
+### Part I: The Language of Sequential Decisions
 
-| Chapter | Main Topic                                                | What It Covers                                                                                                          |
-| :------ | :-------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------- |
-| 01      | [CartPole](docs/chapter01_cartpole/intro.md)              | States, actions, rewards, policies, values, entropy, and training curves through a first runnable control task.         |
-| 02      | [DPO Preference Fine-tuning](docs/chapter02_dpo/intro.md) | Preference data, DPO objectives, reward margins, accuracy, and the first bridge from RL intuition to LLM post-training. |
-| Summary | [Part 1 Summary](docs/summaries/part1-summary.md)         | The practical intuition learners should have before entering formal RL theory.                                          |
+The book first makes an agent's failures and improvements observable, then develops the mathematical objects needed to describe long-term decisions.
 
-### Part 2: Core Theory and Methods
+| Ch. | Topic                                                                        | Through line                                                                                        |
+| :-: | :--------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------- |
+|  1  | [Starting with CartPole](docs/chapter01_cartpole/principles.md)              | Use states, actions, rewards, policies, and training curves to see a complete RL loop.              |
+|  2  | [RL Problems and Definitions](docs/chapter03_mdp/bandit.md)                  | Move from exploration and exploitation to MDPs, returns, trajectories, and partial observability.   |
+|  3  | [Value Functions and Bellman Equations](docs/chapter03_mdp/value-bellman.md) | Express how a present action changes the future through state values, action values, and recursion. |
+|  4  | [Classical RL Methods](docs/chapter03_mdp/dp-mc-td.md)                       | Compare dynamic programming, Monte Carlo, and temporal-difference learning.                         |
 
-| Chapter | Main Topic                                                               | What It Covers                                                                                                                      |
-| :------ | :----------------------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------------------------------- |
-| 03      | [MDPs and Value Functions](docs/chapter03_mdp/intro.md)                  | Bandits, MDPs, value functions, Bellman equations, TD learning, Q-learning, policy objectives, data sources, and reward design.     |
-| 04      | [Deep Q-Networks](docs/chapter04_dqn/intro.md)                           | From tabular Q-learning to DQN, replay buffers, target networks, CNN encoders, LunarLander, Atari, and visual game projects.        |
-| 05      | [Policy Gradient and REINFORCE](docs/chapter05_policy_gradient/intro.md) | Direct policy optimization, sampling-based gradients, baselines, and variance reduction.                                            |
-| 06      | [Actor-Critic](docs/chapter06_actor_critic/intro.md)                     | Actor-critic architecture, advantage functions, TD-error critic training, and game-playing agents.                                  |
-| 07      | [PPO](docs/chapter07_ppo/intro.md)                                       | PPO experiments, clipped objectives, trust-region intuition, GAE, reward models, long-horizon planning, and BipedalWalker practice. |
-| Summary | [Part 2 Summary](docs/summaries/part2-summary.md)                        | The algorithmic patterns that repeat across classic and modern RL.                                                                  |
+### Part II: Learning Values and Policies with Neural Networks
 
-### Part 3: LLM-era RL
+When the state space grows, tables no longer suffice. This part introduces function approximation and follows the value-learning and policy-learning routes into PPO and continuous control.
 
-| Chapter | Main Topic                                                   | What It Covers                                                                                                                                                        |
-| :------ | :----------------------------------------------------------- | :-------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| 08      | [The Full RLHF Pipeline](docs/chapter08_rlhf/intro.md)       | SFT, reward modeling, PPO-style RLHF, evaluation, scaling, and reward hacking.                                                                                        |
-| 09      | [Post-Training Alignment](docs/chapter09_alignment/intro.md) | DPO-family methods, GRPO, DeepSeek-R1 and DAPO, RLVR, financial tool-calling GRPO, policy distillation, sandboxed training, and industrial post-training practice.    |
-| 10      | [Agentic RL](docs/chapter10_agentic_rl/intro.md)             | Multi-turn credit assignment, tool-use trajectories, agent evaluation, SWE/DeepCoder/FinQA-style labs, Deep Research agents, and end-to-end agentic training systems. |
-| Summary | [Part 3 Summary](docs/summaries/part3-summary.md)            | What changes when RL is applied to language models, tools, and multi-step agent behavior.                                                                             |
+| Ch. | Topic                                                                             | Through line                                                                                           |
+| :-: | :-------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------- |
+|  5  | [Deep Q-Networks](docs/chapter07_dqn/from-q-to-dqn.md)                            | Approximate action values with neural networks and stabilize learning with replay and target networks. |
+|  6  | [Policy Gradient Methods](docs/chapter08_policy_gradient/policy-gradient.md)      | Optimize the policy directly, derive REINFORCE, and reduce variance with baselines.                    |
+|  7  | [Actor-Critic Methods](docs/chapter09_actor_critic/advantage-function.md)         | Let policy and value estimation learn together, joined by the advantage function.                      |
+|  8  | [TRPO and PPO](docs/chapter10_ppo/trust-region-clipping.md)                       | Limit each policy update and combine GAE with a clipped objective for stable learning.                 |
+|  9  | [Continuous Control and World Models](docs/chapter11_continuous_control/intro.md) | Progress from DDPG, TD3, and SAC to model-based RL, MuZero, and Dreamer.                               |
 
-### Part 4: Frontier and Advanced Systems
+### Part III: Expanding the Data, Task, and Agent
 
-| Chapter | Main Topic                                                   | What It Covers                                                                                              |
-| :------ | :----------------------------------------------------------- | :---------------------------------------------------------------------------------------------------------- |
-| 11      | [VLM Reinforcement Learning](docs/chapter11_vlm_rl/intro.md) | VLM GRPO, visual rewards, multimodal reasoning frameworks, visual generation RL, and EasyR1 GeoQA practice. |
-| 12      | [Future Trends](docs/chapter12_future_trends/intro.md)       | Embodied intelligence, model-based RL, self-play, multi-agent systems, offline RL, and scaling trends.      |
-| Summary | [Part 4 Summary](docs/summaries/part4-summary.md)            | Frontier directions to explore after finishing the core course.                                             |
+When interaction is expensive, expert demonstrations are available, or a task spans multiple agents and time scales, the object of learning changes.
 
-### Appendices
+| Ch. | Topic                                                                                                  | Through line                                                                             |
+| :-: | :----------------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------- |
+| 10  | [Offline Reinforcement Learning](docs/chapter12_offline_rl/intro.md)                                   | Learn from a fixed dataset while controlling distribution shift and extrapolation error. |
+| 11  | [Imitation, Inverse RL, and Meta-RL](docs/chapter13_imitation_meta_rl/bc-dagger.md)                    | Learn policies or rewards from experts and adapt to new tasks.                           |
+| 12  | [Exploration, Multi-Agent, and Hierarchical RL](docs/chapter14_exploration_marl_hierarchical/intro.md) | Address sparse rewards, coordination, and the hierarchy of long-horizon tasks.           |
 
-| Appendix | Main Topic                                                                           | What It Covers                                                                                                               |
-| :------- | :----------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------------------------------------- |
-| A        | [Training Debugging Guide](docs/appendix_common_pitfalls/intro.md)                   | Common RL training failures, symptoms, root causes, and fixes.                                                               |
-| B        | [RL Engineering Practice](docs/appendix_industrial_training/intro.md)                | Training infrastructure, agent sandboxes, parallelism, monitoring, evaluation benchmarks, metrics, and industrial exercises. |
-| C        | [Handwritten Code Cheatsheet](docs/appendix_code_cheatsheet/intro.md)                | Compact code notes for SFT, PPO, DPO, GRPO, sampling, attention, and DAPO.                                                   |
-| D        | [Learning Resources and Reproduction Projects](docs/appendix_game_projects/intro.md) | Curated resources and reproduction projects for expanding course examples.                                                   |
-| E        | [Math Foundations for Reinforcement Learning](docs/appendix_math/intro.md)           | Linear algebra, probability, calculus, optimization, and information theory for RL.                                          |
+### Part IV: LLM Alignment and Post-Training
+
+Language models expand an “action” into a passage of text. Policy optimization, distribution constraints, and credit assignment now lead into preference alignment, verifiable rewards, and inference-time computation.
+
+| Ch. | Topic                                                                                        | Through line                                                                                                 |
+| :-: | :------------------------------------------------------------------------------------------- | :----------------------------------------------------------------------------------------------------------- |
+| 13  | [The RLHF Training Pipeline](docs/chapter15_rlhf/base-model-to-assistant.md)                 | Move from SFT, AI feedback, and reward modeling to PPO-style RL fine-tuning and evaluation.                  |
+| 14  | [Preference Alignment and the DPO Family](docs/chapter17_dpo/intro.md)                       | Derive DPO from a KL-constrained objective and compare preference-optimization assumptions.                  |
+| 15  | [GRPO, RLVR, and Verifier Engineering](docs/chapter18_grpo/grpo-practice-and-mechanism.md)   | Train mathematical, coding, and tool-use capabilities with group-relative advantages and verifiable rewards. |
+| 16  | [Reasoning Models and Inference-Time Compute](docs/chapter19_reasoning/emergence-and-o1.md)  | Explain long-reasoning training, compute-budget control, and chain-of-thought alignment.                     |
+| 17  | [Process Rewards and Inference-Time Search](docs/chapter20_prm_search/outcome-vs-process.md) | Move supervision from final answers to intermediate steps and combine it with search.                        |
+| 18  | [Industrial LLM RL](docs/chapter16_llm_rl_industrial/intro.md)                               | Scale a single-machine algorithm into a coordinated data, inference, training, and evaluation system.        |
+
+### Part V: Tool Use and Agentic Reinforcement Learning
+
+Once agents call tools across many environment steps, the unit of training becomes a trajectory. Credit assignment, environment construction, and safety boundaries become central.
+
+| Ch. | Topic                                                                                         | Through line                                                                           |
+| :-: | :-------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------- |
+| 19  | [Tool Use, Multi-Turn Interaction, and Multi-Agent RL](docs/chapter22_agentic/overview.md)    | Formalize Agentic RL, synthesize tool trajectories, and run DeepCoder and FinQA labs.  |
+| 20  | [Reinforcement Learning for Coding Agents](docs/chapter23_rl_based_swe/swe-bench-and-rlvr.md) | Study software-engineering agents through SWE-bench, code world models, and self-play. |
+| 21  | [Deep Research and Browser Agents](docs/chapter24_deep_research/browser-rl-harness.md)        | Build trainable browser environments and evaluate deep-research systems.               |
+| 22  | [Computer Use and GUI Agents](docs/chapter25_computer_use/training.md)                        | Train interface agents while handling instruction hierarchy and prompt injection.      |
+
+### Part VI: Reinforcement Learning in Multimodal Worlds
+
+Vision, audio, robot actions, and generative models introduce new state representations, reward sources, and evaluation criteria.
+
+| Ch. | Topic                                                                                           | Through line                                                                        |
+| :-: | :---------------------------------------------------------------------------------------------- | :---------------------------------------------------------------------------------- |
+| 23  | [Vision-Language Model RL](docs/chapter26_vlm/vlm-challenges.md)                                | Design visual rewards and reflection, then run VLM-GRPO and GeoQA experiments.      |
+| 24  | [Audio, Embodied Intelligence, and Visual Generation](docs/chapter27_audio_rl/reward-design.md) | Extend RLVR and RLHF to audio, VLA systems, image generation, and video generation. |
+
+### Part VII: Safety, Evaluation, and Research Frontiers
+
+A rising training reward only shows that the optimizer met its objective. This final part asks whether the objective was sound, whether the gain was real, and what new risks follow from broader capabilities.
+
+| Ch. | Topic                                                                                            | Through line                                                                                   |
+| :-: | :----------------------------------------------------------------------------------------------- | :--------------------------------------------------------------------------------------------- |
+| 25  | [Reward Hacking and RL Evaluation](docs/chapter30_alignment_failures/classical-failures.md)      | Analyze specification gaming, spurious gains, sleeper behavior, and evaluation leakage.        |
+| 26  | [Self-Play, Scaling, and Research Frontiers](docs/chapter32_selfplay/self-play-outlook/index.md) | Study self-play, RL scaling laws, multi-agent learning, and evolutionary scientific discovery. |
+
+### Appendices: A Working Reference
+
+| Appendix | Topic                                                                                         | Contents                                                                                            |
+| :------: | :-------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------------- |
+|    A     | [Training Debugging and Engineering](docs/appendix_industrial_training/training-debugging.md) | Training systems, parallelism, monitoring, agent sandboxes, and bad-case analysis.                  |
+|    B     | [Core Algorithm Implementations](docs/appendix_code_cheatsheet/sft-kl.md)                     | Compact implementations of SFT, PPO, DPO, GRPO, DAPO, sampling, and attention.                      |
+|    C     | [Learning and Reference Materials](docs/appendix_paper_reading/intro.md)                      | Paper roadmaps, GPU-hour estimates, a metrics glossary, and engineering exercises.                  |
+|    D     | [Mathematical Foundations of RL](docs/appendix_math/linear-algebra-basics.md)                 | Progressive reviews of linear algebra, probability, calculus, optimization, and information theory. |
 
 ## Experiment Code
 
 The [`code/`](code/) directory contains runnable examples aligned with course chapters. Each chapter's code is intentionally compact so it can be inspected, run, and modified independently.
 
-| Area                   | Code Path                                                                                                          | Representative Experiments                                                                         |
-| :--------------------- | :----------------------------------------------------------------------------------------------------------------- | :------------------------------------------------------------------------------------------------- |
-| Classic control        | [`code/chapter01_cartpole/`](code/chapter01_cartpole/)                                                             | Train CartPole, inspect rewards and episode length, and compare PPO implementations.               |
-| Preference fine-tuning | [`code/chapter02_dpo/`](code/chapter02_dpo/)                                                                       | Generate preference data, train with DPO, and compare model behavior before and after fine-tuning. |
-| MDP and value learning | [`code/chapter03_mdp/`](code/chapter03_mdp/)                                                                       | Run bandit strategies, solve GridWorld, and verify Bellman updates numerically.                    |
-| Deep Q-learning        | [`code/chapter04_dqn/`](code/chapter04_dqn/)                                                                       | Implement replay buffers, target networks, and Double DQN variants.                                |
-| Policy gradient        | [`code/chapter05_policy_gradient/`](code/chapter05_policy_gradient/)                                               | Compare REINFORCE, baseline variants, and Actor-Critic updates.                                    |
-| PPO                    | [`code/chapter07_ppo/`](code/chapter07_ppo/)                                                                       | Train LunarLander, inspect clipping, visualize GAE, and compare training stability.                |
-| RLHF                   | [`code/chapter08_rlhf/`](code/chapter08_rlhf/)                                                                     | Walk through SFT, reward model training, PPO-style alignment, and veRL/GSM8K adapter scripts.      |
-| Alignment and RLVR     | [`code/chapter09_alignment/`](code/chapter09_alignment/), [`code/chapter09_grpo_rlvr/`](code/chapter09_grpo_rlvr/) | Explore DPO rewards, GRPO group advantages, and rule-based verifiable rewards.                     |
-| VLM and agents         | [`code/chapter10_agentic_rl/`](code/chapter10_agentic_rl/), [`code/chapter11_vlm_rl/`](code/chapter11_vlm_rl/)     | Build tool-use agent trajectory synthesis and implement multimodal model RL examples.              |
-| Advanced topics        | [`code/chapter12_future_trends/`](code/chapter12_future_trends/)                                                   | Study frontier directions including multi-agent RL and model-based RL.                             |
+| Area                   | Code Path                                                                                                          | Representative Experiments                                                                    |
+| :--------------------- | :----------------------------------------------------------------------------------------------------------------- | :-------------------------------------------------------------------------------------------- |
+| Classic control        | [`code/chapter01_cartpole/`](code/chapter01_cartpole/)                                                             | Train CartPole, inspect rewards and episode length, and compare PPO implementations.          |
+| Preference fine-tuning | [`code/chapter17_dpo/`](code/chapter17_dpo/)                                                                       | Train a DPO model and inspect preference accuracy, reward margin, and KL drift.               |
+| MDP and value learning | [`code/chapter03_mdp/`](code/chapter03_mdp/)                                                                       | Run bandit strategies, solve GridWorld, and verify Bellman updates numerically.               |
+| Deep Q-learning        | [`code/chapter04_dqn/`](code/chapter04_dqn/)                                                                       | Implement replay buffers, target networks, and Double DQN variants.                           |
+| Policy gradient        | [`code/chapter05_policy_gradient/`](code/chapter05_policy_gradient/)                                               | Compare REINFORCE, baseline variants, and Actor-Critic updates.                               |
+| PPO                    | [`code/chapter07_ppo/`](code/chapter07_ppo/)                                                                       | Train LunarLander, inspect clipping, visualize GAE, and compare training stability.           |
+| RLHF                   | [`code/chapter08_rlhf/`](code/chapter08_rlhf/)                                                                     | Walk through SFT, reward model training, PPO-style alignment, and veRL/GSM8K adapter scripts. |
+| Alignment and RLVR     | [`code/chapter09_alignment/`](code/chapter09_alignment/), [`code/chapter09_grpo_rlvr/`](code/chapter09_grpo_rlvr/) | Explore DPO rewards, GRPO group advantages, and rule-based verifiable rewards.                |
+| VLM and agents         | [`code/chapter10_agentic_rl/`](code/chapter10_agentic_rl/), [`code/chapter11_vlm_rl/`](code/chapter11_vlm_rl/)     | Build tool-use agent trajectory synthesis and implement multimodal model RL examples.         |
+| Advanced topics        | [`code/chapter12_future_trends/`](code/chapter12_future_trends/)                                                   | Study frontier directions including multi-agent RL and model-based RL.                        |
 
 See [`code/README.md`](code/README.md) for a code index and chapter-specific dependency notes.
 
 ## Recommended Learning Path
 
-A practical path through the repository:
+For a first systematic reading, follow the chapters in order. Chapters 1–4 establish the language and recursive ideas of RL; Chapters 5–9 develop the algorithmic core of deep RL; Chapters 10–12 expand the data and task settings. Together, these parts provide the foundation for the rest of the book.
 
-1. Read the [course guide](docs/preface/intro.md) and run the CartPole example.
-2. Skim the DPO chapter early, even before finishing all theory, to anchor the motivation for LLM post-training.
-3. Study Chapters 03-07 in order; this is the conceptual core.
-4. After understanding policy gradients and PPO, return to RLHF, DPO, GRPO, and RLVR.
-5. Use the debugging and engineering appendices whenever a training run behaves strangely.
-6. Treat frontier chapters as extensions: VLM reinforcement learning, Agentic RL, continuous control, multi-agent systems, and test-time reasoning.
+Readers focused on LLM post-training can enter Chapters 13–18 after completing Chapters 6–8. Policy gradients, advantage estimation, PPO, and KL constraints directly explain the objectives used by RLHF, DPO, and GRPO. Then select the relevant topics from Chapters 19–24 for Agentic or multimodal RL. Chapters 25–26 are worth reading alongside any experiment because reward and evaluation errors affect every method in the book.
+
+For each chapter: restate the problem it solves, derive the central equation, run at least one experiment, and change one important assumption to explain the resulting metrics. Use the appendices as references when mathematics or engineering details arise; they do not need to be read front to back first.
 
 ## Quick Start
 
@@ -402,7 +448,11 @@ Our team has also created other courses. Take a look:
 
 For suggestions or feedback, scan the QR code to join the discussion group (WeChat):
 
-<img src="https://github.com/walkinglabs/.github/raw/main/profile/wechat.png" alt="Discussion Group" width="300" />
+<img
+  src="https://github.com/walkinglabs/.github/raw/main/profile/wechat.png"
+  alt="Discussion Group"
+  style="width: 100%; max-width: 520px; height: auto;"
+/>
 
 ## Citation
 
@@ -418,21 +468,15 @@ If you use this course in teaching materials, study notes, or derivative non-com
 }
 ```
 
+## Acknowledgements
+
+We thank [OpenAI](https://openai.com/) for providing development resources and [AMD](https://www.amd.com/) for providing computing resources that support this project. Without their support, this course could not have evolved so quickly.
+
 ## License
 
 This course is released under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License](LICENSE).
 
 You may share and adapt the material for non-commercial purposes, provided that you give appropriate credit and distribute derivative works under the same license.
-
-## Star History
-
-<a href="https://star-history.com/#walkinglabs/hands-on-modern-rl&Date">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/svg?repos=walkinglabs/hands-on-modern-rl&type=Date&theme=dark" />
-    <source media="(prefers-color-scheme: light)" srcset="https://api.star-history.com/svg?repos=walkinglabs/hands-on-modern-rl&type=Date" />
-    <img alt="Star History Chart" src="https://api.star-history.com/svg?repos=walkinglabs/hands-on-modern-rl&type=Date" />
-  </picture>
-</a>
 
 ---
 

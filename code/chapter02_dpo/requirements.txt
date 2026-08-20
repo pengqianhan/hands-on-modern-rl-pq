@@ -1,7 +1,0 @@
-# 第2章：DPO 偏好微调实验依赖
-transformers==4.57.3
-trl==0.24.0
-torch>=2.0.0
-datasets==4.4.1
-accelerate==1.10.1
-modelscope>=1.18.0

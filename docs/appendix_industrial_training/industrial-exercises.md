@@ -1,4 +1,4 @@
-# B.5 工业岗位练习：后训练与强化学习
+# C.4 工业实践练习
 
 > 这一页不再把练习写成抽象算法题，而是从公开岗位要求倒推：真实的后训练岗位、强化学习岗位每天在做什么，候选人应该拿什么项目证明自己会做。
 
@@ -138,7 +138,7 @@ OpenAI、Anthropic 这类岗位把 post-training 放在最终产品模型发布�
 
 ## 八个工业练习
 
-### 练习一：岗位反推能力矩阵
+### 岗位反推能力矩阵
 
 **目标**：训练你从岗位描述里读出真实工作。
 
@@ -150,7 +150,7 @@ OpenAI、Anthropic 这类岗位把 post-training 放在最终产品模型发布�
 
 **交付物**：一张能力矩阵表，加一段 300 字总结：你要投哪类岗位，下一步最该补哪个项目。
 
-### 练习二：垂域后训练最小闭环
+### 垂域后训练最小闭环
 
 **场景**：你要做一个金融投研助手或法律问答助手，目标是回答更专业、更可靠。
 
@@ -164,7 +164,7 @@ OpenAI、Anthropic 这类岗位把 post-training 放在最终产品模型发布�
 
 **交付物**：数据卡、训练配置、评测表、Badcase 表、下一轮数据配比方案。
 
-### 练习三：RLVR 数学或代码训练
+### RLVR 数学或代码训练
 
 **场景**：你要提升模型在数学或代码任务上的可验证正确率。
 
@@ -178,7 +178,7 @@ OpenAI、Anthropic 这类岗位把 post-training 放在最终产品模型发布�
 
 **交付物**：训练曲线、配置对比、verifier 代码、reward hacking 复盘。
 
-### 练习四：Reward Model 和 Judge 校准
+### Reward Model 和 Judge 校准
 
 **场景**：你的 RM 分数持续上升，但人工评测说模型越来越空洞。
 
@@ -192,7 +192,7 @@ OpenAI、Anthropic 这类岗位把 post-training 放在最终产品模型发布�
 
 **交付物**：rubric、偏好数据样例、judge/RM 一致性报告、偏置分析、修复方案。
 
-### 练习五：Agent 任务环境
+### Agent 任务环境
 
 **场景**：你要训练一个能修复小型代码仓库 bug 的 Agent。
 
@@ -206,7 +206,7 @@ OpenAI、Anthropic 这类岗位把 post-training 放在最终产品模型发布�
 
 **交付物**：任务环境说明、grader、轨迹样例、失败类型统计、下一轮训练数据。
 
-### 练习六：训练系统健康检查
+### 训练系统健康检查
 
 **场景**：RL 训练跑到第 3 天突然变慢，模型指标也开始波动。
 
@@ -220,7 +220,7 @@ OpenAI、Anthropic 这类岗位把 post-training 放在最终产品模型发布�
 
 **交付物**：系统图、指标面板、报警规则、故障复盘。
 
-### 练习七：中国岗位模拟：产品数据飞轮
+### 练习七：中国岗位模拟 与 产品数据飞轮
 
 **场景**：一个 AI 搜索或教育产品希望模型回答更准、更贴合用户。
 
@@ -234,7 +234,7 @@ OpenAI、Anthropic 这类岗位把 post-training 放在最终产品模型发布�
 
 **交付物**：数据飞轮流程图、数据配比表、上线灰度指标、风险清单。
 
-### 练习八：欧美岗位模拟：大规模 Agent/RL 项目计划
+### 练习八：欧美岗位模拟 与 大规模 Agent/RL 项目计划
 
 **场景**：你在做一个会使用工具的 frontier agent，目标提升代码、浏览器和多工具协作能力。
 
@@ -292,9 +292,9 @@ OpenAI、Anthropic 这类岗位把 post-training 放在最终产品模型发布�
 
 [^tencent-hunyuan]: 牛企直聘转载腾讯官网岗位, "混元大语言模型后训练算法工程师", <https://jobs.niuqizp.com/job-vmU55NnaZ.html>
 
-[^mistral-forge]: Mistral AI, "Product Manager, Forge", <https://jobs.lever.co/mistral/11087966-f183-44b1-adc9-3a400c1f52ad>
+[^mistral-forge]: Mistral AI, "Product Manager, Forge"（职位已下线）
 
-[^mistral-ai4engineering]: Mistral AI, "Applied Scientist / Research Engineer, AI4Engineering - EMEA", <https://jobs.lever.co/mistral/249d0ec9-1824-41cb-8c4f-cb17a1d5d111>
+[^mistral-ai4engineering]: Mistral AI, "Applied Scientist / Research Engineer, AI4Engineering - EMEA"（职位已下线）
 
 [^helsing-rl]: Helsing, "AI Research Engineer - Reinforcement Learning", <https://helsing.ai/jobs/4676357101>
 
