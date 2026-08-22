@@ -39,7 +39,7 @@ code/chapter01_cartpole/output/*.pth
 code/chapter01_cartpole/output/*.png
 !code/chapter01_cartpole/output/training_metrics_seed42.csv
 code/**/geometry_dataset/
-.claude/*
+# .claude/*
 
 # Debug scripts for textbook writing
 debug/
